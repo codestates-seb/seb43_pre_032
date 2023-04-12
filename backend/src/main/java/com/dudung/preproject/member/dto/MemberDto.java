@@ -1,6 +1,7 @@
 package com.dudung.preproject.member.dto;
 
 import lombok.Getter;
+import lombok.Setter;
 
 public class MemberDto {
     @Getter
@@ -10,7 +11,9 @@ public class MemberDto {
         private String name;
     }
     @Getter
+    @Setter
     public static class Patch {
+        private long memberId;
         private String email;
         private String password;
         private String name;
