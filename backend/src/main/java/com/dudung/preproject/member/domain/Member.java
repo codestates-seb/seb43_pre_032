@@ -30,8 +30,7 @@ public class Member {
     private String password;
 
     private String name;
-
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToMany
     private List<Question> questions = new ArrayList<>();
