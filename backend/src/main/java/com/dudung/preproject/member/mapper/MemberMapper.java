@@ -4,7 +4,7 @@ import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.member.dto.MemberDto;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface MemberMapper {
     Member memeberPostToMember(MemberDto.Post requestBody);
 
