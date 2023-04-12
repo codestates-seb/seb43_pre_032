@@ -1,8 +1,10 @@
-package com.dudung.preproject.domain;
+package com.dudung.preproject.tag.domain;
 
+import com.dudung.preproject.question.domain.Question;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import javax.persistence.*;
 import java.util.List;
 
 @Entity

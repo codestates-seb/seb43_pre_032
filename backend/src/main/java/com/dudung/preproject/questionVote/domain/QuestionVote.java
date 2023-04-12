@@ -1,9 +1,12 @@
-package com.dudung.preproject.domain;
+package com.dudung.preproject.questionVote.domain;
 
+import com.dudung.preproject.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor

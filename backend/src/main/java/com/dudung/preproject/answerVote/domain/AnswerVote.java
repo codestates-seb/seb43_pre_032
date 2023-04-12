@@ -1,7 +1,10 @@
-package com.dudung.preproject.domain;
+package com.dudung.preproject.answerVote.domain;
 
+import com.dudung.preproject.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
+
+import javax.persistence.*;
 
 @Getter
 @Entity

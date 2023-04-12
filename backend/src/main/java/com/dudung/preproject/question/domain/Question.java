@@ -1,8 +1,12 @@
-package com.dudung.preproject.domain;
+package com.dudung.preproject.question.domain;
 
+import com.dudung.preproject.answer.domain.Answer;
+import com.dudung.preproject.questionVote.domain.QuestionVote;
+import com.dudung.preproject.tag.domain.Tag;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
