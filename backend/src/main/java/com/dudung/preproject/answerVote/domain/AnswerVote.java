@@ -1,7 +1,6 @@
 package com.dudung.preproject.answerVote.domain;
 
 import com.dudung.preproject.member.domain.Member;
-import jakarta.persistence.*;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -15,9 +14,9 @@ public class AnswerVote {
     private Long answerVoteId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member memberId;
+    private Member member;
 
-    private int countAnswerVote;
+    private int score;
 
 
 }

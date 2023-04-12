@@ -1,7 +1,6 @@
 package com.dudung.preproject.questionVote.domain;
 
 import com.dudung.preproject.member.domain.Member;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,5 +20,5 @@ public class QuestionVote {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    private int countQuestionVote;
+    private int score;
 }
