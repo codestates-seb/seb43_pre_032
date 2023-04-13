@@ -3,21 +3,25 @@ package com.dudung.preproject.answer.domain;
 import com.dudung.preproject.answerVote.domain.AnswerVote;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.question.domain.Question;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
 public class Answer {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerId;
 
     @ManyToOne
@@ -33,9 +37,9 @@ public class Answer {
 
     private int answerVoteSum;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    private LocalDateTime modifiedAt;
+    private LocalDateTime modifiedAt = LocalDateTime.now();
 
     public void addAnswerVote(AnswerVote answerVote) {
         this.answerVotes.add(answerVote);
