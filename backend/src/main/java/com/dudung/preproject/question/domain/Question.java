@@ -5,6 +5,7 @@ import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.questionVote.domain.QuestionVote;
 import com.dudung.preproject.tag.domain.Tag;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 public class Question {
 
     @Id
@@ -25,6 +27,7 @@ public class Question {
     private int viewCount;
 
     private int answerCount;
+    private String questionTitle;
 
     private String questionContent;
 
