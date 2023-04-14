@@ -18,5 +18,5 @@ public class MemberQuestion {
     private Long memberQuestionId;
 
     @OneToMany
-    private List<Question> question = new ArrayList<>();
+    private List<Question> questions = new ArrayList<>();
 }
