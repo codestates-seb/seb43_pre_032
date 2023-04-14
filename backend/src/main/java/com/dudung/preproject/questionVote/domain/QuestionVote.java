@@ -1,6 +1,7 @@
 package com.dudung.preproject.questionVote.domain;
 
 import com.dudung.preproject.member.domain.Member;
+import com.dudung.preproject.question.domain.Question;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,12 @@ public class QuestionVote {
     private Long questionVoteId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID")
     private Member member;
+
+    @ManyToOne
+    @JoinColumn(name = "QUESTION_ID")
+    private Question question;
 
     private int score;
 }

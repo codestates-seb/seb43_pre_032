@@ -32,16 +32,16 @@ public class Member {
     private String name;
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @OneToMany
+    @OneToMany(mappedBy = "member")
     private List<Question> questions = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "member")
     private List<Answer> answers = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<QuestionVote> questionVotes = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<AnswerVote> answerVotes = new ArrayList<>();
 
     public void addQuestion(Question question) {
