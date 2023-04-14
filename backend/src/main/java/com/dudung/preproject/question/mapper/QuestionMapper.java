@@ -6,6 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface QuestionMapper {
@@ -19,7 +20,22 @@ public interface QuestionMapper {
                 .createdAt(question.getCreatedAt())
                 .modifiedAt(question.getModifiedAt())
                 .questionVoteSum(question.getQuestionVoteSum())
-                .member(question.getMember().getName()).build();
+                .viewCount(question.getViewCount())
+                .memberName(question.getMember().getName()).build();
     }
-    List<QuestionDto.ResponseForList> questionsToQuestionsResponse(List<Question> questions);
+
+    default QuestionDto.ResponseForList questionToQuestionResponseForList(Question question) {
+        return QuestionDto.ResponseForList.builder()
+                .questionTitle(question.getQuestionTitle())
+                .viewCount(question.getViewCount())
+                .questionVoteSum(question.getQuestionVoteSum())
+                .createdAt(question.getCreatedAt())
+                .memberName(question.getMember().getName())
+                .answerCount(question.getAnswerCount()).build();
+    }
+    default List<QuestionDto.ResponseForList> questionsToQuestionsResponse(List<Question> questions) {
+        return questions.stream()
+                .map(question -> questionToQuestionResponseForList(question))
+                .collect(Collectors.toList());
+    }
 }

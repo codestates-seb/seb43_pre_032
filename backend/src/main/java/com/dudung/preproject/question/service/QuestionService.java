@@ -36,7 +36,10 @@ public class QuestionService {
     }
 
     public Question findQuestion(long questionId) {
-        return findVerifiedQuestion(questionId);
+        Question findedQuestion = findVerifiedQuestion(questionId);
+        addViewCount(findedQuestion);
+
+        return findedQuestion;
     }
     public Page<Question> findQuestions(int page, int size, String sortBy) { // sortBy == 정렬기준 e.g. "questionId"
         return questionRepository.findAll(PageRequest.of(page, size,
@@ -52,5 +55,11 @@ public class QuestionService {
         Question findedQuestion = optionalQuestion.orElseThrow(() -> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
 
         return findedQuestion;
+    }
+
+    private void addViewCount(Question question) {
+        question.setViewCount(question.getViewCount() + 1);
+
+        questionRepository.save(question);
     }
 }
