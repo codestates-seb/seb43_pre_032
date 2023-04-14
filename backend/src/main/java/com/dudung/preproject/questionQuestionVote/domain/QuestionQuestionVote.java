@@ -1,16 +1,19 @@
 package com.dudung.preproject.questionQuestionVote.domain;
 
+import com.dudung.preproject.question.domain.Question;
+import com.dudung.preproject.questionVote.domain.QuestionVote;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
-@Table(name = "QuestionQuestionVote")
+@Table
 public class QuestionQuestionVote {
     @Id
     private Long questionQuestionVoteId;
 
-    @Id
-    private Long questionVoteId;
+    @OneToMany
+    private List<QuestionVote> questionVotes;
 }
