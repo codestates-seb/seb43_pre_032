@@ -22,6 +22,7 @@ public class Question {
     private Long questionId;
 
     @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
     private int viewCount;

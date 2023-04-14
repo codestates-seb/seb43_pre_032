@@ -32,7 +32,8 @@ public class QuestionDto {
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
         private int questionVoteSum;
-        private String member;
+        private int viewCount;
+        private String memberName;
     }
 
     @Getter
