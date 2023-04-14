@@ -11,8 +11,14 @@ public interface AnswerMapper {
 
     Answer answerPatchAnswer(AnswerDto.Patch requestBody);
 
-    @Mapping(target = "memberName", source = "answer.member.name")
-    AnswerDto.Response answerToAnswerResponse(Answer answer);
+    default AnswerDto.Response answerToAnswerResponse(Answer answer) {
+        return AnswerDto.Response.builder()
+                .answerId(answer.getAnswerId())
+                .questionId(answer.getQuestion().getQuestionId())
+                .memberName(answer.getMember().getName())
+                .answerContent(answer.getAnswerContent())
+                .modifiedAt(answer.getModifiedAt()).build();
+    }
 
 
 
