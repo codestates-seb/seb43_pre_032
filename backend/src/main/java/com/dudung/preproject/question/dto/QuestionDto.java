@@ -32,6 +32,17 @@ public class QuestionDto {
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
         private int questionVoteSum;
+        private String member;
+    }
+
+    @Getter
+    @Builder
+    public static class ResponseForList {
+        private String questionTitle;
+        private int viewCount;
+        private int questionVoteSum;
+        private LocalDateTime createdAt;
         private String memberName;
+        private int answerCount;
     }
 }
