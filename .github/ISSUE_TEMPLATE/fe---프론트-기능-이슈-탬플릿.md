@@ -3,7 +3,7 @@ name: FE - 프론트 기능 이슈 탬플릿
 about: FE - 프론트 기능 이슈 탬플릿
 title: ''
 labels: FE
-assignees: JHJFE
+assignees: ''
 
 ---
 
