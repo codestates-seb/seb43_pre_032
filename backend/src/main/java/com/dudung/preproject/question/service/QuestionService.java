@@ -6,6 +6,9 @@ import com.dudung.preproject.member.service.MemberService;
 import com.dudung.preproject.question.domain.Question;
 import com.dudung.preproject.question.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,6 +18,7 @@ import java.util.Optional;
 public class QuestionService {
     private final QuestionRepository questionRepository;
     private final MemberService memberService;
+
 
     public Question createQuestion(Question question) {
         memberService.findVerifiedMember(question.getMember().getMemberId());
@@ -33,6 +37,10 @@ public class QuestionService {
 
     public Question findQuestion(long questionId) {
         return findVerifiedQuestion(questionId);
+    }
+    public Page<Question> findQuestions(int page, int size, String sortBy) { // sortBy == 정렬기준 e.g. "questionId"
+        return questionRepository.findAll(PageRequest.of(page, size,
+                Sort.by(sortBy).descending()));
     }
 
     public void deleteQuestion(long questionId) {
