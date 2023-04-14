@@ -25,14 +25,16 @@ public class Answer {
     private Long answerId;
 
     @ManyToOne
+    @JoinColumn(name = "QUESTION_ID")
     private Question question;
 
     @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
     private String answerContent;
 
-    @OneToMany
+    @OneToMany(mappedBy = "answer")
     private List<AnswerVote> answerVotes = new ArrayList<>();
 
     private int answerVoteSum;

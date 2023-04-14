@@ -32,7 +32,7 @@ public class Question {
 
     private String questionContent;
 
-    @OneToMany
+    @OneToMany(mappedBy = "question")
     private List<QuestionVote> questionVotes = new ArrayList<>();
 
     private int questionVoteSum;
@@ -40,7 +40,7 @@ public class Question {
     @OneToMany
     private List<Tag> tags = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "question")
     private List<Answer> answers = new ArrayList<>();
 
     private LocalDateTime createdAt;
