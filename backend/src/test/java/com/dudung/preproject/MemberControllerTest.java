@@ -21,10 +21,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.doNothing;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(MemberController.class)
 @ExtendWith(MockitoExtension.class)
@@ -38,7 +38,7 @@ public class MemberControllerTest {
     private MemberMapper mapper;
 
     @Test
-    @DisplayName("Member Create test")
+    @DisplayName("Member Create Test")
     public void createMemberTest() throws Exception {
         // given
         String content = "{\n" +
@@ -62,5 +62,46 @@ public class MemberControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", is(startsWith("/"))))
                 .andDo(print());
+    }
+    @Test
+    @DisplayName("Member Patch Test")
+    public void patchMemberTest() throws Exception {
+        String content = "{\n" +
+                "\"memberId\": \"1\",\n" +
+                "\"email\": \"dudung@gamil.com\",\n" +
+                "\"password\": \"1111\",\n" +
+                "\"name\": \"두둥탁\"\n" +
+                "}";
+        MemberDto.Response response = MemberDto.Response.builder()
+                .name("두둥탁")
+                .build();
+
+        given(mapper.memberPatchToMember(Mockito.any(MemberDto.Patch.class))).willReturn(new Member());
+
+        given(memberService.updateMember(Mockito.any(Member.class))).willReturn(new Member());
+
+        given(mapper.memberToMemberResponse(Mockito.any(Member.class))).willReturn(response);
+
+        ResultActions actions =
+                mockMvc.perform(
+                        patch("/{member-id}", 1)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(content)
+                );
+        actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("두둥탁"))
+                .andDo(print());
+    }
+    @Test
+    @DisplayName("Member Delete Test")
+    public void deleteMemberTest() throws Exception {
+        doNothing().when(memberService).deleteMember(Mockito.anyLong());
+
+        mockMvc.perform(
+                        delete("/{member-id}", 1)
+                )
+                .andExpect(status().isNoContent());
     }
 }
