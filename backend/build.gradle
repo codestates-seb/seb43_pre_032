@@ -25,6 +25,7 @@ dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.1.Final'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'org.projectlombok:lombok:1.18.22'
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 //    implementation 'org.springframework.boot:spring-boot-starter-security'
