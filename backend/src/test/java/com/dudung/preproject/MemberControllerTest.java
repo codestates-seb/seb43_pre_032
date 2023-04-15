@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static com.dudung.preproject.utils.StubData.*;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.BDDMockito.given;
@@ -41,12 +42,6 @@ public class MemberControllerTest {
     @DisplayName("Member Create Test")
     public void createMemberTest() throws Exception {
         // given
-        String content = "{\n" +
-                "\"email\": \"dudung@gamil.com\",\n" +
-                "\"password\": \"1111\",\n" +
-                "\"name\": \"두둥탁\"\n" +
-                "}";
-
         given(mapper.memeberPostToMember(Mockito.any(MemberDto.Post.class))).willReturn(new Member());
 
         given(memberService.createMember(Mockito.any(Member.class))).willReturn(new Member());
@@ -56,7 +51,7 @@ public class MemberControllerTest {
                         post("/")
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(content)
+                                .content(getPostMemberContent())
                 );
         actions
                 .andExpect(status().isCreated())
@@ -66,28 +61,36 @@ public class MemberControllerTest {
     @Test
     @DisplayName("Member Patch Test")
     public void patchMemberTest() throws Exception {
-        String content = "{\n" +
-                "\"memberId\": \"1\",\n" +
-                "\"email\": \"dudung@gamil.com\",\n" +
-                "\"password\": \"1111\",\n" +
-                "\"name\": \"두둥탁\"\n" +
-                "}";
-        MemberDto.Response response = MemberDto.Response.builder()
-                .name("두둥탁")
-                .build();
-
         given(mapper.memberPatchToMember(Mockito.any(MemberDto.Patch.class))).willReturn(new Member());
 
         given(memberService.updateMember(Mockito.any(Member.class))).willReturn(new Member());
 
-        given(mapper.memberToMemberResponse(Mockito.any(Member.class))).willReturn(response);
+        given(mapper.memberToMemberResponse(Mockito.any(Member.class))).willReturn(getMemberResponse());
 
         ResultActions actions =
                 mockMvc.perform(
                         patch("/{member-id}", 1)
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(content)
+                                .content(getPatchMemberContent())
+                );
+        actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("두둥탁"))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("Member Get Test")
+    public void getMemberTest() throws Exception {
+        given(memberService.findMember(Mockito.anyLong())).willReturn(new Member());
+
+        given(mapper.memberToMemberResponse(Mockito.any(Member.class))).willReturn(getMemberResponse());
+
+        ResultActions actions =
+                mockMvc.perform(
+                        get("/{member-id}", 1)
+                                .accept(MediaType.APPLICATION_JSON)
                 );
         actions
                 .andExpect(status().isOk())
