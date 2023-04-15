@@ -1,6 +1,8 @@
 package com.dudung.preproject.answerVote.dto;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 public class AnswerVoteDto {
 
@@ -12,19 +14,23 @@ public class AnswerVoteDto {
         추천 받은 수
         비추천 받은 수
          */
-        private Long answerVoteId;
+        private Long answerId;
         private Long memberId;
-        private int score;
+//        private int score;
 
+        private boolean vote;
     }
-
-    public class Patch {
+    @Setter
+    @Getter
+    public static class Patch {
         private Long answerVoteId;
         private int score;
 
     }
 
-    public class Response {
+    @Getter
+    @Builder
+    public static class Response {
         private int score;
 
     }

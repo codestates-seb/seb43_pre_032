@@ -19,16 +19,17 @@ public class AnswerVote {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    private AnswerVoteStatus answerVoteStatus;
+    private AnswerVoteStatus answerVoteStatus = AnswerVoteStatus.ZERO;
 
     @ManyToOne
     @JoinColumn(name = "ANSWER_ID")
     private Answer answer;
     @Getter
     public enum AnswerVoteStatus {
-        MINUS(-1),
         ZERO(0),
-        PLUS(1);
+        PLUS(1),
+        MINUS(-1);
+
         @Getter
         private int score;
 
