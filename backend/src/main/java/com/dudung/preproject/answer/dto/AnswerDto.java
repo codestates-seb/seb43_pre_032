@@ -1,5 +1,6 @@
 package com.dudung.preproject.answer.dto;
 
+import com.dudung.preproject.answer.domain.Answer;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.question.domain.Question;
 import lombok.Builder;
@@ -41,5 +42,15 @@ public class AnswerDto {
         private String answerContent;
         private LocalDateTime modifiedAt;
 
+    }
+    @Getter
+    public static class memberToAnswerVote {
+        private Member member;
+        private Answer answer;
+
+        public memberToAnswerVote(Member member, Answer answer) {
+            this.member = member;
+            this.answer = answer;
+        }
     }
 }
