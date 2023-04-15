@@ -14,6 +14,7 @@ public class AnswerDto {
     public static class Post {
 
         private Long memberId;
+        private Long questionId;
         private String answerContent;
 
     }
