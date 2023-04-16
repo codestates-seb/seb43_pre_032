@@ -1,5 +1,7 @@
 package com.dudung.preproject.question.dto;
 
+import com.dudung.preproject.answer.dto.AnswerDto;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,15 +27,10 @@ public class QuestionDto {
     }
 
     @Getter
-    @Builder
+    @AllArgsConstructor
     public static class Response {
-        private String questionTitle;
-        private String questionContent;
-        private LocalDateTime createdAt;
-        private LocalDateTime modifiedAt;
-        private int questionVoteSum;
-        private int viewCount;
-        private String memberName;
+        private QuestionResponseDto question;
+        private AnswerDto.Response answer;
     }
 
     @Getter
