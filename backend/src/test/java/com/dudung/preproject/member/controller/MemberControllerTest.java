@@ -1,4 +1,4 @@
-package com.dudung.preproject;
+package com.dudung.preproject.member.controller;
 
 import com.dudung.preproject.member.controller.MemberController;
 import com.dudung.preproject.member.domain.Member;
