@@ -50,7 +50,7 @@ public class QuestionService {
         questionRepository.delete(findVerifiedQuestion(questionId));
     }
 
-    private Question findVerifiedQuestion(long questionId) {
+    public Question findVerifiedQuestion(long questionId) {
         Optional<Question> optionalQuestion = questionRepository.findById(questionId);
         Question findedQuestion = optionalQuestion.orElseThrow(() -> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
 
