@@ -1,11 +1,16 @@
 import Sidebanner from './Sidebanner.jsx';
 import Questions from './Questions.jsx';
+import styled from 'styled-components';
+
+const Questionscomponent = styled.div`
+  display: flex;
+`;
 
 function Viewcomponent() {
   return (
-    <>
-      <Sidebanner /> <Questions />
-    </>
+    <Questionscomponent>
+      <Questions /> <Sidebanner />
+    </Questionscomponent>
   );
 }
 

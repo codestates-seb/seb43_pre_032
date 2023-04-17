@@ -3,7 +3,7 @@ import styled from 'styled-components';
 /** 2023.04.18 사이드 배너 스타일드 컴포넌트 - by 김주비*/
 const Bannercomponent = styled.section`
   width: 300px;
-  padding: 10px;
+  padding: 20px;
   color: #232629;
   font-size: 13px;
 `;
