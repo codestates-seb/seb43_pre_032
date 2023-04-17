@@ -1,6 +1,7 @@
 package com.dudung.preproject.tag.domain;
 
 import com.dudung.preproject.question.domain.Question;
+import com.dudung.preproject.question.domain.QuestionTag;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,11 +22,14 @@ public class Tag {
 
     private String tagDescription;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Question> questions = new ArrayList<>();
+    @OneToMany(mappedBy = "tag")
+    private List<QuestionTag> questionTags = new ArrayList<>();
 
-    public void addQuestion(Question question) {
-        this.questions.add(question);
+    public void addQuestionTag(QuestionTag questionTag) {
+        this.questionTags.add(questionTag);
+        if(!questionTag.getTag().equals(this)) {
+            questionTag.setTag(this);
+        }
     }
 
 }
