@@ -7,10 +7,8 @@ import lombok.Setter;
 public class QuestionVoteDto {
     @Getter
     public static class QuestionVotePost {
-        private long questionVoteId;
         private long questionId;
         private long memberId;
-        private int score;
         private boolean vote;
     }
 
