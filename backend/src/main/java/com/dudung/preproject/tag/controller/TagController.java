@@ -1,7 +1,7 @@
 package com.dudung.preproject.tag.controller;
 
 import com.dudung.preproject.dto.MultiResponseDto;
-import com.dudung.preproject.dto.TagQuestionListResponseDto;
+import com.dudung.preproject.dto.DataListResponseDto;
 import com.dudung.preproject.question.domain.Question;
 import com.dudung.preproject.question.mapper.QuestionMapper;
 import com.dudung.preproject.question.service.QuestionService;
@@ -40,7 +40,7 @@ public class TagController {
         Page<Question> pageQuestions = questionService.findQuestions(tag, page - 1, size, sortBy);
         List<Question> questions = pageQuestions.getContent();
 
-        return new ResponseEntity<>(new TagQuestionListResponseDto(tagMapper.tagTotagResponse(tag, questions), pageQuestions), HttpStatus.OK);
+        return new ResponseEntity<>(new DataListResponseDto(tagMapper.tagTotagResponse(tag, questions), pageQuestions), HttpStatus.OK);
     }
 
 }
