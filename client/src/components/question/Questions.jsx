@@ -63,7 +63,9 @@ const QuestionFilter = styled.div`
     }
   }
 `;
-const QuestionList = styled.ul``;
+const QuestionList = styled.ul`
+  width: 100%;
+`;
 
 const IntData = styled.div``;
 const ContentsData = styled.div``;
