@@ -1,9 +1,11 @@
 package com.dudung.preproject.question.dto;
 
 import com.dudung.preproject.answer.dto.AnswerDto;
+import com.dudung.preproject.tag.dto.TagDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class QuestionDto {
     @Getter
@@ -12,6 +14,7 @@ public class QuestionDto {
         private long memberId;
         private String questionTitle;
         private String questionContent;
+        private List<TagDto.Name> tagName;
         private LocalDateTime createdAt = LocalDateTime.now();
     }
     @Getter
@@ -38,6 +41,7 @@ public class QuestionDto {
         private int viewCount;
         private int questionVoteSum;
         private LocalDateTime createdAt;
+        private List<TagDto.Name> tagName;
         private String memberName;
         private int answerCount;
     }
