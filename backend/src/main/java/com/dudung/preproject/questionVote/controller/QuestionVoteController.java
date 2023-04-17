@@ -1,6 +1,7 @@
 package com.dudung.preproject.questionVote.controller;
 
 import com.dudung.preproject.member.service.MemberService;
+import com.dudung.preproject.question.service.QuestionService;
 import com.dudung.preproject.questionVote.dto.QuestionVoteDto;
 import com.dudung.preproject.questionVote.mapper.QuestionVoteMapper;
 import com.dudung.preproject.questionVote.service.QuestionVoteService;
@@ -23,12 +24,12 @@ public class QuestionVoteController {
     public ResponseEntity postQuestionVoteToVoteDown(@RequestBody QuestionVoteDto.QuestionVotePost requestBody) {
 
         if (requestBody.isVote()) {
-            questionVoteService.questionvoteup(memberService.findMember(requestBody.getMemberId()), questionService.findQuestion(requestBody.getQuestionId());
+            questionVoteService.questionVoteUp(memberService.findMember(requestBody.getMemberId()), questionService.findVerifiedQuestion(requestBody.getQuestionId()));
         } else {
-            questionVoteService.questionvotedown(memberService.findMember(requestBody.getMemberId()), questionService.findQuestion(requestBody.getQuestionId());
+            questionVoteService.questionVoteDown(memberService.findMember(requestBody.getMemberId()), questionService.findVerifiedQuestion(requestBody.getQuestionId()));
         }
 
-        return new ResponseEntity<>(questionService.findQuestion(requestBody.getQuestionId().addQuestionVote(), HttpStatus.OK));
+        return new ResponseEntity<>(questionService.findVerifiedQuestion(requestBody.getQuestionId()).getQuestionVoteSum(), HttpStatus.OK);
 
     }
 }
