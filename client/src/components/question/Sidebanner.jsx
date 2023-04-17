@@ -1,5 +1,70 @@
 import styled from 'styled-components';
 
+function Sidebanner() {
+  return (
+    <Bannercomponent>
+      <Sidebanners>
+        <ul>
+          <Bannertitle>The Overflow Blog</Bannertitle>
+          <Bannercontents>
+            Are meetings making you less productive?
+          </Bannercontents>
+          <Bannercontents>
+            The philosopher who believes in Web Assembly
+          </Bannercontents>
+        </ul>
+        <ul>
+          <Bannertitle>Featured on Meta</Bannertitle>
+          <Bannercontents>
+            Improving the copy in the close modal and post notices - 2023
+            edition
+          </Bannercontents>
+          <Bannercontents>Temporary policy: ChatGPT is banned</Bannercontents>
+          <Bannercontents>
+            The [protection] tag is being burninated
+          </Bannercontents>
+          <Bannercontents>
+            Content Discovery initiative 4/13 update: Related questions using a
+            Machine...
+          </Bannercontents>
+        </ul>
+        <ul>
+          <Bannertitle>Hot Meta Posts</Bannertitle>
+          <Bannercontents>
+            47 Voting reversal for smaller tags with few answerers
+          </Bannercontents>
+        </ul>
+      </Sidebanners>
+      <Suboptions>
+        <Optiongroup>
+          <Optiontitle>Custom Filters</Optiontitle>
+          <Optioncontents>
+            <span>Create a custom filter</span>
+          </Optioncontents>
+        </Optiongroup>
+        <Optiongroup>
+          <Optiontitle>Watched Tags</Optiontitle>
+          <Optioncontents>
+            <p>css</p>
+            <p>react</p>
+            <p>html</p>
+            <p>javascript</p>
+            <p>styled-components</p>
+          </Optioncontents>
+        </Optiongroup>
+        <Optiongroup>
+          <Optiontitle>Ignored Tags</Optiontitle>
+          <Optioncontents>
+            <p>Add an ignored tag</p>
+          </Optioncontents>
+        </Optiongroup>
+      </Suboptions>
+    </Bannercomponent>
+  );
+}
+
+export default Sidebanner;
+
 /** 2023.04.18 사이드 배너 스타일드 컴포넌트 - by 김주비*/
 const Bannercomponent = styled.section`
   width: 300px;
@@ -83,68 +148,3 @@ const Optioncontents = styled(Bannercontents)`
     cursor: pointer;
   }
 `;
-
-function Sidebanner() {
-  return (
-    <Bannercomponent>
-      <Sidebanners>
-        <ul>
-          <Bannertitle>The Overflow Blog</Bannertitle>
-          <Bannercontents>
-            Are meetings making you less productive?
-          </Bannercontents>
-          <Bannercontents>
-            The philosopher who believes in Web Assembly
-          </Bannercontents>
-        </ul>
-        <ul>
-          <Bannertitle>Featured on Meta</Bannertitle>
-          <Bannercontents>
-            Improving the copy in the close modal and post notices - 2023
-            edition
-          </Bannercontents>
-          <Bannercontents>Temporary policy: ChatGPT is banned</Bannercontents>
-          <Bannercontents>
-            The [protection] tag is being burninated
-          </Bannercontents>
-          <Bannercontents>
-            Content Discovery initiative 4/13 update: Related questions using a
-            Machine...
-          </Bannercontents>
-        </ul>
-        <ul>
-          <Bannertitle>Hot Meta Posts</Bannertitle>
-          <Bannercontents>
-            47 Voting reversal for smaller tags with few answerers
-          </Bannercontents>
-        </ul>
-      </Sidebanners>
-      <Suboptions>
-        <Optiongroup>
-          <Optiontitle>Custom Filters</Optiontitle>
-          <Optioncontents>
-            <span>Create a custom filter</span>
-          </Optioncontents>
-        </Optiongroup>
-        <Optiongroup>
-          <Optiontitle>Watched Tags</Optiontitle>
-          <Optioncontents>
-            <p>css</p>
-            <p>react</p>
-            <p>html</p>
-            <p>javascript</p>
-            <p>styled-components</p>
-          </Optioncontents>
-        </Optiongroup>
-        <Optiongroup>
-          <Optiontitle>Ignored Tags</Optiontitle>
-          <Optioncontents>
-            <p>Add an ignored tag</p>
-          </Optioncontents>
-        </Optiongroup>
-      </Suboptions>
-    </Bannercomponent>
-  );
-}
-
-export default Sidebanner;
