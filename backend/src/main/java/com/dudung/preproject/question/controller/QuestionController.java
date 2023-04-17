@@ -36,7 +36,7 @@ public class QuestionController {
                 .buildAndExpand(question.getQuestionId())
                 .toUri();
 
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.status(HttpStatus.CREATED).location(location).body(mapper.questionToQuestionResponse(question));
     }
 
     @PatchMapping("/{question-id}")

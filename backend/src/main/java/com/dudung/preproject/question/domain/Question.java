@@ -60,10 +60,6 @@ public class Question {
         this.questionVotes.add(questionVote);
     }
 
-    public void addTag(Tag tag) {
-        this.tags.add(tag);
-    }
-
     public void addAnswer(Answer answer) {
         this.answers.add(answer);
     }
