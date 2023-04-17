@@ -1,15 +1,13 @@
 package com.dudung.preproject.question.dto;
 
 import com.dudung.preproject.answer.dto.AnswerDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 public class QuestionDto {
     @Getter
+    @Setter
     public static class Post {
         private long memberId;
         private String questionTitle;

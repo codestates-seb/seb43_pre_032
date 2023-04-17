@@ -6,6 +6,8 @@ import com.dudung.preproject.question.dto.QuestionDto;
 import com.dudung.preproject.question.dto.QuestionResponseDto;
 import com.dudung.preproject.question.mapper.QuestionMapper;
 import com.dudung.preproject.question.service.QuestionService;
+import com.dudung.preproject.helper.QuestionControllerHelper;
+import com.dudung.preproject.helper.StubData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +23,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -39,8 +42,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -52,7 +54,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureRestDocs
 @MockBean(JpaMetamodelMappingContext.class)
-public class QuestionControllerTest {
+public class QuestionControllerTest implements QuestionControllerHelper {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
@@ -65,23 +67,19 @@ public class QuestionControllerTest {
     @Test
     @DisplayName("Question Create Test")
     public void createQuestionTest() throws  Exception {
-        String content = "{\n" +
-                "\"memberId\": 1,\n" +
-                "\"questionTitle\": \"두둥탁\",\n" +
-                "\"questionContent\": \"두둥두둥\"\n" +
-                "}";
+        // given
+        QuestionDto.Post post = (QuestionDto.Post) StubData.MockQuestion.getRequestBody(HttpMethod.POST);
+        String content = toJsonContent(post);
 
         given(mapper.questionPostToQuestion(Mockito.any(QuestionDto.Post.class))).willReturn(new Question());
 
-        given(questionService.createQuestion(Mockito.any(Question.class))).willReturn(new Question());
+        Question mockResultQuestion = new Question();
+        mockResultQuestion.setQuestionId(1L);
+        given(questionService.createQuestion(Mockito.any(Question.class))).willReturn(mockResultQuestion);
 
+        //when
         ResultActions actions =
-                mockMvc.perform(
-                        post("/questions")
-                                .accept(MediaType.APPLICATION_JSON)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(content)
-                );
+                mockMvc.perform(postRequestBuilder(QUESTION_DEFAULT_URL, content));
         actions
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", is(startsWith("/questions"))))
@@ -93,7 +91,8 @@ public class QuestionControllerTest {
                                 List.of(
                                         fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별 번호"),
                                         fieldWithPath("questionTitle").type(JsonFieldType.STRING).description("질문 제목"),
-                                        fieldWithPath("questionContent").type(JsonFieldType.STRING).description("질문 내용")
+                                        fieldWithPath("questionContent").type(JsonFieldType.STRING).description("질문 내용"),
+                                        fieldWithPath("createdAt").type(JsonFieldType.STRING).description("질문 생성 시간")
                                 )
                         ),
                         responseHeaders(
@@ -105,39 +104,19 @@ public class QuestionControllerTest {
     @Test
     @DisplayName("Question Patch Test")
     public void patchQuestionTest() throws Exception {
-        String content = "{\n" +
-                "\"memberId\": 1,\n" +
-                "\"questionId\": 1,\n" +
-                "\"questionTitle\": \"두둥탁\",\n" +
-                "\"questionContent\": \"두둥두둥\"\n" +
-                "}";
-
-        LocalDateTime time = LocalDateTime.now();
-
-        QuestionResponseDto questionResponseDto = QuestionResponseDto.builder()
-                .questionTitle("두둥탁")
-                .questionContent("두둥두둥")
-                .createdAt(time)
-                .modifiedAt(time)
-                .questionVoteSum(0)
-                .viewCount(0)
-                .memberName("두둥탁")
-                .build();
-        QuestionDto.Response response = new QuestionDto.Response(questionResponseDto, null);
+        // given
+        QuestionDto.Patch patch = (QuestionDto.Patch) StubData.MockQuestion.getRequestBody(HttpMethod.PATCH);
+        String content = toJsonContent(patch);
 
         given(mapper.questionPatchToQuestion(Mockito.any(QuestionDto.Patch.class))).willReturn(new Question());
 
         given(questionService.updateQuestion(Mockito.any(Question.class))).willReturn(new Question());
 
-        given(mapper.questionToQuestionResponse(Mockito.any(Question.class))).willReturn(response);
+        given(mapper.questionToQuestionResponse(Mockito.any(Question.class))).willReturn(StubData.MockQuestion.getResponseBody());
 
+        // when
         ResultActions actions =
-                mockMvc.perform(
-                        patch("/questions/{question-id}", 1)
-                                .accept(MediaType.APPLICATION_JSON)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(content)
-                );
+                mockMvc.perform(patchRequestBuilder(QUESTION_RESOURCE_URI, 1L, content));
         actions
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.question.questionTitle").value("두둥탁"))
@@ -145,7 +124,7 @@ public class QuestionControllerTest {
 //                .andExpect(jsonPath("$.question.createdAt").value(time))
 //                .andExpect(jsonPath("$.question.modifiedAt").value(LocalDateTime.now())) // 시간 테스팅 보류
                 .andExpect(jsonPath("$.question.questionVoteSum").value(0))
-                .andExpect(jsonPath("$.question.viewCount").value(0))
+                .andExpect(jsonPath("$.question.viewCount").value(1))
                 .andExpect(jsonPath("$.question.memberName").value("두둥탁"))
                 .andDo(print())
                 .andDo(document("patch-question",
@@ -159,7 +138,8 @@ public class QuestionControllerTest {
                                         fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별 번호").optional(),
                                         fieldWithPath("questionId").type(JsonFieldType.NUMBER).description("질문 식별 번호").ignored(),
                                         fieldWithPath("questionTitle").type(JsonFieldType.STRING).description("질문 제목").optional(),
-                                        fieldWithPath("questionContent").type(JsonFieldType.STRING).description("질문 내용").optional()
+                                        fieldWithPath("questionContent").type(JsonFieldType.STRING).description("질문 내용").optional(),
+                                        fieldWithPath("modifiedAt").type(JsonFieldType.STRING).description("질문 마지막 수정 시간")
                                 )
                         ),
                         responseFields(
@@ -180,28 +160,17 @@ public class QuestionControllerTest {
     @Test
     @DisplayName("Question Get Test")
     public void getQuestionTest() throws Exception {
-        LocalDateTime time = LocalDateTime.now();
-
-        QuestionResponseDto questionResponseDto = QuestionResponseDto.builder()
-                .questionTitle("두둥탁")
-                .questionContent("두둥두둥")
-                .createdAt(time)
-                .modifiedAt(time)
-                .questionVoteSum(0)
-                .viewCount(1)
-                .memberName("두둥탁")
-                .build();
-        QuestionDto.Response response = new QuestionDto.Response(questionResponseDto, null);
-
+        // given
         given(questionService.findQuestion(Mockito.anyLong())).willReturn(new Question());
 
-        given(mapper.questionToQuestionResponse(Mockito.any(Question.class))).willReturn(response);
+        given(mapper.questionToQuestionResponse(Mockito.any(Question.class))).willReturn(StubData.MockQuestion.getResponseBody());
 
+        // when
         ResultActions actions =
-                mockMvc.perform(
-                        get("/questions/{question-id}", 1)
-                                .accept(MediaType.APPLICATION_JSON)
+                mockMvc.perform(getRequestBuilder(QUESTION_RESOURCE_URI, 1L)
                 );
+
+        // then
         actions
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.question.questionTitle").value("두둥탁"))
@@ -211,7 +180,26 @@ public class QuestionControllerTest {
                 .andExpect(jsonPath("$.question.questionVoteSum").value(0))
                 .andExpect(jsonPath("$.question.viewCount").value(1))
                 .andExpect(jsonPath("$.question.memberName").value("두둥탁"))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("get-question",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        pathParameters(
+                                getMemberRequestPathParameterDescriptor()
+                        ),
+                        responseFields(
+                                List.of(
+                                        fieldWithPath("question.questionTitle").type(JsonFieldType.STRING).description("질문 제목").optional(),
+                                        fieldWithPath("question.questionContent").type(JsonFieldType.STRING).description("질문 내용").optional(),
+                                        fieldWithPath("question.createdAt").type(JsonFieldType.STRING).description("질문 생성 시간").optional(),
+                                        fieldWithPath("question.modifiedAt").type(JsonFieldType.STRING).description("질문 마지막 수정 시간").optional(),
+                                        fieldWithPath("question.questionVoteSum").type(JsonFieldType.NUMBER).description("질문 투표 합계").optional(),
+                                        fieldWithPath("question.viewCount").type(JsonFieldType.NUMBER).description("질문 조회수").optional(),
+                                        fieldWithPath("question.memberName").type(JsonFieldType.STRING).description("회원 이름").optional(),
+                                        fieldWithPath("answer").type(JsonFieldType.STRING).description("답변").optional()
+                                )
+                        )
+                ));
     }
 
     @Test
@@ -274,10 +262,18 @@ public class QuestionControllerTest {
     public void deleteQuestionTest() throws Exception {
         doNothing().when(questionService).deleteQuestion(Mockito.anyLong());
 
-        mockMvc.perform(
-                delete("/questions/{question-id}", 1)
-                )
-                .andExpect(status().isNoContent());
+        mockMvc.perform(deleteRequestBuilder(QUESTION_RESOURCE_URI, 1L))
+                .andExpect(status().isNoContent())
+                .andDo(
+                        document(
+                                "delete-question",
+                                getRequestPreProcessor(),
+                                getResponsePreProcessor(),
+                                pathParameters(
+                                        getMemberRequestPathParameterDescriptor()
+                                )
+                        )
+                );
     }
 
 }
