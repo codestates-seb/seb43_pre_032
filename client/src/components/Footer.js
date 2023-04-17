@@ -46,62 +46,64 @@ function Footer() {
   return (
     <>
       <Footerbox>
-        <div className="footer-logo">
-          <img src={logo} alt="stackoverflowlogo"></img>
-        </div>
-        <div className="footer-menu1">
-          <h5>STACK OVERFLOW</h5>
-          <ul>
-            {stackoverflowMenu.map((el) => (
-              <li key={el[1]}>
-                <a href={el[0]}>{el[1]}</a>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="footer-menu2">
-          <h5>PRODUCTS</h5>
+        <div className="footer-content">
+          <div className="footer-logo">
+            <img src={logo} alt="stackoverflowlogo"></img>
+          </div>
+          <div className="footer-menu1">
+            <h5>STACK OVERFLOW</h5>
+            <ul>
+              {stackoverflowMenu.map((el) => (
+                <li key={el[1]}>
+                  <a href={el[0]}>{el[1]}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="footer-menu2">
+            <h5>PRODUCTS</h5>
 
-          <ul>
-            {productsMenu.map((el) => (
-              <li key={el[1]}>
-                <a href={el[0]}>{el[1]}</a>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="footer-menu3">
-          <h5>COMPANY</h5>
-          <ul>
-            {companyMenu.map((el) => (
-              <li key={el[1]}>
-                <a href={el[0]}>{el[1]}</a>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="footer-menu4">
-          <h5>STACK EXCHANGE NETWORK</h5>
-          <ul>
-            {stackexchangenetworkMenu.map((el) => (
-              <li key={el[1]}>
-                <a href={el[0]}>{el[1]}</a>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="footer-footer">
-          <ul>
-            {snsMenu.map((el) => (
-              <li key={el[1]}>
-                <a href={el[0]}>{el[1]}</a>
-              </li>
-            ))}
-          </ul>
-          <p>
-            Site design/logo © 2023 Stack Exchange Inc; user contributions
-            licensed under CC BY-SA. rev 2023.4.13.4387
-          </p>
+            <ul>
+              {productsMenu.map((el) => (
+                <li key={el[1]}>
+                  <a href={el[0]}>{el[1]}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="footer-menu3">
+            <h5>COMPANY</h5>
+            <ul>
+              {companyMenu.map((el) => (
+                <li key={el[1]}>
+                  <a href={el[0]}>{el[1]}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="footer-menu4">
+            <h5>STACK EXCHANGE NETWORK</h5>
+            <ul>
+              {stackexchangenetworkMenu.map((el) => (
+                <li key={el[1]}>
+                  <a href={el[0]}>{el[1]}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="footer-footer">
+            <ul>
+              {snsMenu.map((el) => (
+                <li key={el[1]}>
+                  <a href={el[0]}>{el[1]}</a>
+                </li>
+              ))}
+            </ul>
+            <p>
+              Site design/logo © 2023 Stack Exchange Inc; user contributions
+              licensed under CC BY-SA. rev 2023.4.13.4387
+            </p>
+          </div>
         </div>
       </Footerbox>
     </>
@@ -109,20 +111,17 @@ function Footer() {
 }
 
 const Footerbox = styled.div`
+  z-index: 5;
   background-color: #232629;
   display: flex;
   gap: 10px;
   bottom: 0;
-  justify-content: space-around;
   width: 100%;
   color: whitesmoke;
   img {
     width: 44px;
     height: 44px;
   }
-  /* div {
-    text-align: start;
-  } */
   ul {
     margin: 0;
     padding: 0;
@@ -138,8 +137,25 @@ const Footerbox = styled.div`
       }
     }
   }
+  .footer-content {
+    margin: 0;
+    display: flex;
+    width: 1250px;
+    font-size: 13px;
+    justify-content: space-around;
+    @media (max-width: 1250px) {
+      flex-direction: column;
+      padding: 6px;
+      font-size: 11px;
+      li {
+        display: inline;
+        padding: 6px 12px 6px 0px;
+      }
+    }
+  }
   .footer-footer {
     display: flex;
+    font-size: 11px;
     justify-content: space-between;
     flex-direction: column;
     width: 30%;
@@ -150,15 +166,6 @@ const Footerbox = styled.div`
     li {
       display: inline;
       margin: 3px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    padding: 6px;
-    li {
-      display: inline;
-      padding: 6px 12px 6px 0px;
     }
   }
 `;
