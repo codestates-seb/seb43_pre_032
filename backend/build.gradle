@@ -43,6 +43,7 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.30'
 
     asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    implementation 'com.google.code.gson:gson'
 }
 
 tasks.named('test') {
