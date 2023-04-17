@@ -5,6 +5,8 @@ import com.dudung.preproject.answer.dto.AnswerDto;
 import com.dudung.preproject.answer.mapper.AnswerMapper;
 import com.dudung.preproject.answer.service.AnswerService;
 import com.dudung.preproject.member.domain.Member;
+import com.dudung.preproject.member.service.MemberService;
+import com.dudung.preproject.question.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +19,18 @@ public class AnswerController {
     private final AnswerService answerService;
     private final AnswerMapper mapper;
 
-    @PostMapping("{answer-id}")
+    private final QuestionService questionService;
+
+    private final MemberService memberService;
+
+    @PostMapping
     public ResponseEntity postAnswer(@RequestBody AnswerDto.Post requestBody) {
         Answer answer = mapper.answerPostToAnswer(requestBody);
+        answer.setMember(memberService.findMember(requestBody.getMemberId()));
+        answer.setQuestion(questionService.findVerifiedQuestion(requestBody.getQuestionId()));
 
         Answer createdAnswer = answerService.createAnswer(answer);
-        return ResponseEntity.ok(createdAnswer);
+        return new ResponseEntity<>(mapper.answerToAnswerResponse(createdAnswer), HttpStatus.OK);
     }
 
     @PatchMapping("{answer-id}")

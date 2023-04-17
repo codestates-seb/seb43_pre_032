@@ -7,7 +7,8 @@ public enum ExceptionCode {
     MEMBER_EMAIL_EXISTS(409, "email exists"),
     MEMBER_NAME_EXISTS(409, "name exists"),
     ANSWER_NOT_FOUND(404, "Answer not found"),
-    QUESTION_NOT_FOUND(404, "Question not found");
+    QUESTION_NOT_FOUND(404, "Question not found"),
+    TAG_NOT_FOUND(404, "Tag not found");
 
     @Getter
     private int status;
