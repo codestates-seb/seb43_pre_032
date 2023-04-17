@@ -188,7 +188,6 @@ const LiChild = styled.li`
     font-size: 13px;
     line-height: 26px;
     padding: 0px;
-
     color: #525960;
     :hover {
       color: #0c0d0e;
