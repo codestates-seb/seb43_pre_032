@@ -4,52 +4,6 @@ import MenuIcon from './Menu-Icon';
 import { LoginBtn, SignInBtn, OtherButtons } from './NavButton';
 import { useState } from 'react';
 
-const HeaderContainer = styled.header`
-  width: 100vw;
-  height: 3.5rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-top: 0.2rem;
-  padding-bottom: 0.2rem;
-
-  -webkit-box-shadow: 0px 5px 12px -2px rgba(0, 0, 0, 0.27);
-  box-shadow: 0px 5px 12px -2px rgba(0, 0, 0, 0.27);
-  border-top: 3px solid #f48225;
-  background-color: #f8f9f9;
-`;
-
-const ContentsContainer = styled.div`
-  margin-top: 3px;
-  display: flex;
-  flex-direction: row;
-  height: 80%;
-  & > :hover.menu {
-    background-color: var(--menu-hover-background);
-  }
-`;
-// const SubContainer = styled.div`
-//   width: 38rem;
-//   height: 100%;
-//   overflow: hidden;
-//   margin: 1.5rem;
-// `;
-const Menu = styled.div`
-  color: black;
-  font-size: 1rem;
-  padding: 0.3rem;
-  border-radius: 1rem;
-  margin: 1rem;
-`;
-const SerachBar = styled.input`
-  width: 55rem;
-  height: 2.3rem;
-  border: 1px solid lightgray;
-  border-radius: 0.2rem;
-  font-size: 1.1rem;
-`;
-
 function Header() {
   let [isLogin, setIsLogin] = useState(false);
   const clickLogin = () => {
@@ -89,4 +43,43 @@ function Header() {
     </HeaderContainer>
   );
 }
+const HeaderContainer = styled.header`
+  width: 100vw;
+  height: 3.5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+
+  -webkit-box-shadow: 0px 5px 12px -2px rgba(0, 0, 0, 0.27);
+  box-shadow: 0px 5px 12px -2px rgba(0, 0, 0, 0.27);
+  border-top: 3px solid #f48225;
+  background-color: #f8f9f9;
+`;
+
+const ContentsContainer = styled.div`
+  margin-top: 3px;
+  display: flex;
+  flex-direction: row;
+  height: 80%;
+  & > :hover.menu {
+    background-color: var(--menu-hover-background);
+  }
+`;
+const Menu = styled.div`
+  color: black;
+  font-size: 1rem;
+  padding: 0.3rem;
+  border-radius: 1rem;
+  margin: 1rem;
+`;
+const SerachBar = styled.input`
+  width: 55rem;
+  height: 2.3rem;
+  border: 1px solid lightgray;
+  border-radius: 0.2rem;
+  font-size: 1.1rem;
+`;
 export default Header;

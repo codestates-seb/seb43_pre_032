@@ -10,6 +10,9 @@ const BoldLine = styled.div`
   height: 2.7px;
   width: 1.3rem;
   background-color: black;
+  :hover {
+    transform: rotate(-30deg);
+  }
 `;
 const ThinLine = styled.div`
   height: 1px;
@@ -20,9 +23,9 @@ const ThinLine = styled.div`
 const MenuIcon = () => {
   return (
     <IconContainer>
-      <BoldLine></BoldLine>
+      <BoldLine deg="30"></BoldLine>
       <ThinLine></ThinLine>
-      <BoldLine></BoldLine>
+      <BoldLine deg="30"></BoldLine>
     </IconContainer>
   );
 };
