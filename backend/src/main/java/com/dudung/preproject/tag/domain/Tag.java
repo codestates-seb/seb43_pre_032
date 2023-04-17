@@ -1,14 +1,16 @@
 package com.dudung.preproject.tag.domain;
 
 import com.dudung.preproject.question.domain.Question;
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @Getter
+@Setter
+@NoArgsConstructor
+@Entity
 public class Tag {
 
     @Id

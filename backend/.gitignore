@@ -27,3 +27,5 @@ replay_pid*
 *.DS_Store
 *.yml
 *.yaml
+*.csv
+*.adoc

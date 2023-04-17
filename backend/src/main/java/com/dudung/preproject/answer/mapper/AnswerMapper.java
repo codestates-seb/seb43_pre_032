@@ -3,6 +3,7 @@ package com.dudung.preproject.answer.mapper;
 import com.dudung.preproject.answer.domain.Answer;
 import com.dudung.preproject.answer.dto.AnswerDto;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface AnswerMapper {
@@ -10,7 +11,15 @@ public interface AnswerMapper {
 
     Answer answerPatchAnswer(AnswerDto.Patch requestBody);
 
-    AnswerDto.Response answerToAnswerResponse(Answer answer);
+    default AnswerDto.Response answerToAnswerResponse(Answer answer) {
+        return AnswerDto.Response.builder()
+                .answerId(answer.getAnswerId())
+                .questionId(answer.getQuestion().getQuestionId())
+                .memberName(answer.getMember().getName())
+                .answerContent(answer.getAnswerContent())
+                .modifiedAt(answer.getModifiedAt()).build();
+    }
+
 
 
 }

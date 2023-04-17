@@ -23,6 +23,7 @@ public class QuestionVote {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
+
     private QuestionVoteStatus questionVoteStatus = QuestionVoteStatus.ZERO;
 
     @ManyToOne
