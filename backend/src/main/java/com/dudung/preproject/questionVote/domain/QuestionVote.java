@@ -2,16 +2,17 @@ package com.dudung.preproject.questionVote.domain;
 
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.question.domain.Question;
+import com.dudung.preproject.questionVote.dto.QuestionVoteDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
+@Setter
+@Entity
 public class QuestionVote {
 
     @Id
@@ -22,9 +23,23 @@ public class QuestionVote {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
+
+    private QuestionVoteStatus questionVoteStatus = QuestionVoteStatus.ZERO;
+
     @ManyToOne
     @JoinColumn(name = "QUESTION_ID")
     private Question question;
 
-    private int score;
+    public enum QuestionVoteStatus {
+        ZERO(0),
+        PLUS(1),
+        MINUS(-1);
+
+        @Getter
+        private int score;
+
+        QuestionVoteStatus(int score) { this.score = score; }
+
+    }
+
 }
