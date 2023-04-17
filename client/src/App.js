@@ -3,6 +3,7 @@ import './App.css';
 import Footer from './components/Footer';
 import Nav from './components/Nav';
 import styled from 'styled-components';
+import Viewcomponent from './components/question/Viewcomponent.jsx';
 
 function App() {
   return (
@@ -17,7 +18,9 @@ function App() {
               <Nav />
             </div>
           </article>
-          <article className="main_view">본문내용</article>
+          <article className="main_view">
+            <Viewcomponent />
+          </article>
         </Maincontents>
       </Maingroup>
       <Footersection>
