@@ -71,11 +71,10 @@ const Nav = () => {
 };
 
 const DivContainer = styled.div`
+  /* border: 1px solid red; */
   margin: 0px;
   padding: 0px;
   display: flex;
-  position: absolute;
-  right: 0px;
   width: 200px;
 
   > div {
