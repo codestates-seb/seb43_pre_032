@@ -27,7 +27,7 @@ public class AnswerController {
     public ResponseEntity postAnswer(@RequestBody AnswerDto.Post requestBody) {
         Answer answer = mapper.answerPostToAnswer(requestBody);
         answer.setMember(memberService.findMember(requestBody.getMemberId()));
-        answer.setQuestion(questionService.findQuestion(requestBody.getQuestionId()));
+        answer.setQuestion(questionService.findVerifiedQuestion(requestBody.getQuestionId()));
 
         Answer createdAnswer = answerService.createAnswer(answer);
         return new ResponseEntity<>(mapper.answerToAnswerResponse(createdAnswer), HttpStatus.OK);
