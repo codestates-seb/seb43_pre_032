@@ -1,5 +1,5 @@
 import './App.css';
-// import Header from './components/HeaderCom';
+import Header from './components/Header/HeaderCom';
 import Footer from './components/Footer';
 import Nav from './components/Nav';
 import styled from 'styled-components';
@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <Headersection>
-        <div className="Area">헤더및 서칭바</div>
+        <Header />
       </Headersection>
       <Maingroup>
         <Maincontents>
