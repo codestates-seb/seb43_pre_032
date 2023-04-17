@@ -1,6 +1,5 @@
 package com.dudung.preproject.member.controller;
 
-import com.dudung.preproject.member.controller.MemberController;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.member.dto.MemberDto;
 import com.dudung.preproject.member.mapper.MemberMapper;
@@ -18,7 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static com.dudung.preproject.utils.StubData.*;
+import static com.dudung.preproject.helper.StubData.*;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.BDDMockito.given;
