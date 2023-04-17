@@ -17,18 +17,18 @@ public class QuestionVoteService {
     private QuestionRepository questionRepository;
     private QuestionVoteRepository questionVoteRepository;
 
-    public void questionvoteup(Member member, Question question) {
+    public void questionVoteUp(Member member, Question question) {
         QuestionVote questionVote = findQuestionVote(member.getQuestionVotes(), question);
-        questionvoteplus(questionVote);
+        questionVotePlus(questionVote);
         questionVote.setMember(member);
         questionVote.setQuestion(question);
         questionVoteRepository.save(questionVote);
         questionRepository.save(question);
     }
 
-    public void questionvotedown(Member member, Question question) {
+    public void questionVoteDown(Member member, Question question) {
         QuestionVote questionVote = findQuestionVote(member.getQuestionVotes(), question);
-        questionvoteminus(questionVote);
+        questionVoteMinus(questionVote);
         questionVote.setMember(member);
         questionVote.setQuestion(question);
         questionVoteRepository.save(questionVote);
@@ -46,7 +46,7 @@ public class QuestionVoteService {
         return new QuestionVote();
     }
 
-    private void questionvoteplus(QuestionVote questionVote) {
+    private void questionVotePlus(QuestionVote questionVote) {
         if (questionVote.getQuestionVoteStatus().getScore() == 0) {
             questionVote.setQuestionVoteStatus(QuestionVote.QuestionVoteStatus.PLUS);
         } else if (questionVote.getQuestionVoteStatus().getScore() == 1) {
@@ -56,7 +56,7 @@ public class QuestionVoteService {
         }
     }
 
-    private void questionvoteminus(QuestionVote questionVote) {
+    private void questionVoteMinus(QuestionVote questionVote) {
         if (questionVote.getQuestionVoteStatus().getScore() == 0) {
             questionVote.setQuestionVoteStatus(QuestionVote.QuestionVoteStatus.MINUS);
         } else if (questionVote.getQuestionVoteStatus().getScore() == 1) {
