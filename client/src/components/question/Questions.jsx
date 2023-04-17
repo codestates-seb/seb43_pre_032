@@ -14,7 +14,8 @@ const QuestionFilter = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0px 20px 10px 20px;
+    padding: 10px 20px;
+    margin-top: 10px;
   }
   h2 {
     font-size: 1.7em;
@@ -40,7 +41,7 @@ const QuestionFilter = styled.div`
     overflow: hidden;
     height: 35px;
     border: 1px solid hsl(210, 8%, 65%);
-    border-radius: 5px;
+    border-radius: 3px;
     button {
       background: rgb(255, 255, 255);
       border: none;
@@ -65,11 +66,78 @@ const QuestionFilter = styled.div`
 `;
 const QuestionList = styled.ul`
   width: 100%;
+  position: relative;
+  border-bottom: 1px solid #ddd;
+  li {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
 `;
 
-const IntData = styled.div``;
-const ContentsData = styled.div``;
-const UserData = styled.div``;
+const IntData = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 200px;
+  height: 100%;
+  margin-right: 20px;
+  span {
+    font-size: 13px;
+    margin-top: 10px;
+    width: 100%;
+    text-align: right;
+  }
+`;
+const ContentsData = styled.div`
+  > * {
+    margin: 10px 0px;
+  }
+  h3 {
+    color: #0074cc;
+  }
+  span {
+    font-size: 14px;
+  }
+  p {
+    background-color: hsl(205, 46%, 92%);
+    color: hsl(205, 47%, 42%);
+    border-radius: 3px;
+    border: 1px solid hsl(205, 47%, 42%);
+    font-size: 12px;
+    padding: 5px 10px;
+    margin: 3px;
+    transition: 0.2s ease-in-out;
+  }
+  p:hover {
+    background-color: #afccdf;
+    cursor: pointer;
+  }
+  .tagData {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 100%;
+  }
+`;
+const UserData = styled.div`
+  display: flex;
+  align-items: center;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  font-size: 12px;
+  img {
+    width: 15px;
+    border-radius: 3px;
+  }
+  > * {
+    margin-right: 3px;
+  }
+  .username_color {
+    color: #0074cc;
+  }
+`;
 
 function Questions() {
   return (
@@ -94,33 +162,35 @@ function Questions() {
           </div>
         </QuestionFilter>
         <QuestionList>
-          <IntData>
-            <span>0 votes</span>
-            <span>0 answers</span>
-            <span>2 views</span>
-          </IntData>
-          <ContentsData>
-            <h3>
-              PHP dropdown populated from MySQL database wont POST selection to
-              PHP query
-            </h3>
-            <span>
-              Scenario: I am populating a dropdown menu with data from MySQL
-              database. Upon clicking submit button, script should take the user
-              to the results page and show data based on their selection.
-            </span>
-            <div className="tagData">
-              <p>php</p>
-              <p>php</p>
-              <p>php</p>
-              <p>php</p>
-            </div>
-          </ContentsData>
-          <UserData>
-            <img src="https://i.imgur.com/nXnTowV.jpg" alt="profile icon" />
-            <span>zth_codes</span>
-            <span>1 asked 43 secs ago</span>
-          </UserData>
+          <li>
+            <IntData>
+              <span>0 votes</span>
+              <span>0 answers</span>
+              <span>2 views</span>
+            </IntData>
+            <ContentsData>
+              <h3>
+                PHP dropdown populated from MySQL database wont POST selection
+                to PHP query
+              </h3>
+              <span>
+                Scenario: I am populating a dropdown menu with data from MySQL
+                database. Upon clicking submit button, script should take the
+                user to the results page and show data based on their selection.
+              </span>
+              <div className="tagData">
+                <p>php</p>
+                <p>php</p>
+                <p>php</p>
+                <p>php</p>
+              </div>
+            </ContentsData>
+            <UserData>
+              <img src="https://i.imgur.com/nXnTowV.jpg" alt="profile icon" />
+              <span className="username_color">zth_codes</span>
+              <span>1 asked 43 secs ago</span>
+            </UserData>
+          </li>
         </QuestionList>
       </Questionscomponent>
     </>

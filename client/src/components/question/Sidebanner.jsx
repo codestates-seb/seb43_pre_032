@@ -74,7 +74,7 @@ const Bannercomponent = styled.section`
 `;
 
 const Sidebanners = styled.aside`
-  box-shadow: 0px 0px 5px #e8ddb3;
+  box-shadow: 0px 0px 5px #f1e6b9;
   border: 1px solid #e8ddb3;
   border-radius: 5px;
   overflow: hidden;
@@ -88,7 +88,7 @@ const Sidebanners = styled.aside`
 `;
 
 const Bannertitle = styled.li`
-  background-color: hsl(47, 65%, 84%);
+  background-color: #fbeec4;
   border: 1px solid #e8ddb3;
   padding: 15px;
   font-weight: 800;

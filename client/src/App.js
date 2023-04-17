@@ -71,7 +71,7 @@ const Maincontents = styled.div`
   flex-direction: row;
   width: 1250px;
   .side_menu {
-    min-width: 200px;
+    min-width: 165px;
     height: 100%;
     border-right: 1px solid #ccc;
   }
