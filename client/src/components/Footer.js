@@ -144,7 +144,7 @@ const Footerbox = styled.div`
     width: 1250px;
     font-size: 13px;
     justify-content: space-around;
-    @media (max-width: 1250px) {
+    @media (max-width: 600px) {
       flex-direction: column;
       padding: 6px;
       font-size: 11px;
