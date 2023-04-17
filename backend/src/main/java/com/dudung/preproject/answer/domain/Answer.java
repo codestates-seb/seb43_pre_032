@@ -37,6 +37,8 @@ public class Answer {
     @OneToMany(mappedBy = "answer")
     private List<AnswerVote> answerVotes = new ArrayList<>();
 
+    private int answerVoteSum;
+
     public int getAnswerVoteSum() {
 
         int answerVoteSum = this.answerVotes.stream()
@@ -44,6 +46,7 @@ public class Answer {
                         .getAnswerVoteStatus().getScore())
                 .mapToInt(N -> N)
                 .sum();
+        this.answerVoteSum = answerVoteSum;
         return answerVoteSum;
     }
 

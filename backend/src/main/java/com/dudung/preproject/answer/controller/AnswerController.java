@@ -4,13 +4,20 @@ import com.dudung.preproject.answer.domain.Answer;
 import com.dudung.preproject.answer.dto.AnswerDto;
 import com.dudung.preproject.answer.mapper.AnswerMapper;
 import com.dudung.preproject.answer.service.AnswerService;
+import com.dudung.preproject.dto.MultiResponseDto;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.member.service.MemberService;
+import com.dudung.preproject.question.domain.Question;
 import com.dudung.preproject.question.service.QuestionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.Positive;
+import java.util.List;
+
 @RequestMapping("/answers")
 @RestController
 @RequiredArgsConstructor
@@ -50,6 +57,19 @@ public class AnswerController {
         Answer answer = answerService.findAnswer(answerId);
 
         return new ResponseEntity<>(mapper.answerToAnswerResponse(answer), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity getAnswers(@Positive @RequestParam int page,
+                                     @Positive @RequestParam int size,
+                                     @RequestParam String sortBy) {
+        Page<Answer> pageAnswers = answerService.findAnswers(page -1, size, sortBy);
+        List<Answer> answers = pageAnswers.getContent();
+
+        return new ResponseEntity<>(new MultiResponseDto<>(
+                mapper.answerToAnswerResponse(answers), pageAnswers),
+                HttpStatus.OK);
+
     }
 
     @DeleteMapping("{answer-id}")

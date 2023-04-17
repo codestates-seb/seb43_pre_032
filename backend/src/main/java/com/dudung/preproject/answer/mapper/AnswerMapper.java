@@ -5,6 +5,9 @@ import com.dudung.preproject.answer.dto.AnswerDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Mapper(componentModel = "spring")
 public interface AnswerMapper {
     Answer answerPostToAnswer(AnswerDto.Post requestBody);
@@ -19,6 +22,24 @@ public interface AnswerMapper {
                 .answerContent(answer.getAnswerContent())
                 .modifiedAt(answer.getModifiedAt()).build();
     }
+
+    default AnswerDto.ResponseForList answerToAnswerResponseForList(Answer answer) {
+        return AnswerDto.ResponseForList.builder()
+                .answerId(answer.getAnswerId())
+                .answerContent(answer.getAnswerContent())
+                .answerVoteSum(answer.getAnswerVoteSum())
+                .createdAt(answer.getCreatedAt())
+                .modifiedAt(answer.getModifiedAt())
+                .answerName(answer.getMember().getName())
+                .build();
+    }
+
+    default List<AnswerDto.ResponseForList> answerToAnswerResponse(List<Answer> answers) {
+        return answers.stream()
+                .map(answer -> answerToAnswerResponseForList(answer))
+                .collect(Collectors.toList());
+    }
+
 
 
 
