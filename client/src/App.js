@@ -70,6 +70,9 @@ const SideNavigation = styled.article`
     position: fixed;
     display: flex;
   }
+  @media (max-width: 600px) {
+    display: none;
+  }
   @media (max-width: 1250px) {
     width: 200px;
     .Navbox {
@@ -85,6 +88,7 @@ const Viewsection = styled.section`
 
 //푸터 - Footer
 const Footersection = styled.footer`
+  z-index: 99;
   width: 100%;
   height: 100px;
   background-color: hsl(210, 8%, 15%);
