@@ -112,7 +112,6 @@ const Footerbox = styled.div`
   background-color: #232629;
   display: flex;
   gap: 10px;
-  position: absolute;
   bottom: 0;
   justify-content: space-around;
   width: 100%;
@@ -141,8 +140,8 @@ const Footerbox = styled.div`
   }
   .footer-footer {
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
+    flex-direction: column;
     width: 30%;
     color: #80878e;
     ul {

@@ -73,10 +73,10 @@ const Nav = () => {
 const DivContainer = styled.div`
   margin: 0px;
   padding: 0px;
-
   display: flex;
-
-  width: 250px;
+  position: absolute;
+  right: 0px;
+  width: 200px;
 
   > div {
     padding: 0px 0px 0px 0px;
@@ -173,8 +173,8 @@ const LiChild = styled.li`
   li:nth-last-child(2) {
     margin: 16px 0px 0px 8px;
     font-size: 11px;
-    color: #6a737c;
     cursor: auto;
+    color: #6a737c;
   }
 
   //Explore Collectives
