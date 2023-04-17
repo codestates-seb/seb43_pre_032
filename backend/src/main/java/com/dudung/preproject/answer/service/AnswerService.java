@@ -6,6 +6,9 @@ import com.dudung.preproject.exception.BusinessLogicException;
 import com.dudung.preproject.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -48,5 +51,10 @@ public class AnswerService {
     public void deleteAnswer(Long answerId) {
         Answer findAnswer = findVerifiedAnswer(answerId);
         answerRepository.delete(findAnswer);
+    }
+
+    public Page<Answer> findAnswers(int page, int size, String sortBy) {
+        return answerRepository.findAll(PageRequest.of
+                (page, size, Sort.by(sortBy).descending()));
     }
 }
