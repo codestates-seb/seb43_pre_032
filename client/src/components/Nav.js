@@ -71,11 +71,10 @@ const Nav = () => {
 };
 
 const DivContainer = styled.div`
+  /* border: 1px solid red; */
   margin: 0px;
   padding: 0px;
   display: flex;
-  position: absolute;
-  right: 0px;
   width: 200px;
 
   > div {
@@ -189,7 +188,6 @@ const LiChild = styled.li`
     font-size: 13px;
     line-height: 26px;
     padding: 0px;
-
     color: #525960;
     :hover {
       color: #0c0d0e;

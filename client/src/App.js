@@ -10,14 +10,16 @@ function App() {
       <Headersection>
         <div className="Area">헤더및 서칭바</div>
       </Headersection>
-      <Maincontents>
-        <SideNavigation>
-          <div className="Navbox">
-            <Nav />
-          </div>
-        </SideNavigation>
-        <Viewsection>메인 컨텐츠</Viewsection>
-      </Maincontents>
+      <Maingroup>
+        <Maincontents>
+          <article className="side_menu">
+            <div className="fixed_contents">
+              <Nav />
+            </div>
+          </article>
+          <article className="main_view">본문내용</article>
+        </Maincontents>
+      </Maingroup>
       <Footersection>
         <Footer />
       </Footersection>
@@ -39,56 +41,56 @@ const Headersection = styled.section`
   background-color: hsl(210, 8%, 97.5%);
   box-shadow: 0px 0px 8px rgb(0, 0, 0, 0.2);
   box-sizing: border-box;
+  z-index: 99;
   .Area {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 1250px;
     height: 100%;
-    border: 1px solid red;
     text-align: center;
   }
 `;
 
 ///메인섹션 - Main
-const Maincontents = styled.header`
-  display: flex;
-  min-height: 100vh;
-  height: 200%;
+const Maingroup = styled.section`
+  position: relative;
   width: 100%;
-  box-sizing: border-box;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
 `;
 
-const SideNavigation = styled.article`
-  width: 25vw;
-  height: auto;
-  border-right: 1px solid #ccc;
-
-  .Navbox {
-    width: 25vw;
-    margin-top: 50px;
+const Maincontents = styled.div`
+  position: relative;
+  display: flex;
+  margin-top: 50px;
+  flex-direction: row;
+  width: 1250px;
+  .side_menu {
+    min-width: 200px;
+    height: 100%;
+    border-right: 1px solid #ccc;
+  }
+  .fixed_contents {
     position: fixed;
-    display: flex;
   }
-  @media (max-width: 600px) {
-    display: none;
+  .main_view {
+    position: relative;
+    width: 100%;
+    min-height: 3000px;
   }
-  @media (max-width: 1250px) {
-    width: 200px;
-    .Navbox {
-      width: 200px;
+  @media (max-width: 800px) {
+    .side_menu {
+      display: none;
     }
   }
-`;
-
-const Viewsection = styled.section`
-  margin-top: 50px;
-  height: 200vh;
 `;
 
 //푸터 - Footer
 const Footersection = styled.footer`
   z-index: 99;
+  position: relative;
   width: 100%;
   height: 100px;
   background-color: hsl(210, 8%, 15%);
