@@ -49,9 +49,9 @@ const HeaderContainer = styled.header`
   padding-top: 3px;
   padding-bottom: 3px;
 
-  -webkit-box-shadow: 0px 5px 12px -2px rgba(0, 0, 0, 0.27);
-  box-shadow: 0px 5px 12px -2px rgba(0, 0, 0, 0.27);
-  border-top: 3px solid #f48225;
+  -webkit-box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.01);
+  box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.03);
+  border-top: 1spx solid #f48225;
   background-color: #f8f9f9;
 `;
 
@@ -63,6 +63,10 @@ const ContentsContainer = styled.div`
   height: 80%;
   & > :hover.hover {
     background-color: var(--menu-hover-background);
+  }
+  @media (max-width: 1250px) {
+    padding-left: 20px;
+    padding-right: 20px;
   }
 `;
 const Menu = styled.div`
@@ -79,7 +83,7 @@ const SerachBar = styled.input`
   border-radius: 2px;
   font-size: 13px;
   @media (max-width: 1250px) {
-    width: 45%;
+    width: 40%;
   }
 `;
 export default Header;
