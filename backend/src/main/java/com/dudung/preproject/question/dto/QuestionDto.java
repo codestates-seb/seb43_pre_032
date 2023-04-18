@@ -14,7 +14,7 @@ public class QuestionDto {
         private long memberId;
         private String questionTitle;
         private String questionContent;
-        private List<TagDto.Name> tagName;
+        private List<QuestionTagDto.Add> tagName;
         private LocalDateTime createdAt = LocalDateTime.now();
     }
     @Getter
@@ -24,6 +24,7 @@ public class QuestionDto {
         private long questionId;
         private String questionTitle;
         private String questionContent;
+        private List<QuestionTagDto.Add> tagName;
         private LocalDateTime modifiedAt = LocalDateTime.now();
     }
 
@@ -31,17 +32,18 @@ public class QuestionDto {
     @AllArgsConstructor
     public static class Response {
         private QuestionResponseDto question;
-        private AnswerDto.Response answer;
+        private List<AnswerDto.ResponseForList> answer;
     }
 
     @Getter
     @Builder
     public static class ResponseForList {
+        private long questionId;
         private String questionTitle;
         private int viewCount;
         private int questionVoteSum;
         private LocalDateTime createdAt;
-        private List<TagDto.Name> tagName;
+        private List<QuestionTagDto.Response> tagName;
         private String memberName;
         private int answerCount;
     }

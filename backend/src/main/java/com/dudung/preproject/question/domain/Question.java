@@ -45,8 +45,8 @@ public class Question {
         return questionVoteSum;
     }
 
-    @OneToMany
-    private List<Tag> tags = new ArrayList<>();
+    @OneToMany(mappedBy = "question")
+    private List<QuestionTag> questionTags = new ArrayList<>();
 
     @OneToMany(mappedBy = "question")
     private List<Answer> answers = new ArrayList<>();
@@ -55,7 +55,9 @@ public class Question {
 
     private LocalDateTime modifiedAt;
 
-
+    public void addQuestionTag(QuestionTag questionTag) {
+        this.questionTags.add(questionTag);
+    }
     public void addQuestionVote(QuestionVote questionVote) {
         this.questionVotes.add(questionVote);
     }

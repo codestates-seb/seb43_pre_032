@@ -6,7 +6,9 @@ import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.member.repository.MemberRepository;
 import com.dudung.preproject.member.service.MemberService;
 import com.dudung.preproject.question.domain.Question;
+import com.dudung.preproject.question.domain.QuestionTag;
 import com.dudung.preproject.question.repository.QuestionRepository;
+import com.dudung.preproject.question.repository.QuestionTagRepository;
 import com.dudung.preproject.tag.domain.Tag;
 import com.dudung.preproject.tag.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,14 +29,16 @@ public class QuestionService {
     private final TagRepository tagRepository;
     private final MemberService memberService;
     private final MemberRepository memberRepository;
+    private final QuestionTagRepository questionTagRepository;
 
 
     public Question createQuestion(Question question) {
         Member member = memberService.findVerifiedMember(question.getMember().getMemberId());
         question.setMember(member);
-        insertTag(question);
+
 
         Question createdQuestion = questionRepository.save(question);
+        insertTag(createdQuestion);
         member.addQuestion(createdQuestion);
         memberRepository.save(member);
 
@@ -45,6 +50,8 @@ public class QuestionService {
 
         Optional.ofNullable(question.getQuestionContent())
                 .ifPresent(content -> findedQuestion.setQuestionContent(content));
+        Optional.ofNullable(question.getQuestionTags())
+                .ifPresent(tagList -> insertTag(tagList, findedQuestion));
 
         return questionRepository.save(findedQuestion);
     }
@@ -61,7 +68,7 @@ public class QuestionService {
     }
 
     public Page<Question> findQuestions(Tag tag, int page, int size, String sortBy) { // sortBy == 정렬기준 e.g. "questionId"
-        return questionRepository.findAllByTagsContains(tag, PageRequest.of(page, size, Sort.by(sortBy).descending()));
+        return questionRepository.findAllByTag(tag, PageRequest.of(page, size, Sort.by(sortBy).descending()));
     }
 
     public void deleteQuestion(long questionId) {
@@ -82,14 +89,39 @@ public class QuestionService {
     }
 
     private void insertTag(Question question) {
-        List<Tag> list = question.getTags();
-        List<Tag> tags = list.stream().map(tag -> {
-            Tag realTag = tagRepository.findById(tag.getTagId()).orElseThrow(() -> new BusinessLogicException(ExceptionCode.TAG_NOT_FOUND));
-            realTag.addQuestion(question);
-//            tagRepository.save(realTag);
-            return realTag;
+        List<QuestionTag> list = question.getQuestionTags();
+        List<QuestionTag> questionTagList = list.stream().map(questionTag -> questionTagRepository.save(questionTag)).collect(Collectors.toList());
+        List<QuestionTag> questionTags = questionTagList.stream().map(questionTag -> {
+            Tag realTag = tagRepository.findById(questionTag.getTag().getTagId()).orElseThrow(() -> new BusinessLogicException(ExceptionCode.TAG_NOT_FOUND));
+            realTag.addQuestionTag(questionTag);
+            return questionTag;
         }).collect(Collectors.toList());
 
-        question.setTags(tags);
+        List<QuestionTag> savedQuestionTag = questionTags.stream().map(questionTag -> questionTagRepository.save(questionTag)).collect(Collectors.toList());
+
+        Iterator<QuestionTag> iterator = savedQuestionTag.iterator();
+        while (iterator.hasNext()) {
+            QuestionTag questionTag = iterator.next();
+            questionTag.addQuestion(question);
+        }
+
+        question.setQuestionTags(savedQuestionTag);
+    }
+
+    private void insertTag(List<QuestionTag> questionTagList, Question question) {
+        List<QuestionTag> savedQuestionTags = questionTagList.stream().map(questionTag -> questionTagRepository.save(questionTag)).collect(Collectors.toList());
+        List<QuestionTag> questionsTags = savedQuestionTags.stream().map(questionTag -> {
+            Tag realTag = tagRepository.findById(questionTag.getTag().getTagId()).orElseThrow(() -> new BusinessLogicException(ExceptionCode.TAG_NOT_FOUND));
+            realTag.addQuestionTag(questionTag);
+            return questionTag;
+        }).collect(Collectors.toList());
+
+        Iterator<QuestionTag> iterator = questionsTags.iterator();
+        while (iterator.hasNext()) {
+            QuestionTag questionTag = iterator.next();
+            questionTag.setQuestion(question);
+        }
+
+        question.setQuestionTags(questionsTags);
     }
 }

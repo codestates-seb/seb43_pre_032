@@ -1,7 +1,9 @@
 package com.dudung.preproject.tag.mapper;
 
 import com.dudung.preproject.question.domain.Question;
+import com.dudung.preproject.question.domain.QuestionTag;
 import com.dudung.preproject.question.dto.QuestionDto;
+import com.dudung.preproject.question.dto.QuestionTagDto;
 import com.dudung.preproject.tag.domain.Tag;
 import com.dudung.preproject.tag.dto.TagDto;
 import org.mapstruct.Mapper;
@@ -26,14 +28,15 @@ public interface TagMapper {
 
     default QuestionDto.ResponseForList questionToQuestionResponseForList(Question question) {
         return QuestionDto.ResponseForList.builder()
+                .questionId(question.getQuestionId())
                 .questionTitle(question.getQuestionTitle())
                 .viewCount(question.getViewCount())
                 .questionVoteSum(question.getQuestionVoteSum())
                 .createdAt(question.getCreatedAt())
-                .tagName(tagsToTagNames(question.getTags()))
+                .tagName(tagsToTagNames(question.getQuestionTags()))
                 .memberName(question.getMember().getName())
                 .answerCount(question.getAnswerCount()).build();
     }
 
-    List<TagDto.Name> tagsToTagNames(List<Tag> tagList);
+    List<QuestionTagDto.Response> tagsToTagNames(List<QuestionTag> tagList);
 }

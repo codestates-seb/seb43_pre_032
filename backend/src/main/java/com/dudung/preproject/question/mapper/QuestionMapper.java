@@ -1,12 +1,15 @@
 package com.dudung.preproject.question.mapper;
 
+import com.dudung.preproject.answer.domain.Answer;
 import com.dudung.preproject.answer.dto.AnswerDto;
 import com.dudung.preproject.exception.BusinessLogicException;
 import com.dudung.preproject.exception.ExceptionCode;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.question.domain.Question;
+import com.dudung.preproject.question.domain.QuestionTag;
 import com.dudung.preproject.question.dto.QuestionDto;
 import com.dudung.preproject.question.dto.QuestionResponseDto;
+import com.dudung.preproject.question.dto.QuestionTagDto;
 import com.dudung.preproject.tag.domain.Tag;
 import com.dudung.preproject.tag.dto.TagDto;
 import com.dudung.preproject.tag.repository.TagRepository;
@@ -29,50 +32,73 @@ public interface QuestionMapper {
         question.setQuestionContent(requestBody.getQuestionContent());
         question.setCreatedAt(requestBody.getCreatedAt());
 
-        List<Tag> tagList = requestBody.getTagName().stream()
-                .map(tagName -> {
+        List<QuestionTag> questionTags = requestBody.getTagName().stream()
+                .map(ADD -> {
                     Tag tag = new Tag();
-                    tag.setTagId(tagName.getTagId());
-                    return tag;
+                    QuestionTag questionTag = new QuestionTag();
+                    tag.setTagId(ADD.getTagId());
+                    questionTag.addTag(tag);
+                    questionTag.addQuestion(question);
+                    return questionTag;
                 }).collect(Collectors.toList());
-        question.setTags(tagList);
+        question.setQuestionTags(questionTags);
         question.setMember(member);
 
         return question;
     }
     Question questionPatchToQuestion(QuestionDto.Patch requestBody);
-    default QuestionDto.Response questionToQuestionResponse(Question question) {
+    default QuestionDto.Response questionToQuestionResponse(Question question, List<Answer> answers) {
+        List<AnswerDto.ResponseForList> answerResponseDto = answers.size() == 0 ? null :
+                question.getAnswers().stream()
+                        .map(answer -> answerToAnswerResponseForList(answer))
+                        .collect(Collectors.toList());
+
         QuestionResponseDto questionResponseDto = QuestionResponseDto.builder()
                 .questionId(question.getQuestionId())
                 .questionTitle(question.getQuestionTitle())
                 .questionContent(question.getQuestionContent())
                 .createdAt(question.getCreatedAt())
                 .modifiedAt(question.getModifiedAt())
-                .tagName(tagsToTagNames(question.getTags()))
+                .tagName(tagsToTagNames(question.getQuestionTags()))
                 .questionVoteSum(question.getQuestionVoteSum())
                 .viewCount(question.getViewCount())
                 .memberName(question.getMember().getName()).build();
-        AnswerDto.Response answerResponseDto = question.getAnswers().size() == 0 ? null :
-                AnswerDto.Response.builder()   // answersResponse 가 구현이 안돼있어 answerResponse 로 대체
-                        .answerId(question.getAnswers().get(0).getAnswerId())
-                        .questionId(question.getAnswers().get(0).getQuestion().getQuestionId())
-                        .memberName(question.getAnswers().get(0).getMember().getName())
-                        .answerContent(question.getAnswers().get(0).getAnswerContent())
-                        .modifiedAt(question.getAnswers().get(0).getModifiedAt())
-                        .build();
+
 
         return new QuestionDto.Response(questionResponseDto, answerResponseDto);
     }
+    default List<QuestionTagDto.Response> tagsToTagNames(List<QuestionTag> questionTagList) {
+        return questionTagList.stream()
+                .map(questionTag -> tagToTagName(questionTag))
+                .collect(Collectors.toList());
+    }
 
-    List<TagDto.Name> tagsToTagNames(List<Tag> tagList);
+    default QuestionTagDto.Response tagToTagName(QuestionTag questionTag) {
+        return QuestionTagDto.Response.builder()
+                .tagId(questionTag.getTag().getTagId())
+                .tagName(questionTag.getTag().getTagName())
+                .build();
+    }
+
+    default AnswerDto.ResponseForList answerToAnswerResponseForList(Answer answer) {
+        return AnswerDto.ResponseForList.builder()
+                .answerId(answer.getAnswerId())
+                .answerContent(answer.getAnswerContent())
+                .answerVoteSum(answer.getAnswerVoteSum())
+                .createdAt(answer.getCreatedAt())
+                .modifiedAt(answer.getModifiedAt())
+                .answerName(answer.getMember().getName())
+                .build();
+    }
 
     default QuestionDto.ResponseForList questionToQuestionResponseForList(Question question) {
         return QuestionDto.ResponseForList.builder()
+                .questionId(question.getQuestionId())
                 .questionTitle(question.getQuestionTitle())
                 .viewCount(question.getViewCount())
                 .questionVoteSum(question.getQuestionVoteSum())
                 .createdAt(question.getCreatedAt())
-                .tagName(tagsToTagNames(question.getTags()))
+                .tagName(tagsToTagNames(question.getQuestionTags()))
                 .memberName(question.getMember().getName())
                 .answerCount(question.getAnswerCount()).build();
     }
