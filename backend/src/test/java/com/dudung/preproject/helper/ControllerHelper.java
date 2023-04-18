@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.util.MultiValueMap;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,6 +30,21 @@ public interface ControllerHelper<T> {
 
     default RequestBuilder getRequestBuilder(String url, long resourceId) {
         return get(url, resourceId)
+                .accept(MediaType.APPLICATION_JSON);
+    }
+
+    default RequestBuilder getRequestBuilderWithParams(String url, long resourceId, MultiValueMap<String, String> params) {
+        return get(url, resourceId)
+                .params(params)
+                .accept(MediaType.APPLICATION_JSON);
+    }
+
+    default RequestBuilder getRequestBuilder(String url,
+                                             MultiValueMap<String, String> queryParams) {
+        return get(url)
+                .params(
+                        queryParams
+                )
                 .accept(MediaType.APPLICATION_JSON);
     }
 
