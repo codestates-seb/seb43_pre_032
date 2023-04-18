@@ -3,15 +3,10 @@
   margin: 0;
   list-style: none;
 }
-
 .flex-center{
   display: flex;
   align-items: center;
  justify-content: center;
-}
-.flex-row{
-  display: flex;
-  flex-direction: row;
 }
 .flex-space-between{
   display: flex;
@@ -23,7 +18,6 @@
   align-items: center;
  justify-content: space-around;
 }
-
 
 .logo{
   height: 25px;
@@ -44,15 +38,4 @@
 .log-sign{
   width: 150px;
   font-size: 13px;
-}
-.margin-right-3px{
-  margin-right: 3px;
-}
-.selected{
-  background-color: lightgray;
-}
-@media (max-width: 980px) {
-  .mypage-col-style{
-    width: 90%;
-  }
 }

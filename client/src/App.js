@@ -3,7 +3,7 @@ import Header from './components/Header/HeaderCom';
 import Footer from './components/Footer';
 import Nav from './components/Nav';
 import styled from 'styled-components';
-// import MyPage from './pages/MyinfoPage';
+import Viewcomponent from './components/question/Viewcomponent.jsx';
 
 function App() {
   return (
@@ -18,7 +18,9 @@ function App() {
               <Nav />
             </div>
           </article>
-          <article className="main_view"></article>
+          <article className="main_view">
+            <Viewcomponent />
+          </article>
         </Maincontents>
       </Maingroup>
       <Footersection>
