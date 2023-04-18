@@ -31,7 +31,7 @@ function Taglists() {
     <>
       <TagsPage>
         <h1>Tags</h1>
-        <p>
+        <p className="tags-title-description">
           A tag is a keyword or label that categorizes your question with other,
           similar questions. Using the right tags makes it easier for others to
           find and answer your question.
@@ -71,7 +71,7 @@ const TagContainer = styled.div`
   color: black;
   display: grid;
   max-width: 1050px;
-  gap: 5px;
+  gap: 10px;
   grid-template-rows: repeat(autofit, 1fr);
   grid-template-columns: repeat(4, minmax(250px, 1fr));
   font-size: 13px;
@@ -101,6 +101,7 @@ const TagContainer = styled.div`
     grid-template-rows: 0.5fr 2fr 0.5fr;
     border: 1px solid #d6d9dc;
     padding: 12px;
+    border-radius: 5px;
   }
   .singleTagTagDescription {
     overflow: none;
@@ -110,6 +111,15 @@ const TagContainer = styled.div`
 const TagsPage = styled.div`
   padding: 24px;
   max-width: 1050;
+  h1 {
+    font-weight: 500;
+    font-size: 1.7rem;
+    margin: 16px 0px;
+  }
+  p {
+    font-size: 15px;
+    margin-bottom: 16px;
+  }
   .searchbar--tab {
     display: flex;
     justify-content: space-between;
@@ -162,7 +172,9 @@ const TagSerachBar = styled.input`
   border-radius: 5px;
   font-size: 13px;
   &:focus {
-    outline: 3px outset skyblue;
+    outline-style: outset;
+    outline-width: 3px;
+    outline-color: #ddeaf7;
   }
 `;
 export default Taglists;
