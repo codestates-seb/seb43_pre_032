@@ -37,7 +37,7 @@ public class AnswerController {
         answer.setQuestion(questionService.findVerifiedQuestion(requestBody.getQuestionId()));
 
         Answer createdAnswer = answerService.createAnswer(answer);
-        return new ResponseEntity<>(mapper.answerToAnswerResponse(createdAnswer), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.answerToAnswerResponse(createdAnswer), HttpStatus.CREATED);
     }
 
     @PatchMapping("{answer-id}")
