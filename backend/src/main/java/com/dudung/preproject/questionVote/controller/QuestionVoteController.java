@@ -29,7 +29,7 @@ public class QuestionVoteController {
             questionVoteService.questionVoteDown(memberService.findMember(requestBody.getMemberId()), questionService.findVerifiedQuestion(requestBody.getQuestionId()));
         }
 
-        return new ResponseEntity<>(questionService.findVerifiedQuestion(requestBody.getQuestionId()).getQuestionVoteSum(), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.questionToQuestionVoteResponse(questionService.findVerifiedQuestion(requestBody.getQuestionId())), HttpStatus.OK);
 
     }
 }
