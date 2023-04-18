@@ -1,4 +1,3 @@
-// import { useEffect, useState } from 'react';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { data } from '../data/tagdata';
@@ -37,7 +36,7 @@ function Taglists() {
           similar questions. Using the right tags makes it easier for others to
           find and answer your question.
         </p>
-        <p>Show all tag synonyms</p>
+        <p className="showAllTag">Show all tag synonyms</p>
         <div className="searchbar--tab">
           <TagSerachBar
             className="taglist-SerchBar"
@@ -71,13 +70,13 @@ function Taglists() {
 const TagContainer = styled.div`
   color: black;
   display: grid;
+  max-width: 1050px;
   gap: 5px;
   grid-template-rows: repeat(autofit, 1fr);
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(250px, 1fr));
   font-size: 13px;
-  padding: 12px;
   @media (max-width: 1050px) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(250px, 1fr));
   }
   @media (max-width: 750px) {
     grid-template-columns: repeat(2, 1fr);
@@ -99,7 +98,7 @@ const TagContainer = styled.div`
   }
   .singleTag {
     display: grid;
-    grid-template-rows: 1fr 2fr 1fr;
+    grid-template-rows: 0.5fr 2fr 0.5fr;
     border: 1px solid #d6d9dc;
     padding: 12px;
   }
@@ -114,6 +113,13 @@ const TagsPage = styled.div`
   .searchbar--tab {
     display: flex;
     justify-content: space-between;
+  }
+  .showAllTag {
+    color: #0995ff;
+    &:hover {
+      color: #43a4ff;
+      cursor: pointer;
+    }
   }
 `;
 
@@ -149,6 +155,7 @@ const TagsTab = styled.div`
 `;
 
 const TagSerachBar = styled.input`
+  margin: 10px 0px;
   width: 190px;
   height: 38px;
   border: 1px solid lightgray;
