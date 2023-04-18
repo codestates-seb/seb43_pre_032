@@ -29,9 +29,7 @@ public class QuestionController {
     private final static String QUESTION_DEFAULT_URL = "/questions";
     private final QuestionService questionService;
     private final QuestionMapper questionMapper;
-    private final MemberService memberService;
     private final AnswerService answerService;
-    private final AnswerMapper answerMapper;
 
     @PostMapping
     public ResponseEntity postQuestion(@RequestBody QuestionDto.Post requestBody) {
@@ -64,8 +62,8 @@ public class QuestionController {
     }
 
     @GetMapping
-    public ResponseEntity getQuestions(@Positive @RequestParam int page, @Positive @RequestParam int size, @RequestParam String sortBy) {
-        Page<Question> pageQuestions = questionService.findQuestions(page - 1, size, sortBy);
+    public ResponseEntity getQuestions(@Positive @RequestParam int page, @Positive @RequestParam int size, @RequestParam String sortBy, @RequestParam(required = false) String keyword) {
+        Page<Question> pageQuestions = questionService.findQuestions(page - 1, size, sortBy, keyword);
         List<Question> questions = pageQuestions.getContent();
 
         return new ResponseEntity<>(new MultiResponseDto<>(questionMapper.questionsToQuestionsResponse(questions), pageQuestions), HttpStatus.OK);
