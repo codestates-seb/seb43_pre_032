@@ -27,8 +27,8 @@ public class TagController {
     private final QuestionMapper questionMapper;
 
     @GetMapping
-    public ResponseEntity getTags(@Positive @RequestParam int page, @Positive @RequestParam int size, @RequestParam String sortBy) {
-        Page<Tag> pageTags = tagService.findTags(page - 1, size, sortBy);
+    public ResponseEntity getTags(@Positive @RequestParam int page, @Positive @RequestParam int size, @RequestParam String sortBy, @RequestParam(required = false) String keyword) {
+        Page<Tag> pageTags = tagService.findTags(page - 1, size, sortBy, keyword);
         List<Tag> tags = pageTags.getContent();
 
         return new ResponseEntity<>(new MultiResponseDto<>(tagMapper.tagsToTagsResponse(tags), pageTags), HttpStatus.OK);
