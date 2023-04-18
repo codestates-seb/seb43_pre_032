@@ -47,7 +47,7 @@ public class MemberControllerTest {
 
         ResultActions actions =
                 mockMvc.perform(
-                        post("/")
+                        post("/members")
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(getPostMemberContent())
@@ -68,7 +68,7 @@ public class MemberControllerTest {
 
         ResultActions actions =
                 mockMvc.perform(
-                        patch("/{member-id}", 1)
+                        patch("/members/{member-id}", 1)
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(getPatchMemberContent())
@@ -88,7 +88,7 @@ public class MemberControllerTest {
 
         ResultActions actions =
                 mockMvc.perform(
-                        get("/{member-id}", 1)
+                        get("/members/{member-id}", 1)
                                 .accept(MediaType.APPLICATION_JSON)
                 );
         actions
@@ -102,7 +102,7 @@ public class MemberControllerTest {
         doNothing().when(memberService).deleteMember(Mockito.anyLong());
 
         mockMvc.perform(
-                        delete("/{member-id}", 1)
+                        delete("/members/{member-id}", 1)
                 )
                 .andExpect(status().isNoContent());
     }
