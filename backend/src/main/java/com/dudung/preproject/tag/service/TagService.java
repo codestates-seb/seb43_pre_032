@@ -21,8 +21,12 @@ public class TagService {
         return findVerifiedTag(tagId);
     }
 
-    public Page<Tag> findTags(int page, int size, String sortBy) {
-        return tagRepository.findAll(PageRequest.of(page, size,
+    public Page<Tag> findTags(int page, int size, String sortBy, String keyword) {
+        if (keyword == null) {
+            return tagRepository.findAll(PageRequest.of(page, size,
+                    Sort.by(sortBy).ascending()));
+        }
+        return tagRepository.findAllByTagNameContaining(keyword, PageRequest.of(page, size,
                 Sort.by(sortBy).ascending()));
     }
 
