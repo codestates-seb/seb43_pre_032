@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import logo from '../assets/logo.png';
-import MenuIcon from './Menu-Icon';
-import { LoginBtn, SignInBtn, OtherButtons } from './NavButton';
+import logo from '../../assets/logo.png';
+import { LoginBtn, SignInBtn, OtherButtons } from './HeaderButton';
 import { useState } from 'react';
 
 function Header() {
@@ -10,27 +9,24 @@ function Header() {
     setIsLogin((pre) => !pre);
   };
   return (
-    <HeaderContainer className="header-pos">
+    <HeaderContainer>
       <ContentsContainer className="flex-space-between">
         {isLogin ? (
           <>
-            <img className="logo menu" src={logo} alt="로고" />
-            <Menu className="menu">Products</Menu>
+            <img className="logo" src={logo} alt="로고" />
+            <Menu className="hover">Products</Menu>
           </>
         ) : (
           <>
-            <div className="btn1 flex-center menu">
-              <MenuIcon></MenuIcon>
-            </div>
-            <img className="logo menu" src={logo} alt="로고" />
-            <Menu className="menu">About</Menu>
-            <Menu className="menu">Products</Menu>
-            <Menu className="menu">For Teams</Menu>
+            <img className="logo" src={logo} alt="로고" />
+            <Menu className="hover moblie-none flex-center">About</Menu>
+            <Menu className="hover flex-center">Products</Menu>
+            <Menu className="hover moblie-none flex-center">For Teams</Menu>
           </>
         )}
-        <SerachBar placeholder=" 🔍 Search.."></SerachBar>
+        <SerachBar placeholder=" 🔍 Search..."></SerachBar>
         {isLogin ? (
-          <OtherButtons></OtherButtons>
+          <OtherButtons />
         ) : (
           <div className="flex-center log-sign">
             <LoginBtn className="flex-center" onClick={clickLogin}>
@@ -45,13 +41,13 @@ function Header() {
 }
 const HeaderContainer = styled.header`
   width: 100vw;
-  height: 3.5rem;
+  height: 40px;
 
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 0.2rem;
-  padding-bottom: 0.2rem;
+  padding-top: 3px;
+  padding-bottom: 3px;
 
   -webkit-box-shadow: 0px 5px 12px -2px rgba(0, 0, 0, 0.27);
   box-shadow: 0px 5px 12px -2px rgba(0, 0, 0, 0.27);
@@ -60,26 +56,30 @@ const HeaderContainer = styled.header`
 `;
 
 const ContentsContainer = styled.div`
+  width: 1250px;
   margin-top: 3px;
   display: flex;
   flex-direction: row;
   height: 80%;
-  & > :hover.menu {
+  & > :hover.hover {
     background-color: var(--menu-hover-background);
   }
 `;
 const Menu = styled.div`
   color: black;
-  font-size: 1rem;
-  padding: 0.3rem;
-  border-radius: 1rem;
-  margin: 1rem;
+  font-size: 13px;
+  padding: 5px;
+  border-radius: 13px;
+  width: 70px;
 `;
 const SerachBar = styled.input`
-  width: 55rem;
-  height: 2.3rem;
+  width: 680px;
+  height: 25px;
   border: 1px solid lightgray;
-  border-radius: 0.2rem;
-  font-size: 1.1rem;
+  border-radius: 2px;
+  font-size: 13px;
+  @media (max-width: 1250px) {
+    width: 45%;
+  }
 `;
 export default Header;
