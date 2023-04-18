@@ -160,4 +160,60 @@ public class StubData {
                     QuestionTagDto.Response.builder().tagId(2L).tagName("태그 2").build());
         }
     }
+
+    public static class MockTag {
+
+        public static TagDto.Response getResponseBody() {
+            LocalDateTime time = LocalDateTime.now();
+
+            List<QuestionTagDto.Response> responseQuestionTag = List.of(
+                    QuestionTagDto.Response.builder()
+                            .tagId(1)
+                            .tagName("태그 1")
+                            .build()
+            );
+
+            List<QuestionDto.ResponseForList> responseQuestions = List.of(
+                    QuestionDto.ResponseForList.builder()
+                            .questionId(1L)
+                            .questionTitle("질문 제목")
+                            .viewCount(1)
+                            .questionVoteSum(1)
+                            .createdAt(time)
+                            .tagName(responseQuestionTag)
+                            .memberName("작성자 이름")
+                            .answerCount(1)
+                            .build()
+            );
+
+            return TagDto.Response.builder()
+                        .tagId(1)
+                        .tagName("태그 1")
+                        .tagDescription("태그 1 설명")
+                        .questions(responseQuestions)
+                        .build();
+        }
+
+        public static Page<Tag> getMultiResultTag() {
+            Tag tag1 = new Tag();
+            Tag tag2 = new Tag();
+            return new PageImpl<>(List.of(tag1, tag2),
+                    PageRequest.of(0, 10, Sort.by("tagId").ascending()),
+                    2);
+        }
+
+        public static List<TagDto.ResponseForList> getMultiResponseBody() {
+            return List.of(
+            TagDto.ResponseForList.builder()
+                    .tagId(1L)
+                    .tagName("태그 1")
+                    .tagDescription("태그 1 설명")
+                    .build(),
+            TagDto.ResponseForList.builder()
+                    .tagId(2L)
+                    .tagName("태그 2")
+                    .tagDescription("태그 2 설명")
+                    .build());
+        }
+    }
 }
