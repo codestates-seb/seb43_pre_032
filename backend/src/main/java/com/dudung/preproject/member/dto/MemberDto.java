@@ -22,6 +22,7 @@ public class MemberDto {
     @Getter
     @Builder
     public static class Response {
+        private Long memberId;
         private String name;
     }
 }
