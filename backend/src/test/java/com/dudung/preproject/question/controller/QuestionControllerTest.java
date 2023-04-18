@@ -274,7 +274,7 @@ public class QuestionControllerTest implements QuestionControllerHelper {
                         requestParameters(
                                 List.of(
                                         parameterWithName("page").description("페이지"),
-                                        parameterWithName("size").description("한 페이지에 표시 될 회원 정보 갯수"),
+                                        parameterWithName("size").description("한 페이지에 표시 될 질문 정보 갯수"),
                                         parameterWithName("sortBy").description("정렬 기준 ex) questionId"),
                                         parameterWithName("keyword").description("검색 키워드")
                                 )
