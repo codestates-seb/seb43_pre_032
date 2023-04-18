@@ -2,5 +2,40 @@
   padding: 0;
   margin: 0;
   list-style: none;
-  
+}
+.flex-center{
+  display: flex;
+  align-items: center;
+ justify-content: center;
+}
+.flex-space-between{
+  display: flex;
+  align-items: center;
+ justify-content: space-between;
+}
+.flex-space-around{
+  display: flex;
+  align-items: center;
+ justify-content: space-around;
+}
+
+.logo{
+  height: 25px;
+}
+.other-img-size{
+  height: 27px;
+}
+
+@media (max-width: 980px) {
+  .moblie-none{
+    display: none;
+  }
+}
+.menu-icon{
+  height: 100%;
+  padding: 5px;
+}
+.log-sign{
+  width: 150px;
+  font-size: 13px;
 }
