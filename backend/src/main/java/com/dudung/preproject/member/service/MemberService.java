@@ -5,8 +5,12 @@ import com.dudung.preproject.exception.ExceptionCode;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.util.Optional;
 
 @Service
@@ -35,6 +39,10 @@ public class MemberService {
 
     public Member findMember(long memberId) {
         return findVerifiedMember(memberId);
+    }
+
+    public Page<Member> findMembers(int page, int size) {
+        return memberRepository.findAll(PageRequest.of(page, size, Sort.by("memberId").descending()));
     }
 
     public void deleteMember(long memberId) {
