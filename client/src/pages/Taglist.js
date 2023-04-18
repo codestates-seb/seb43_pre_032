@@ -52,8 +52,14 @@ function Taglists() {
         <TagContainer>
           {tagData.map((tag) => (
             <div className="singleTag" key={tag.tagId}>
-              <div>{tag.tagName}</div>
-              <div>{tag.tagDescription}</div>
+              <div className="singleTagNamePosition">
+                <button className="singleTagNameBtn">
+                  <span>{tag.tagName}</span>
+                </button>
+              </div>
+              <div className="singleTagTagDescription">
+                {tag.tagDescription}
+              </div>
             </div>
           ))}
         </TagContainer>
@@ -64,53 +70,52 @@ function Taglists() {
 
 const TagContainer = styled.div`
   color: black;
-  max-width: 1050;
   display: grid;
   gap: 5px;
-  grid-template-rows: auto;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: repeat(autofit, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  font-size: 13px;
+  padding: 12px;
+  @media (max-width: 1050px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (max-width: 750px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .singleTagNamePosition {
+    height: 28px;
+    margin-bottom: 12px;
+  }
+  .singleTagNameBtn {
+    background-color: hsl(205, 54%, 88%);
+    border: none;
+    margin: 2px 2px 2px 0px;
+    padding: 4.8px 6px;
+    border-radius: 3px;
+    color: #60849e;
+  }
+  .singleTag {
+    display: grid;
+    grid-template-rows: 1fr 2fr 1fr;
+    border: 1px solid #d6d9dc;
+    padding: 12px;
+  }
+  .singleTagTagDescription {
+    overflow: none;
+  }
 `;
 
 const TagsPage = styled.div`
   padding: 24px;
+  max-width: 1050;
   .searchbar--tab {
     display: flex;
     justify-content: space-between;
   }
 `;
-
-// const Tab = styled.div`
-//   display: flex;
-//   width: 180px;
-//   height: 38px;
-//   border: 1px solid gray;
-//   border-radius: 5px;
-//   justify-content: center;
-//   align-items: center;
-//   text-align: center;
-//   cursor: pointer;
-//   > div {
-//     justify-content: center;
-//     height: 38px;
-//     line-height: 38px;
-//     &:hover {
-//       background-color: rgba(0, 0, 0, 0.05);
-//     }
-//     &:active {
-//       box-shadow: 0 0 10px gray;
-//     }
-//   }
-//   .Tab1 {
-//     width: 70px;
-//   }
-//   .Tab2 {
-//     width: 60px;
-//     border: 1px solid gray;
-//   }
-//   .Tab3 {
-//     width: 50px;
-//   }
-// `;
 
 const TagsTab = styled.div`
   display: flex;
