@@ -14,8 +14,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class QuestionVoteService {
-    private QuestionRepository questionRepository;
-    private QuestionVoteRepository questionVoteRepository;
+    private final QuestionRepository questionRepository;
+    private final QuestionVoteRepository questionVoteRepository;
 
     public void questionVoteUp(Member member, Question question) {
         QuestionVote questionVote = findQuestionVote(member.getQuestionVotes(), question);
