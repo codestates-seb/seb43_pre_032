@@ -35,12 +35,15 @@ public class Question {
     @OneToMany(mappedBy = "question")
     private List<QuestionVote> questionVotes = new ArrayList<>();
 
+    private int questionVoteSum;
     public int getQuestionVoteSum() {
 
         int questionVoteSum = this.questionVotes.stream()
                 .map(answerVote -> answerVote.getQuestionVoteStatus().getScore())
                 .mapToInt(N -> N)
                 .sum();
+
+        this.questionVoteSum = questionVoteSum;
 
         return questionVoteSum;
     }
