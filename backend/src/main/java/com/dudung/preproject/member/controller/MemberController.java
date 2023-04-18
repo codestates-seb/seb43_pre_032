@@ -1,19 +1,23 @@
 package com.dudung.preproject.member.controller;
 
+import com.dudung.preproject.dto.MultiResponseDto;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.member.dto.MemberDto;
 import com.dudung.preproject.member.mapper.MemberMapper;
 import com.dudung.preproject.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/members")
 public class MemberController {
     private final static String MEMBER_DEFAULT_URL = "/";
     private final MemberService memberService;
@@ -49,6 +53,17 @@ public class MemberController {
         Member member = memberService.findMember(memberId);
 
         return new ResponseEntity<>(mapper.memberToMemberResponse(member), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity getMembers(@RequestParam int page, @RequestParam int size) {
+
+        Page<Member> pageMembers = memberService.findMembers(page -1, size);
+        List<Member> members = pageMembers.getContent();
+
+        return new ResponseEntity<>(
+                new MultiResponseDto<>(mapper.membersToMemberResponses(members), pageMembers),
+                HttpStatus.OK);
     }
 
     @DeleteMapping("/{member-id}")
