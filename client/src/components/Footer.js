@@ -144,6 +144,7 @@ const Footerbox = styled.div`
     width: 1250px;
     font-size: 13px;
     justify-content: space-around;
+    margin: 22px 0px;
     @media (max-width: 600px) {
       flex-direction: column;
       padding: 6px;
@@ -155,6 +156,7 @@ const Footerbox = styled.div`
     }
   }
   .footer-footer {
+    margin-top: -22px;
     display: flex;
     font-size: 11px;
     justify-content: space-between;
