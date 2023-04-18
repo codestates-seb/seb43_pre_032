@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-    @Query("SELECT q FROM Question q JOIN q.questionTags c WHERE c.tag = :tag")
+    @Query("SELECT q FROM Question q JOIN q.questionTags t WHERE t.tag = :tag")
     Page<Question> findAllByTag(Tag tag, Pageable pageable);
+    Page<Question> findAllByQuestionTitleContaining(String keyword, Pageable pageable);
 }
