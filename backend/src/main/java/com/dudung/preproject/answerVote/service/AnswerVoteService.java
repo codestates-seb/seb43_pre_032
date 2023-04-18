@@ -25,6 +25,7 @@ public class AnswerVoteService {
         answerVote.setAnswer(answer);
         answerVote.setMember(member);
         answerVoteRepository.save(answerVote);
+        answer.getAnswerVoteSum();
         answerRepository.save(answer);
     }
 
@@ -34,6 +35,7 @@ public class AnswerVoteService {
         answerVote.setAnswer(answer);
         answerVote.setMember(member);
         answerVoteRepository.save(answerVote);
+        answer.getAnswerVoteSum();
         answerRepository.save(answer);
     }
 
