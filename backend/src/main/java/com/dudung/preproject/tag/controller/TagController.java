@@ -24,7 +24,6 @@ public class TagController {
     private final TagService tagService;
     private final TagMapper tagMapper;
     private final QuestionService questionService;
-    private final QuestionMapper questionMapper;
 
     @GetMapping
     public ResponseEntity getTags(@Positive @RequestParam int page, @Positive @RequestParam int size, @RequestParam String sortBy, @RequestParam(required = false) String keyword) {
