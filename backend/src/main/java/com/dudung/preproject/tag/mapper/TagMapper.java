@@ -38,5 +38,17 @@ public interface TagMapper {
                 .answerCount(question.getAnswerCount()).build();
     }
 
-    List<QuestionTagDto.Response> tagsToTagNames(List<QuestionTag> tagList);
+    default List<QuestionTagDto.Response> tagsToTagNames(List<QuestionTag> questionTagList) {
+        return questionTagList.stream()
+                .map(questionTag -> tagToTagName(questionTag))
+                .collect(Collectors.toList());
+    }
+
+    default QuestionTagDto.Response tagToTagName(QuestionTag questionTag) {
+        return QuestionTagDto.Response.builder()
+                .tagId(questionTag.getTag().getTagId())
+                .tagName(questionTag.getTag().getTagName())
+                .build();
+    }
+
 }
