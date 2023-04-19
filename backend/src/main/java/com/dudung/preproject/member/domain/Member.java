@@ -63,5 +63,13 @@ public class Member {
         this.answerVotes.add(answerVote);
     }
 
+    public int getQuestionCount() {
+        return this.questions.size();
+    }
+
+    public int getAnswerCount() {
+        return this.answers.size();
+    }
+
 
 }
