@@ -1,6 +1,33 @@
 import styled from 'styled-components';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function Questions() {
+  const [qsData, setQsData] = useState([]);
+  console.log(qsData);
+
+  useEffect(() => {
+    axios
+      .get(
+        'https://3596-61-254-8-200.ngrok-free.app/questions?page=1&size=20&sortBy=questionId',
+        {
+          headers: {
+            'ngrok-skip-browser-warning': '69420',
+          },
+          withCredentials: true,
+          credentials: 'include',
+        }
+      )
+      .then(function (res) {
+        // 성공한 경우 실행
+        setQsData(res.data.data);
+      })
+      .catch(function (error) {
+        // 에러인 경우 실행
+        console.log(error);
+      });
+  }, []);
+
   return (
     <>
       <Questionscomponent>
@@ -21,43 +48,43 @@ function Questions() {
             </aside>
           </div>
         </QuestionFilter>
-        <QuestionList>
-          <li>
-            <IntData>
-              <span>
-                <strong>0</strong> votes
-              </span>
-              <span>
-                <strong>0</strong> answers
-              </span>
-              <span>
-                <strong>2</strong> views
-              </span>
-            </IntData>
-            <ContentsData>
-              <h3>
-                PHP dropdown populated from MySQL database wont POST selection
-                to PHP query
-              </h3>
-              <span>
-                Scenario: I am populating a dropdown menu with data from MySQL
-                database. Upon clicking submit button, script should take the
-                user to the results page and show data based on their selection.
-              </span>
-              <div className="tagData">
-                <p>php</p>
-                <p>php</p>
-                <p>php</p>
-                <p>php</p>
-              </div>
-            </ContentsData>
-            <UserData>
-              <img src="https://i.imgur.com/nXnTowV.jpg" alt="profile icon" />
-              <span className="username_color">zth_codes</span>
-              <span>1 asked 43 secs ago</span>
-            </UserData>
-          </li>
-        </QuestionList>
+
+        {qsData.map((el) => (
+          <QuestionList key={el.questionId}>
+            <li>
+              <IntData>
+                <span>
+                  <strong>{el.questionVoteSum}</strong> votes
+                </span>
+                <span>
+                  <strong>{el.answerCount}</strong> answers
+                </span>
+                <span>
+                  <strong>{el.viewCount}</strong> views
+                </span>
+              </IntData>
+              <ContentsData>
+                <h3>{el.questionTitle}</h3>
+                <span>
+                  Scenario: I am populating a dropdown menu with data from MySQL
+                  database. Upon clicking submit button, script should take the
+                  user to the results page and show data based on their
+                  selection.
+                </span>
+                <div className="tagData">
+                  {el.map((tag) => (
+                    <p key={tag.tagId}>{tag.tagName}</p>
+                  ))}
+                </div>
+              </ContentsData>
+              <UserData>
+                <img src="https://i.imgur.com/nXnTowV.jpg" alt="profile icon" />
+                <span className="username_color">{el.memberName}</span>
+                <span>1 asked 43 secs ago</span>
+              </UserData>
+            </li>
+          </QuestionList>
+        ))}
       </Questionscomponent>
     </>
   );
