@@ -6,7 +6,9 @@ import com.dudung.preproject.answer.mapper.AnswerMapper;
 import com.dudung.preproject.answer.service.AnswerService;
 import com.dudung.preproject.helper.AnswerControllerHelper;
 import com.dudung.preproject.helper.StubData;
+import com.dudung.preproject.member.service.MemberService;
 import com.dudung.preproject.question.domain.Question;
+import com.dudung.preproject.question.service.QuestionService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,6 +38,11 @@ class AnswerControllerTest implements AnswerControllerHelper {
     private MockMvc mockMvc;
     @MockBean
     private AnswerService answerService;
+
+    @MockBean
+    private MemberService memberService;
+    @MockBean
+    private QuestionService questionService;
     @MockBean
     private AnswerMapper mapper;
     @Autowired
