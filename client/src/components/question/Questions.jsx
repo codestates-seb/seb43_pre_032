@@ -4,6 +4,7 @@ import axios from 'axios';
 
 function Questions() {
   const [qsData, setQsData] = useState([]);
+  // console.log(qsData);
 
   useEffect(() => {
     axios
@@ -27,6 +28,24 @@ function Questions() {
       });
   }, []);
 
+  function displayedAt(createdAt) {
+    const milliSeconds = new Date() - createdAt;
+    const seconds = milliSeconds / 1000;
+    if (seconds < 60) return `${Math.floor(seconds)} secs ago`;
+    const minutes = seconds / 60;
+    if (minutes < 60) return `${Math.floor(minutes)} min ago`;
+    const hours = minutes / 60;
+    if (hours < 24) return `${Math.floor(hours)} hour ago`;
+    const days = hours / 24;
+    if (days < 7) return `${Math.floor(days)} days ago`;
+    const weeks = days / 7;
+    if (weeks < 5) return `${Math.floor(weeks)} weeks ago`;
+    const months = days / 30;
+    if (months < 12) return `${Math.floor(months)} months ago`;
+    const years = days / 365;
+    return `${Math.floor(years)}years ago`;
+  }
+
   return (
     <>
       <Questionscomponent>
@@ -36,7 +55,7 @@ function Questions() {
             <buttom className="askquestion_Btn">Ask Question</buttom>
           </div>
           <div className="headContents flex-column">
-            <span>23,652,799 questions</span>
+            <span>{qsData.length} questions</span>
             <aside className="subFilterBtn">
               <button>Newset</button>
               <button>Active</button>
@@ -79,7 +98,7 @@ function Questions() {
               <UserData>
                 <img src="https://i.imgur.com/nXnTowV.jpg" alt="profile icon" />
                 <span className="username_color">{el.memberName}</span>
-                <span>1 asked 43 secs ago</span>
+                <span>1 asked {displayedAt(new Date(el.createdAt))}</span>
               </UserData>
             </li>
           </QuestionList>
