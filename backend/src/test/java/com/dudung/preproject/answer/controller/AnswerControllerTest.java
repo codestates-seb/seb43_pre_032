@@ -6,41 +6,26 @@ import com.dudung.preproject.answer.mapper.AnswerMapper;
 import com.dudung.preproject.answer.service.AnswerService;
 import com.dudung.preproject.helper.AnswerControllerHelper;
 import com.dudung.preproject.helper.StubData;
-import com.dudung.preproject.member.service.MemberService;
 import com.dudung.preproject.question.domain.Question;
-import com.dudung.preproject.question.service.QuestionService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import com.google.gson.Gson;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.ArgumentMatchers.startsWith;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.doNothing;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AnswerController.class)
@@ -51,12 +36,6 @@ class AnswerControllerTest implements AnswerControllerHelper {
     private MockMvc mockMvc;
     @MockBean
     private AnswerService answerService;
-    @MockBean
-    private QuestionService questionService;
-
-    @MockBean
-    private MemberService memberService;
-
     @MockBean
     private AnswerMapper mapper;
     @Autowired
@@ -81,7 +60,7 @@ class AnswerControllerTest implements AnswerControllerHelper {
 
 
         ResultActions actions =
-                mockMvc.perform(postRequestBuilder("/answers", content));
+                mockMvc.perform(postRequestBuilder(ANSWER_DEFAULT_URL, content));
 
         actions
                 .andExpect(status().isCreated());
@@ -124,7 +103,7 @@ class AnswerControllerTest implements AnswerControllerHelper {
         given(mapper.answerToAnswerResponse(Mockito.anyList())).willReturn(answers);
 
         ResultActions actions =
-                mockMvc.perform(patchRequestBuilder("/answers/{answer-id}", 1, content));
+                mockMvc.perform(patchRequestBuilder(ANSWER_RESOURCE_URI, 1, content));
 
         actions
                 .andExpect(status().isOk());
@@ -152,7 +131,7 @@ class AnswerControllerTest implements AnswerControllerHelper {
 
 
         ResultActions actions =
-                mockMvc.perform(getRequestBuilder("/answers/{answer-id}", 1));
+                mockMvc.perform(getRequestBuilder(ANSWER_RESOURCE_URI, 1));
 
         // then
 
@@ -169,7 +148,7 @@ class AnswerControllerTest implements AnswerControllerHelper {
         doNothing().when(answerService).deleteAnswer(Mockito.anyLong());
 
         ResultActions actions =
-                mockMvc.perform(deleteRequestBuilder("/answers/{answer-id}", 1));
+                mockMvc.perform(deleteRequestBuilder(ANSWER_RESOURCE_URI, 1));
 
         actions.andExpect(status().isNoContent());
     }
@@ -194,7 +173,7 @@ class AnswerControllerTest implements AnswerControllerHelper {
         given(mapper.answerToAnswerResponse(Mockito.anyList())).willReturn(answerList);
 
         ResultActions actions =
-                mockMvc.perform(getRequestBuilder("/answers", params));
+                mockMvc.perform(getRequestBuilder(ANSWER_DEFAULT_URL, params));
 
         actions.andExpect(status().isOk());
     }

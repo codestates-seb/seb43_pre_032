@@ -12,7 +12,7 @@ public interface AnswerControllerHelper extends ControllerHelper{
 
     String ANSWER_DEFAULT_URL = "/answers";
     String ANSWER_RESOURCE_ID = "/{answer-id}";
-    String ASNWER_RESOURCE_URI = ANSWER_DEFAULT_URL + ANSWER_RESOURCE_ID;
+    String ANSWER_RESOURCE_URI = ANSWER_DEFAULT_URL + ANSWER_RESOURCE_ID;
 
     default List<ParameterDescriptor> getMemberRequestPathParameterDescriptor() {
         return Arrays.asList(parameterWithName("answer-id").description("답변 식별 번호"));
