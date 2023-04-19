@@ -150,7 +150,8 @@ const Sidebanners = styled.aside`
 
 const Bannertitle = styled.li`
   background-color: #fbeec4;
-  border: 1px solid #e8ddb3;
+  border-top: 1px solid #e8ddb3;
+  border-bottom: 1px solid #e8ddb3;
   padding: 15px;
   font-weight: 800;
 `;
