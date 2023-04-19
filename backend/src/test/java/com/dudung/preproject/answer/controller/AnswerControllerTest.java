@@ -81,7 +81,7 @@ class AnswerControllerTest implements AnswerControllerHelper {
 
 
         ResultActions actions =
-                mockMvc.perform(postRequestBuilder("/answers", content));
+                mockMvc.perform(postRequestBuilder(ANSWER_DEFAULT_URL, content));
 
         actions
                 .andExpect(status().isCreated());
@@ -124,7 +124,7 @@ class AnswerControllerTest implements AnswerControllerHelper {
         given(mapper.answerToAnswerResponse(Mockito.anyList())).willReturn(answers);
 
         ResultActions actions =
-                mockMvc.perform(patchRequestBuilder("/answers/{answer-id}", 1, content));
+                mockMvc.perform(patchRequestBuilder(ANSWER_RESOURCE_URI, 1, content));
 
         actions
                 .andExpect(status().isOk());
@@ -152,7 +152,7 @@ class AnswerControllerTest implements AnswerControllerHelper {
 
 
         ResultActions actions =
-                mockMvc.perform(getRequestBuilder("/answers/{answer-id}", 1));
+                mockMvc.perform(getRequestBuilder(ANSWER_RESOURCE_URI, 1));
 
         // then
 
@@ -169,7 +169,7 @@ class AnswerControllerTest implements AnswerControllerHelper {
         doNothing().when(answerService).deleteAnswer(Mockito.anyLong());
 
         ResultActions actions =
-                mockMvc.perform(deleteRequestBuilder("/answers/{answer-id}", 1));
+                mockMvc.perform(deleteRequestBuilder(ANSWER_RESOURCE_URI, 1));
 
         actions.andExpect(status().isNoContent());
     }
@@ -194,7 +194,7 @@ class AnswerControllerTest implements AnswerControllerHelper {
         given(mapper.answerToAnswerResponse(Mockito.anyList())).willReturn(answerList);
 
         ResultActions actions =
-                mockMvc.perform(getRequestBuilder("/answers", params));
+                mockMvc.perform(getRequestBuilder(ANSWER_DEFAULT_URL, params));
 
         actions.andExpect(status().isOk());
     }
