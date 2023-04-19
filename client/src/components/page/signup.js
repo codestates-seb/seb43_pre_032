@@ -27,8 +27,8 @@ const Signup = () => {
   const [isName, setIsName] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
-  const [isCheck, setIsCheck] = useState(false);
-  const [isSignup, setIsSignup] = useState(true);
+  const [isCheck, setIsCheck] = useState(true);
+  // const [isSignup, setIsSignup] = useState(true);
 
   // const navigate = useNavigate();
   const NameInputRef = useRef(null);
@@ -98,11 +98,9 @@ const Signup = () => {
     let checkInputBoolean = CheckInputRef.current.value;
 
     if (checkInputBoolean === true) {
-      //2. false가됨
-      setIsCheck(!isCheck);
+      setIsCheck(true);
     } else {
-      // 1. true가됨
-      setIsCheck(!isCheck);
+      setIsCheck(false);
     }
   };
 
@@ -123,10 +121,6 @@ const Signup = () => {
       isCheck === true
     ) {
       signupAxios();
-      console.log(isCheck);
-    } else {
-      setIsSignup(!isSignup);
-      console.log(isCheck);
     }
 
     //지우기 css끝나면
@@ -311,7 +305,7 @@ const Signup = () => {
                           ref={CheckInputRef}
                         ></input>
                         {/* 체크가 되어있다면 true 안되어있다면 false */}
-                        {isSignup ? (
+                        {isCheck ? (
                           <div className="checkBox">
                             <label htmlFor="not-robot">{`I'm not a robot`}</label>
                           </div>
@@ -338,14 +332,7 @@ const Signup = () => {
                   </DivCheckTwo>
                 </div>
                 <div>
-                  {/* 체크가 되어있다면 true 안되어있으면 false */}
-                  {isSignup ? (
-                    <button name="submit-button">Sign up</button>
-                  ) : (
-                    <div>
-                      <button name="submit-button">Sign up</button>
-                    </div>
-                  )}
+                  <button name="submit-button">Sign up</button>
                 </div>
               </FormContainer>
               <div></div>
