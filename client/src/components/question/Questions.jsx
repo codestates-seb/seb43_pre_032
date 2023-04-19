@@ -1,5 +1,70 @@
 import styled from 'styled-components';
 
+function Questions() {
+  return (
+    <>
+      <Questionscomponent>
+        <QuestionFilter>
+          <div className="headContents">
+            <h2>All Questions</h2>
+            <buttom className="askquestion_Btn">Ask Question</buttom>
+          </div>
+          <div className="headContents flex-column">
+            <span>23,652,799 questions</span>
+            <aside className="subFilterBtn">
+              <button>Newset</button>
+              <button>Active</button>
+              <button>
+                Bountied<span className="length_tag">234</span>
+              </button>
+              <button>Unanswered</button>
+            </aside>
+          </div>
+        </QuestionFilter>
+        <QuestionList>
+          <li>
+            <IntData>
+              <span>
+                <strong>0</strong> votes
+              </span>
+              <span>
+                <strong>0</strong> answers
+              </span>
+              <span>
+                <strong>2</strong> views
+              </span>
+            </IntData>
+            <ContentsData>
+              <h3>
+                PHP dropdown populated from MySQL database wont POST selection
+                to PHP query
+              </h3>
+              <span>
+                Scenario: I am populating a dropdown menu with data from MySQL
+                database. Upon clicking submit button, script should take the
+                user to the results page and show data based on their selection.
+              </span>
+              <div className="tagData">
+                <p>php</p>
+                <p>php</p>
+                <p>php</p>
+                <p>php</p>
+              </div>
+            </ContentsData>
+            <UserData>
+              <img src="https://i.imgur.com/nXnTowV.jpg" alt="profile icon" />
+              <span className="username_color">zth_codes</span>
+              <span>1 asked 43 secs ago</span>
+            </UserData>
+          </li>
+        </QuestionList>
+      </Questionscomponent>
+    </>
+  );
+}
+
+export default Questions;
+
 const Questionscomponent = styled.section`
   width: 100%;
   height: auto;
@@ -63,6 +128,17 @@ const QuestionFilter = styled.div`
       background: hsl(206, 100%, 40%);
     }
   }
+  @media (max-width: 800px) {
+    .flex-column {
+      display: flex;
+      flex-direction: column;
+      justify-content: left;
+      align-items: flex-start;
+    }
+    .subFilterBtn {
+      margin-top: 10px;
+    }
+  }
 `;
 const QuestionList = styled.ul`
   width: 100%;
@@ -72,6 +148,14 @@ const QuestionList = styled.ul`
     display: flex;
     justify-content: center;
     padding: 20px;
+  }
+  @media (max-width: 800px) {
+    li {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px;
+    }
   }
 `;
 
@@ -88,12 +172,21 @@ const IntData = styled.div`
     width: 100%;
     text-align: right;
   }
+  @media (max-width: 800px) {
+    flex-direction: row;
+    span {
+      text-align: left;
+      width: auto;
+      margin-right: 10px;
+    }
+  }
 `;
 const ContentsData = styled.div`
   > * {
     margin: 10px 0px;
   }
   h3 {
+    font-weight: 500;
     color: #0074cc;
   }
   span {
@@ -119,6 +212,11 @@ const ContentsData = styled.div`
     align-items: center;
     width: 100%;
   }
+  @media (max-width: 800px) {
+    h3 {
+      font-size: 16px;
+    }
+  }
 `;
 const UserData = styled.div`
   display: flex;
@@ -138,63 +236,3 @@ const UserData = styled.div`
     color: #0074cc;
   }
 `;
-
-function Questions() {
-  return (
-    <>
-      <Questionscomponent>
-        <QuestionFilter>
-          <div className="headContents">
-            <h2>All Questions</h2>
-            <buttom className="askquestion_Btn">Ask Question</buttom>
-          </div>
-          <div className="headContents">
-            <span>23,652,799 questions</span>
-            <aside className="subFilterBtn">
-              <button>Newset</button>
-              <button>Active</button>
-              <button>
-                Bountied<span className="length_tag">234</span>
-              </button>
-              <button>Unanswered</button>
-              <button>More</button>
-            </aside>
-          </div>
-        </QuestionFilter>
-        <QuestionList>
-          <li>
-            <IntData>
-              <span>0 votes</span>
-              <span>0 answers</span>
-              <span>2 views</span>
-            </IntData>
-            <ContentsData>
-              <h3>
-                PHP dropdown populated from MySQL database wont POST selection
-                to PHP query
-              </h3>
-              <span>
-                Scenario: I am populating a dropdown menu with data from MySQL
-                database. Upon clicking submit button, script should take the
-                user to the results page and show data based on their selection.
-              </span>
-              <div className="tagData">
-                <p>php</p>
-                <p>php</p>
-                <p>php</p>
-                <p>php</p>
-              </div>
-            </ContentsData>
-            <UserData>
-              <img src="https://i.imgur.com/nXnTowV.jpg" alt="profile icon" />
-              <span className="username_color">zth_codes</span>
-              <span>1 asked 43 secs ago</span>
-            </UserData>
-          </li>
-        </QuestionList>
-      </Questionscomponent>
-    </>
-  );
-}
-
-export default Questions;

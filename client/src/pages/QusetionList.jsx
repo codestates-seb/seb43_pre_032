@@ -5,7 +5,12 @@ import styled from 'styled-components';
 function Viewcomponent() {
   return (
     <Questionscomponent>
-      <Questions /> <Sidebanner />
+      <Viewquestion>
+        <Questions />
+      </Viewquestion>
+      <Viewsidebanner>
+        <Sidebanner />
+      </Viewsidebanner>
     </Questionscomponent>
   );
 }
@@ -14,4 +19,12 @@ export default Viewcomponent;
 
 const Questionscomponent = styled.div`
   display: flex;
+`;
+
+const Viewquestion = styled.div``;
+
+const Viewsidebanner = styled.div`
+  @media (max-width: 1000px) {
+    display: none;
+  }
 `;
