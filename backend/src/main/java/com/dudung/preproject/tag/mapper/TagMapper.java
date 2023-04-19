@@ -30,6 +30,7 @@ public interface TagMapper {
         return QuestionDto.ResponseForList.builder()
                 .questionId(question.getQuestionId())
                 .questionTitle(question.getQuestionTitle())
+                .questionContent(question.getQuestionContent())
                 .viewCount(question.getViewCount())
                 .questionVoteSum(question.getQuestionVoteSum())
                 .createdAt(question.getCreatedAt())
