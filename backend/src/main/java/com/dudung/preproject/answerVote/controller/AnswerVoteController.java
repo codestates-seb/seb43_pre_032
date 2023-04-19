@@ -1,19 +1,16 @@
 package com.dudung.preproject.answerVote.controller;
 
-import com.dudung.preproject.answer.domain.Answer;
-import com.dudung.preproject.answer.dto.AnswerDto;
 import com.dudung.preproject.answer.service.AnswerService;
-import com.dudung.preproject.answerVote.domain.AnswerVote;
 import com.dudung.preproject.answerVote.dto.AnswerVoteDto;
 import com.dudung.preproject.answerVote.mapper.AnswerVoteMapper;
 import com.dudung.preproject.answerVote.service.AnswerVoteService;
-import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/answervote")
