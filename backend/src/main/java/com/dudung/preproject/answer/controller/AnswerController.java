@@ -5,9 +5,7 @@ import com.dudung.preproject.answer.dto.AnswerDto;
 import com.dudung.preproject.answer.mapper.AnswerMapper;
 import com.dudung.preproject.answer.service.AnswerService;
 import com.dudung.preproject.dto.MultiResponseDto;
-import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.member.service.MemberService;
-import com.dudung.preproject.question.domain.Question;
 import com.dudung.preproject.question.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
+@CrossOrigin
 @RequestMapping("/answers")
 @RestController
 @RequiredArgsConstructor
