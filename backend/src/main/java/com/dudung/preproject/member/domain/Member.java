@@ -44,6 +44,9 @@ public class Member {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<AnswerVote> answerVotes = new ArrayList<>();
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
+
     public void addQuestion(Question question) {
         this.questions.add(question);
     }

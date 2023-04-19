@@ -1,5 +1,6 @@
 package com.dudung.preproject.member.service;
 
+import com.dudung.preproject.auth.utils.CustomAuthorityUtils;
 import com.dudung.preproject.exception.BusinessLogicException;
 import com.dudung.preproject.exception.ExceptionCode;
 import com.dudung.preproject.member.domain.Member;
@@ -8,18 +9,27 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final CustomAuthorityUtils authorityUtils;
 
     public Member createMember(Member member) {
         verifyExistEmailAndName(member.getEmail(), member.getName());
+
+        String encryptedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encryptedPassword);
+
+        List<String> roles = authorityUtils.createRoles(member.getEmail());
+        member.setRoles(roles);
 
         return memberRepository.save(member);
     }
