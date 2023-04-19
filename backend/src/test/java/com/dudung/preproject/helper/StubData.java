@@ -2,6 +2,7 @@ package com.dudung.preproject.helper;
 
 import com.dudung.preproject.answer.domain.Answer;
 import com.dudung.preproject.answer.dto.AnswerDto;
+import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.member.dto.MemberDto;
 import com.dudung.preproject.question.domain.Question;
 import com.dudung.preproject.question.dto.QuestionDto;
@@ -43,6 +44,56 @@ public class StubData {
                 .name("두둥탁")
                 .build();
     }
+
+    public static class MockMember {
+        private static Map<HttpMethod, Object> stubRequestBody;
+        static {
+
+            MemberDto.Post post = new MemberDto.Post();
+            post.setEmail("12@12.kr");
+            post.setPassword("123");
+            post.setName("가나다");
+
+            MemberDto.Patch patch = new MemberDto.Patch();
+            patch.setMemberId(1L);
+            patch.setEmail("12@12.kr");
+            patch.setPassword("123");
+            post.setName("가나다");
+
+            stubRequestBody = new HashMap<>();
+            stubRequestBody.put(HttpMethod.POST, post);
+            stubRequestBody.put(HttpMethod.PATCH, patch);
+        }
+
+        public static Object getRequestBody(HttpMethod method) {
+            return stubRequestBody.get(method);
+        }
+
+        public static Page<Member> getMultiResultMember() {
+            Member member1 = new Member();
+            Member member2 = new Member();
+
+            return new PageImpl<>(List.of(member1, member2),
+                    PageRequest.of(0, 10, Sort.by("memberId").descending()),
+                    2);
+        }
+
+        public static List<MemberDto.ResponseForList> getMemberList() {
+
+            return List.of(
+                    MemberDto.ResponseForList.builder()
+                            .memberId(1L)
+                            .name("가나다")
+                            .build(),
+                    MemberDto.ResponseForList.builder()
+                            .memberId(2L)
+                            .name("마바사")
+                            .build()
+            );
+
+        }
+    }
+
     public static class MockQuestion {
         private static Map<HttpMethod, Object> stubRequestBody;
         static {
