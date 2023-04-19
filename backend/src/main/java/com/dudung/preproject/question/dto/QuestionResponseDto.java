@@ -1,9 +1,11 @@
 package com.dudung.preproject.question.dto;
 
+import com.dudung.preproject.question.domain.Question;
 import com.dudung.preproject.tag.domain.Tag;
 import com.dudung.preproject.tag.dto.TagDto;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,4 +22,10 @@ public class QuestionResponseDto {
     private int questionVoteSum;
     private int viewCount;
     private String memberName;
+
+    @Getter
+    @Builder
+    public static class QuestionMemberResponseForList {
+        private String questionsTitle;
+    }
 }
