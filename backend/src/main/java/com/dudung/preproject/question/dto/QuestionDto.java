@@ -40,6 +40,7 @@ public class QuestionDto {
     public static class ResponseForList {
         private long questionId;
         private String questionTitle;
+        private String questionContent;
         private int viewCount;
         private int questionVoteSum;
         private LocalDateTime createdAt;
