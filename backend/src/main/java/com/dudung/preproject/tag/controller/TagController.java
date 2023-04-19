@@ -1,9 +1,8 @@
 package com.dudung.preproject.tag.controller;
 
-import com.dudung.preproject.dto.MultiResponseDto;
 import com.dudung.preproject.dto.DataListResponseDto;
+import com.dudung.preproject.dto.MultiResponseDto;
 import com.dudung.preproject.question.domain.Question;
-import com.dudung.preproject.question.mapper.QuestionMapper;
 import com.dudung.preproject.question.service.QuestionService;
 import com.dudung.preproject.tag.domain.Tag;
 import com.dudung.preproject.tag.mapper.TagMapper;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/tags")
 @RequiredArgsConstructor
