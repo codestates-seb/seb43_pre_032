@@ -4,6 +4,7 @@ import axios from 'axios';
 
 function Questions() {
   const [qsData, setQsData] = useState([]);
+  const [index, setIndex] = useState(0);
   // console.log(qsData);
 
   useEffect(() => {
@@ -46,6 +47,17 @@ function Questions() {
     return `${Math.floor(years)}years ago`;
   }
 
+  const buttomArr = [
+    { bottomName: 'Newset' },
+    { bottomName: 'Active' },
+    { bottomName: 'Bountied' },
+    { bottomName: 'Unanswered' },
+  ];
+
+  const selectMenu = (index) => {
+    setIndex(index);
+  };
+
   return (
     <>
       <Questionscomponent>
@@ -57,12 +69,17 @@ function Questions() {
           <div className="headContents flex-column">
             <span>{qsData.length} questions</span>
             <aside className="subFilterBtn">
-              <button>Newset</button>
-              <button>Active</button>
-              <button>
-                Bountied<span className="length_tag">234</span>
-              </button>
-              <button>Unanswered</button>
+              {buttomArr.map((el, i) => (
+                <button
+                  key={i}
+                  className={i === index ? 'focused' : null}
+                  onClick={() => {
+                    selectMenu(i);
+                  }}
+                >
+                  {el.bottomName}
+                </button>
+              ))}
             </aside>
           </div>
         </QuestionFilter>
@@ -171,6 +188,13 @@ const QuestionFilter = styled.div`
       border-radius: 5px;
       color: #fff;
       background: hsl(206, 100%, 40%);
+    }
+    .focused {
+      background-color: #e3e6e8;
+      color: #000;
+    }
+    .focused:hover {
+      background-color: #e3e6e8;
     }
   }
   @media (max-width: 800px) {
