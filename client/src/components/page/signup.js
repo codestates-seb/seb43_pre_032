@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import Header from '../Header/HeaderCom';
@@ -28,9 +28,9 @@ const Signup = () => {
   const [isEmail, setIsEmail] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [isCheck, setIsCheck] = useState(true);
-  // const [isSignup, setIsSignup] = useState(true);
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+
   const NameInputRef = useRef(null);
   const EamilInputRef = useRef(null);
   const PasswordInputRef = useRef(null);
@@ -45,8 +45,7 @@ const Signup = () => {
       })
       .then((res) => {
         if (res.status === 201 || res.status === 200) {
-          console.log('완료');
-          // navigate('/');
+          navigate('/login');
         }
       })
       .catch((err) => {
