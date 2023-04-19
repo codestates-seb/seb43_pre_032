@@ -4,6 +4,7 @@ import Footer from './components/Footer';
 import Nav from './components/Nav';
 import styled from 'styled-components';
 // import MyPage from './pages/MyinfoPage';
+// import Question from './pages/QusetionList.jsx';
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
               <Nav />
             </div>
           </article>
-          <article className="main_view"></article>
+          <article className="main_view">{/* <Question /> */}</article>
         </Maincontents>
       </Maingroup>
       <Footersection>
