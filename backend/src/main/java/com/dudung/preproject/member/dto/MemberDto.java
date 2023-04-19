@@ -6,6 +6,7 @@ import lombok.Setter;
 
 public class MemberDto {
     @Getter
+    @Setter
     public static class Post {
         private String email;
         private String password;
@@ -22,6 +23,13 @@ public class MemberDto {
     @Getter
     @Builder
     public static class Response {
+        private Long memberId;
+        private String name;
+    }
+
+    @Getter
+    @Builder
+    public  static class ResponseForList {
         private Long memberId;
         private String name;
     }
