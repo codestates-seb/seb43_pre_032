@@ -33,8 +33,7 @@ public class AnswerVoteController {
                     answerService.findAnswer(requestBody.getAnswerId()));
         }
 
-        return new ResponseEntity<>(answerService.findAnswer
-                (requestBody.getAnswerId()).getAnswerVoteSum(), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.answerVoteToAnswerVoteResponse(answerService.findAnswer(requestBody.getAnswerId())), HttpStatus.OK);
     }
 }
 

@@ -7,6 +7,7 @@ import lombok.Setter;
 public class AnswerVoteDto {
 
     @Getter
+    @Setter
     public static class Post {
         /*
         게시글 답변 ID
