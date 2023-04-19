@@ -4,7 +4,6 @@ import axios from 'axios';
 
 function Questions() {
   const [qsData, setQsData] = useState([]);
-  console.log(qsData);
 
   useEffect(() => {
     axios
