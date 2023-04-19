@@ -37,7 +37,7 @@ public class AnswerService {
         return answerRepository.save(findAnswer);
     }
 
-    private Answer findVerifiedAnswer(Long answerId) {
+    public Answer findVerifiedAnswer(Long answerId) {
         Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
         Answer findedAnswer = optionalAnswer.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND));
 
