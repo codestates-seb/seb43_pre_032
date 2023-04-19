@@ -72,7 +72,7 @@ function Questions() {
                   selection.
                 </span>
                 <div className="tagData">
-                  {el.map((tag) => (
+                  {el.tagName.map((tag) => (
                     <p key={tag.tagId}>{tag.tagName}</p>
                   ))}
                 </div>
