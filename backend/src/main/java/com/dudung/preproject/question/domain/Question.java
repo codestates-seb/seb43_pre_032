@@ -28,6 +28,9 @@ public class Question {
     private int viewCount;
 
     private int answerCount;
+    public int getAnswerCount() {
+        return this.answers.size();
+    }
     private String questionTitle;
 
     private String questionContent;
