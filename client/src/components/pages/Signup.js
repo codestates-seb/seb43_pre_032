@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import Header from '../Header/HeaderCom';
@@ -27,25 +27,25 @@ const Signup = () => {
   const [isName, setIsName] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
-  const [isCheck, setIsCheck] = useState(true);
+  const [isCheck, setIsCheck] = useState(false);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const NameInputRef = useRef(null);
   const EamilInputRef = useRef(null);
   const PasswordInputRef = useRef(null);
-  const CheckInputRef = useRef(null);
 
   const signupAxios = () => {
     axios
-      .post('https://3596-61-254-8-200.ngrok-free.app/members', {
+      .post('https://8625-61-254-8-200.ngrok-free.app/members', {
         email,
         password,
         name,
       })
       .then((res) => {
         if (res.status === 201 || res.status === 200) {
-          navigate('/login');
+          console.log('완료');
+          // navigate('/login');
         }
       })
       .catch((err) => {
@@ -88,42 +88,34 @@ const Signup = () => {
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
     if (!passwordRegex.test(passwordInputText)) {
       setIsPassword(true);
+      console.log('이게 실패?');
     } else {
       setIsPassword(false);
+      console.log('아니면 이게 실패?');
     }
   };
 
   const checkboxHandler = () => {
-    let checkInputBoolean = CheckInputRef.current.value;
-
-    if (checkInputBoolean === true) {
-      setIsCheck(true);
-    } else {
-      setIsCheck(false);
-    }
+    setIsCheck((prev) => !prev);
   };
 
-  const formSubmitHandler = (evnet) => {
-    evnet.preventDefault();
+  const formSubmitHandler = (event) => {
+    event.preventDefault();
 
     //유효성 검사하는 함수들
+
     nameHandler();
     emailHandler();
     passwordHandler();
-    checkboxHandler();
+
+    const isVaild = !isName && !isEmail && !isPassword && isCheck;
 
     //유효성 검사 통과하면 axios요청 보내기
-    if (
-      isName === false &&
-      isEmail === false &&
-      isPassword === false &&
-      isCheck === true
-    ) {
+    if (isVaild) {
       signupAxios();
+    } else {
+      console.log('다시 입력해');
     }
-
-    //지우기 css끝나면
-    // isSignup;
   };
 
   return (
@@ -300,8 +292,9 @@ const Signup = () => {
                         <input
                           type="checkbox"
                           id="not-robot"
-                          // onClick={checkboxHandler}
-                          ref={CheckInputRef}
+                          checked={isCheck}
+                          onChange={checkboxHandler}
+                          // ref={CheckInputRef}
                         ></input>
                         {/* 체크가 되어있다면 true 안되어있다면 false */}
                         {isCheck ? (
