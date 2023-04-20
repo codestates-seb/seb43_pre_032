@@ -62,7 +62,9 @@ public interface QuestionMapper {
                 .tagName(tagsToTagNames(question.getQuestionTags()))
                 .questionVoteSum(question.getQuestionVoteSum())
                 .viewCount(question.getViewCount())
-                .memberName(question.getMember().getName()).build();
+                .memberId(question.getMember().getMemberId())
+                .memberName(question.getMember().getName())
+                .memberReputation(question.getMember().getReputation()).build();
 
 
         return new QuestionDto.Response(questionResponseDto, answerResponseDto);
@@ -87,7 +89,9 @@ public interface QuestionMapper {
                 .answerVoteSum(answer.getAnswerVoteSum())
                 .createdAt(answer.getCreatedAt())
                 .modifiedAt(answer.getModifiedAt())
-                .answerName(answer.getMember().getName())
+                .memberId(answer.getMember().getMemberId())
+                .memberName(answer.getMember().getName())
+                .memberReputation(answer.getMember().getReputation())
                 .build();
     }
 
@@ -100,7 +104,9 @@ public interface QuestionMapper {
                 .questionVoteSum(question.getQuestionVoteSum())
                 .createdAt(question.getCreatedAt())
                 .tagName(tagsToTagNames(question.getQuestionTags()))
+                .memberId(question.getMember().getMemberId())
                 .memberName(question.getMember().getName())
+                .memberReputation(question.getMember().getReputation())
                 .answerCount(question.getAnswerCount()).build();
     }
     default List<QuestionDto.ResponseForList> questionsToQuestionsResponse(List<Question> questions) {
