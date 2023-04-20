@@ -42,7 +42,9 @@ public class AnswerDto {
     public static class Response {
         private Long answerId;
         private long questionId;
+        private long memberId;
         private String memberName;
+        private int memberReputation;
         private String answerContent;
         private LocalDateTime modifiedAt;
 
@@ -66,7 +68,9 @@ public class AnswerDto {
         private int answerVoteSum;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
-        private String answerName;
+        private long memberId;
+        private String memberName;
+        private int memberReputation;
 
 
     }
