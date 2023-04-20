@@ -2,14 +2,17 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import InfiniteScroll from '../components/InfiniteScroll';
+import TagSearch from '../components/Tags/TagSearch';
 
-function Taglists() {
+function Taglist() {
   const [tagData, setTagData] = useState([]);
   const [page, setPage] = useState(1);
+  const [isSearch, setIsSearch] = useState(true);
+
   useEffect(() => {
     axios
       .get(
-        `https://3596-61-254-8-200.ngrok-free.app/tags?page=${page}&size=40&sortBy=tagId`,
+        `https://8625-61-254-8-200.ngrok-free.app/tags?page=${page}&size=20&sortBy=tagId`,
         {
           headers: {
             'ngrok-skip-browser-warning': '69420',
@@ -29,6 +32,7 @@ function Taglists() {
   const handleLoadMore = () => {
     setPage((prevPage) => prevPage + 1);
   };
+
   return (
     <>
       <TagsPage>
@@ -40,37 +44,35 @@ function Taglists() {
         </p>
         <p className="showAllTag">Show all tag synonyms</p>
         <div className="searchbar--tab">
-          <TagSerachBar
+          <TagSearch
             className="taglist-SerchBar"
-            placeholder="🔍 Filter by tag name"
-          />
-          <TagsTab>
-            <button>Popular</button>
-            <button>Name</button>
-            <button>New</button>
-          </TagsTab>
+            isSearch={isSearch}
+            setIsSearch={setIsSearch}
+          ></TagSearch>
         </div>
-        <TagContainer>
-          {tagData.map((tag) => (
-            <div className="singleTag" key={tag.tagId}>
-              <div className="singleTagNamePosition">
-                <button className="singleTagNameBtn">
-                  <span>{tag.tagName}</span>
-                </button>
+        {isSearch ? (
+          <TagContainer>
+            {tagData.map((tag) => (
+              <div className="singleTag" key={tag.tagId}>
+                <div className="singleTagNamePosition">
+                  <button className="singleTagNameBtn">
+                    <span>{tag.tagName}</span>
+                  </button>
+                </div>
+                <div className="singleTagTagDescription">
+                  {tag.tagDescription}
+                </div>
               </div>
-              <div className="singleTagTagDescription">
-                {tag.tagDescription}
-              </div>
-            </div>
-          ))}
-          <InfiniteScroll onLoadMore={handleLoadMore} />
-        </TagContainer>
+            ))}
+            <InfiniteScroll onLoadMore={handleLoadMore} />
+          </TagContainer>
+        ) : null}
       </TagsPage>
     </>
   );
 }
 
-const TagContainer = styled.div`
+export const TagContainer = styled.div`
   color: black;
   display: grid;
   max-width: 1050px;
@@ -140,48 +142,4 @@ const TagsPage = styled.div`
   }
 `;
 
-const TagsTab = styled.div`
-  display: flex;
-  overflow: hidden;
-  height: 35px;
-  border: 1px solid hsl(210, 8%, 65%);
-  border-radius: 3px;
-  button {
-    background: rgb(255, 255, 255);
-    border: none;
-    color: #6b6f73;
-    border-left: 1px solid hsl(210, 8%, 65%);
-    padding: 0px 10px;
-  }
-  button:nth-child(1) {
-    border: none;
-  }
-  button:hover {
-    background: #f5f5f5;
-  }
-  button:active {
-    box-shadow: 0 0 10px gray;
-  }
-  button > span {
-    padding: 0px 5px;
-    margin-left: 3px;
-    border-radius: 5px;
-    color: #fff;
-    background: hsl(206, 100%, 40%);
-  }
-`;
-
-const TagSerachBar = styled.input`
-  margin: 10px 0px;
-  width: 190px;
-  height: 38px;
-  border: 1px solid lightgray;
-  border-radius: 5px;
-  font-size: 13px;
-  &:focus {
-    outline-style: outset;
-    outline-width: 3px;
-    outline-color: #ddeaf7;
-  }
-`;
-export default Taglists;
+export default Taglist;
