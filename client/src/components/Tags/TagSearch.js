@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { TagContainer } from '../../pages/Taglist';
+import { Link } from 'react-router-dom';
 
-function TagSearch({ isSearch, setIsSearch }) {
+function TagSearch({ setIsSearch }) {
   const [query, setQuery] = useState(''); // 입력값 상태
   const [results, setResults] = useState([]); // 검색 결과 상태
   const [filteredResults, setFilteredResults] = useState([]); //검색 결과
@@ -60,11 +61,14 @@ function TagSearch({ isSearch, setIsSearch }) {
       <TagContainer className="tagcontainer-search">
         {query !== ''
           ? filteredResults.map((tag) => (
-              <div className="singleTag sigleTag-search" key={tag.tagId}>
+              <div className="sigleTag-search singleTag " key={tag.tagId}>
                 <div className="singleTagNamePosition">
-                  <button className="singleTagNameBtn">
+                  <Link to={'/tags/' + tag.tagId} className="singleTagNameBtn">
                     <span>{tag.tagName}</span>
-                  </button>
+                  </Link>
+                </div>
+                <div className="singleTagTagDescription">
+                  {tag.tagDescription}
                 </div>
               </div>
             ))
@@ -84,55 +88,9 @@ const TagSearchMain = styled.div`
   }
 
   .sigleTag-search {
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 0.5fr 1fr;
   }
 `;
-
-// const SearchTagContainer = styled.div`
-//   color: black;
-//   display: grid;
-//   max-width: 1050px;
-//   gap: 10px;
-//   grid-template-rows: repeat(autofit, 1fr);
-//   grid-template-columns: repeat(3, minmax(322px, 1fr));
-//   font-size: 13px;
-//   @media (max-width: 1050px) {
-//     grid-template-columns: repeat(3, minmax(250px, 1fr));
-//   }
-//   @media (max-width: 750px) {
-//     grid-template-columns: repeat(2, 1fr);
-//   }
-//   @media (max-width: 600px) {
-//     grid-template-columns: repeat(1, 1fr);
-//   }
-//   .singleTagNamePosition {
-//     height: 28px;
-//     margin-bottom: 12px;
-//   }
-//   .singleTagNameBtn {
-//     background-color: hsl(205, 54%, 88%);
-//     border: none;
-//     margin: 2px 2px 2px 0px;
-//     padding: 4.8px 6px;
-//     border-radius: 3px;
-//     color: #60849e;
-//     cursor: pointer;
-//     &:hover {
-//       opacity: 0.8;
-//     }
-//   }
-//   .singleTag {
-//     display: grid;
-//     grid-template-rows: 0.5fr 2fr 0.5fr;
-//     border: 1px solid #d6d9dc;
-//     padding: 12px;
-//     border-radius: 5px;
-//   }
-//   .singleTagTagDescription {
-//     overflow: none;
-//   }
-// `;
-
 const TagSerachBar = styled.input`
   margin: 10px 0px;
   width: 190px;
