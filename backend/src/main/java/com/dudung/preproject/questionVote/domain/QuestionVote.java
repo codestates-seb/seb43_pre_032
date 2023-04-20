@@ -31,15 +31,19 @@ public class QuestionVote {
     private Question question;
 
     public enum QuestionVoteStatus {
-        ZERO(0),
-        PLUS(1),
-        MINUS(-1);
+        ZERO(0, 0),
+        PLUS(1, 5),
+        MINUS(-1, -2);
 
         @Getter
         private int score;
+        @Getter
+        private int reputation;
 
-        QuestionVoteStatus(int score) { this.score = score; }
-
+        QuestionVoteStatus(int score, int reputation) {
+            this.score = score;
+            this.reputation = reputation;
+        }
     }
 
 }
