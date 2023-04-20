@@ -18,7 +18,9 @@ public interface AnswerMapper {
         return AnswerDto.Response.builder()
                 .answerId(answer.getAnswerId())
                 .questionId(answer.getQuestion().getQuestionId())
+                .memberId(answer.getMember().getMemberId())
                 .memberName(answer.getMember().getName())
+                .memberReputation(answer.getMember().getReputation())
                 .answerContent(answer.getAnswerContent())
                 .modifiedAt(answer.getModifiedAt()).build();
     }
@@ -30,7 +32,9 @@ public interface AnswerMapper {
                 .answerVoteSum(answer.getAnswerVoteSum())
                 .createdAt(answer.getCreatedAt())
                 .modifiedAt(answer.getModifiedAt())
-                .answerName(answer.getMember().getName())
+                .memberId(answer.getMember().getMemberId())
+                .memberName(answer.getMember().getName())
+                .memberReputation(answer.getMember().getReputation())
                 .build();
     }
 
