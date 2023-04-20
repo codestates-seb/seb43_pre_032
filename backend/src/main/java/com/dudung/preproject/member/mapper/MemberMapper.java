@@ -18,6 +18,7 @@ public interface MemberMapper {
         return MemberDto.Response.builder()
                 .memberId(member.getMemberId())
                 .name(member.getName())
+                .reputation(member.getReputation())
                 .build();
     }
 
@@ -25,6 +26,7 @@ public interface MemberMapper {
         return MemberDto.ResponseForList.builder()
                 .memberId(member.getMemberId())
                 .name(member.getName())
+                .reputation(member.getReputation())
                 .build();
 
     }
@@ -41,6 +43,7 @@ public interface MemberMapper {
                 .name(member.getName())
                 .email(member.getEmail())
                 .createAt(member.getCreatedAt())
+                .reputation(member.getReputation())
                 .questionCount(member.getQuestionCount())
                 .answerCount(member.getAnswerCount())
                 .questionTitle(member.getQuestions().stream()
