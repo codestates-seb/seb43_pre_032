@@ -31,8 +31,6 @@ public class MemberService {
         List<String> roles = authorityUtils.createRoles(member.getEmail());
         member.setRoles(roles);
 
-        member.setReputation(1);
-
         return memberRepository.save(member);
     }
 
