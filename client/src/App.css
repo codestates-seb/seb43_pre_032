@@ -3,7 +3,10 @@
   margin: 0;
   list-style: none;
 }
-
+input:focus { outline: none; }
+input {
+  border:1px solid var(--menu-hover-background);
+}
 .flex-center{
   display: flex;
   align-items: center;
@@ -55,4 +58,38 @@
   .mypage-col-style{
     width: 90%;
   }
+}
+.link-style-remove{
+  text-decoration: none;
+  color: inherit;
+}
+.modify-content-title {
+  font-weight: 500;
+  padding: 3px;
+}
+.modify-input-content {
+width: 100%;
+height: 25px;
+box-shadow: none;
+border-radius: 3px;
+}
+.btn-blue-style{
+  font-weight: bold;
+  border: 1px solid skyblue;
+  border-radius: 4px;
+  box-shadow: 0px 0.5px 1px#dadce0 inset;
+  border: 1px solid skyblue;
+  background-color: var(--signup-btn-before);
+  padding-left: 7px;
+  padding-right: 7px;
+  color: white;
+}
+.btn-skyblue-style{
+  border: 1px solid var(--login-btn-border);
+  border-radius: 4px;
+  background-color: var(--login-btn-before);
+  padding-left: 3px;
+  padding-right: 3px;
+  color: var(--login-btn-border);
+  margin: 5px;
 }
