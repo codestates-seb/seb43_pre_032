@@ -34,7 +34,7 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
     compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'com.h2database:h2'
+//    runtimeOnly 'com.h2database:h2'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     annotationProcessor 'org.projectlombok:lombok'
     implementation 'org.mapstruct:mapstruct:1.5.1.Final'
@@ -47,7 +47,7 @@ dependencies {
 //    implementation 'org.springframework.boot:spring-boot-starter-security'
 //    testImplementation 'org.springframework.security:spring-security-test'
 //    implementation 'io.jsonwebtoken:jjwt:0.9.1'
-    implementation 'mysql:mysql-connector-java:8.0.30'
+    implementation 'mysql:mysql-connector-java:8.0.32'
 
     asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     implementation 'com.google.code.gson:gson'
