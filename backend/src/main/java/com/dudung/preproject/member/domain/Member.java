@@ -35,6 +35,26 @@ public class Member {
 
     private int reputation;
 
+    public int getReputation() {
+        int qReputation = this.questions.stream()
+                .flatMap(question -> question.getQuestionVotes().stream())
+                .mapToInt(questionVote -> questionVote.getQuestionVoteStatus().getReputation())
+                .sum();
+
+        int aReputation = this.answers.stream()
+                .flatMap(answer -> answer.getAnswerVotes().stream())
+                .mapToInt(answerVotes -> answerVotes.getAnswerVoteStatus().getReputation())
+                .sum();
+
+        int myReputation = this.answerVotes.stream()
+                .filter(answerVote -> answerVote.getAnswerVoteStatus().getScore() == -1)
+                .mapToInt(answerVote -> answerVote.getAnswerVoteStatus().getScore())
+                .sum();
+
+
+        return qReputation + aReputation + myReputation + 1;
+    }
+
     @OneToMany(mappedBy = "member")
     private List<Question> questions = new ArrayList<>();
 
