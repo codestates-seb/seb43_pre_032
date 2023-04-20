@@ -1,4 +1,4 @@
-// import { useState } from 'react';
+import { useState, useRef } from 'react';
 // import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -8,17 +8,42 @@ import {
   faFacebook,
   faGoogle,
 } from '@fortawesome/free-brands-svg-icons';
+import axios from 'axios';
 
 const Login = () => {
-  // const [id, setId] = useState('');
-  // const [password, setPassword] = useState('');
+  //아이디 비밀번호
+  const [id, setId] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLogin, setIsLogin] = useState(false);
 
-  const emailHandler = (evnet) => {
-    console.log(evnet.target.value);
-  };
+  const IdInputRef = useRef(null);
+  const PasswordInputRef = useRef(null);
 
-  const passwordHandler = (evnet) => {
-    console.log(evnet.target.value);
+  // const authorizationToken =
+  //   'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjoxLCJ1c2VybmFtZSI6ImhnZEBnbWFpbC5jb20iLCJzdWIiOiJoZ2RAZ21haWwuY29tIiwiaWF0IjoxNjgxOTk5NDM0LCJleHAiOjE2ODIwMDEyMzR9.NLDsKQIVrAjy8UKEBBtklaQnZl82BALpSYHYTwJe1w4';
+  // const refreshToken =
+  //   'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoZ2RAZ21haWwuY29tIiwiaWF0IjoxNjgxOTk5NDM0LCJleHAiOjE2ODIwMjQ2MzR9.oTavrta9wNNHhzOE6O4IKbnl1GPsoaPEZRqfJ6H_Auw';
+
+  const loginAxios = () => {
+    axios
+      .post('https://8625-61-254-8-200.ngrok-free.app/auth/login', {
+        username: id,
+        password,
+      })
+      .then((response) => {
+        console.log(response.headers.get('authorization'));
+        if (response.status === 200 || response.status === 201) {
+          setIsLogin(false);
+          console.log('로그인 성공');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response.status === 401) {
+          setIsLogin(true);
+          console.log('아이디 혹은 비밀번호를 잘못 적었습니다.');
+        }
+      });
   };
 
   //  Oauth 클라이언트 ID
@@ -42,6 +67,23 @@ const Login = () => {
     //   `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}`
     // );
     console.log('준비완료');
+  };
+
+  const emailHandler = () => {
+    setId(IdInputRef.current.value);
+  };
+
+  const passwordHandler = () => {
+    setPassword(PasswordInputRef.current.value);
+  };
+
+  const loginFormHandler = (event) => {
+    event.preventDefault();
+
+    emailHandler();
+    passwordHandler();
+
+    loginAxios();
   };
 
   return (
@@ -75,18 +117,30 @@ const Login = () => {
             </button>
           </OauthButtonDiv>
           <DivFormContainer>
-            <FormContent>
+            <FormContent onSubmit={loginFormHandler}>
               <DivUserInput>
                 <label htmlFor="email" className="email">
                   Email
                 </label>
                 <div>
-                  <input
-                    id="email"
-                    type="email"
-                    name="email"
-                    onChange={emailHandler}
-                  ></input>
+                  {isLogin ? (
+                    <>
+                      <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        ref={IdInputRef}
+                      ></input>
+                      <div>아이디 혹은 비밀번호가 틀렸습니다.</div>
+                    </>
+                  ) : (
+                    <input
+                      id="email"
+                      type="email"
+                      name="email"
+                      ref={IdInputRef}
+                    ></input>
+                  )}
                 </div>
               </DivUserInput>
               <DivUserInput>
@@ -102,7 +156,7 @@ const Login = () => {
                     id="password"
                     name="password"
                     autoComplete="off"
-                    onChange={passwordHandler}
+                    ref={PasswordInputRef}
                   ></input>
                 </div>
               </DivUserInput>
@@ -270,8 +324,11 @@ const DivUserInput = styled.div`
 
     > input:focus {
       /* #DDEAF7 */
-      border-color: #58a4de;
-      outline: none;
+      /* border-color: #58a4de;
+      outline: none; */
+      outline: none !important;
+      border-color: #ddeaf7;
+      box-shadow: 0 0 10px #ddeaf7;
     }
   }
 
