@@ -73,4 +73,11 @@ public class MemberController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/{member-id}/mypage")
+    public ResponseEntity getMemberMyPage(@PathVariable("member-id") long memberId) {
+
+        return new ResponseEntity<>(mapper.memberToMyPage
+                (memberService.findMember(memberId)), HttpStatus.OK);
+    }
 }
