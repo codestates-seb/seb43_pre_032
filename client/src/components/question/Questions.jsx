@@ -1,4 +1,131 @@
 import styled from 'styled-components';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+
+function Questions() {
+  const [qsData, setQsData] = useState([]);
+  const [index, setIndex] = useState(0);
+  // console.log(qsData);
+
+  useEffect(() => {
+    axios
+      .get(
+        'https://3596-61-254-8-200.ngrok-free.app/questions?page=1&size=20&sortBy=questionId',
+        {
+          headers: {
+            'ngrok-skip-browser-warning': '69420',
+          },
+          withCredentials: true,
+          credentials: 'include',
+        }
+      )
+      .then(function (res) {
+        // 성공한 경우 실행
+        setQsData(res.data.data);
+      })
+      .catch(function (error) {
+        // 에러인 경우 실행
+        console.log(error);
+      });
+  }, []);
+
+  function displayedAt(createdAt) {
+    const milliSeconds = new Date() - createdAt;
+    const seconds = milliSeconds / 1000;
+    if (seconds < 60) return `${Math.floor(seconds)} secs ago`;
+    const minutes = seconds / 60;
+    if (minutes < 60) return `${Math.floor(minutes)} min ago`;
+    const hours = minutes / 60;
+    if (hours < 24) return `${Math.floor(hours)} hour ago`;
+    const days = hours / 24;
+    if (days < 7) return `${Math.floor(days)} days ago`;
+    const weeks = days / 7;
+    if (weeks < 5) return `${Math.floor(weeks)} weeks ago`;
+    const months = days / 30;
+    if (months < 12) return `${Math.floor(months)} months ago`;
+    const years = days / 365;
+    return `${Math.floor(years)}years ago`;
+  }
+
+  const buttomArr = [
+    { bottomName: 'Newset' },
+    { bottomName: 'Active' },
+    { bottomName: 'Bountied' },
+    { bottomName: 'Unanswered' },
+  ];
+
+  const selectMenu = (index) => {
+    setIndex(index);
+  };
+
+  return (
+    <>
+      <Questionscomponent>
+        <QuestionFilter>
+          <div className="headContents">
+            <h2>All Questions</h2>
+            <buttom className="askquestion_Btn">Ask Question</buttom>
+          </div>
+          <div className="headContents flex-column">
+            <span>{qsData.length} questions</span>
+            <aside className="subFilterBtn">
+              {buttomArr.map((el, i) => (
+                <button
+                  key={i}
+                  className={i === index ? 'focused' : null}
+                  onClick={() => {
+                    selectMenu(i);
+                  }}
+                >
+                  {el.bottomName}
+                </button>
+              ))}
+            </aside>
+          </div>
+        </QuestionFilter>
+
+        {qsData.map((el) => (
+          <QuestionList key={el.questionId}>
+            <li>
+              <IntData>
+                <span>
+                  <strong>{el.questionVoteSum}</strong> votes
+                </span>
+                <span>
+                  <strong>{el.answerCount}</strong> answers
+                </span>
+                <span>
+                  <strong>{el.viewCount}</strong> views
+                </span>
+              </IntData>
+              <ContentsData>
+                <h3>{el.questionTitle}</h3>
+                <span>
+                  Scenario: I am populating a dropdown menu with data from MySQL
+                  database. Upon clicking submit button, script should take the
+                  user to the results page and show data based on their
+                  selection.
+                </span>
+                <div className="tagData">
+                  {el.tagName.map((tag) => (
+                    <p key={tag.tagId}>{tag.tagName}</p>
+                  ))}
+                </div>
+              </ContentsData>
+              <UserData>
+                <img src="https://i.imgur.com/nXnTowV.jpg" alt="profile icon" />
+                <span className="username_color">{el.memberName}</span>
+                <span>1 asked {displayedAt(new Date(el.createdAt))}</span>
+              </UserData>
+            </li>
+          </QuestionList>
+        ))}
+      </Questionscomponent>
+    </>
+  );
+}
+
+export default Questions;
 
 const Questionscomponent = styled.section`
   width: 100%;
@@ -62,6 +189,24 @@ const QuestionFilter = styled.div`
       color: #fff;
       background: hsl(206, 100%, 40%);
     }
+    .focused {
+      background-color: #e3e6e8;
+      color: #000;
+    }
+    .focused:hover {
+      background-color: #e3e6e8;
+    }
+  }
+  @media (max-width: 800px) {
+    .flex-column {
+      display: flex;
+      flex-direction: column;
+      justify-content: left;
+      align-items: flex-start;
+    }
+    .subFilterBtn {
+      margin-top: 10px;
+    }
   }
 `;
 const QuestionList = styled.ul`
@@ -72,6 +217,14 @@ const QuestionList = styled.ul`
     display: flex;
     justify-content: center;
     padding: 20px;
+  }
+  @media (max-width: 800px) {
+    li {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px;
+    }
   }
 `;
 
@@ -88,12 +241,21 @@ const IntData = styled.div`
     width: 100%;
     text-align: right;
   }
+  @media (max-width: 800px) {
+    flex-direction: row;
+    span {
+      text-align: left;
+      width: auto;
+      margin-right: 10px;
+    }
+  }
 `;
 const ContentsData = styled.div`
   > * {
     margin: 10px 0px;
   }
   h3 {
+    font-weight: 500;
     color: #0074cc;
   }
   span {
@@ -119,6 +281,11 @@ const ContentsData = styled.div`
     align-items: center;
     width: 100%;
   }
+  @media (max-width: 800px) {
+    h3 {
+      font-size: 16px;
+    }
+  }
 `;
 const UserData = styled.div`
   display: flex;
@@ -138,63 +305,3 @@ const UserData = styled.div`
     color: #0074cc;
   }
 `;
-
-function Questions() {
-  return (
-    <>
-      <Questionscomponent>
-        <QuestionFilter>
-          <div className="headContents">
-            <h2>All Questions</h2>
-            <buttom className="askquestion_Btn">Ask Question</buttom>
-          </div>
-          <div className="headContents">
-            <span>23,652,799 questions</span>
-            <aside className="subFilterBtn">
-              <button>Newset</button>
-              <button>Active</button>
-              <button>
-                Bountied<span className="length_tag">234</span>
-              </button>
-              <button>Unanswered</button>
-              <button>More</button>
-            </aside>
-          </div>
-        </QuestionFilter>
-        <QuestionList>
-          <li>
-            <IntData>
-              <span>0 votes</span>
-              <span>0 answers</span>
-              <span>2 views</span>
-            </IntData>
-            <ContentsData>
-              <h3>
-                PHP dropdown populated from MySQL database wont POST selection
-                to PHP query
-              </h3>
-              <span>
-                Scenario: I am populating a dropdown menu with data from MySQL
-                database. Upon clicking submit button, script should take the
-                user to the results page and show data based on their selection.
-              </span>
-              <div className="tagData">
-                <p>php</p>
-                <p>php</p>
-                <p>php</p>
-                <p>php</p>
-              </div>
-            </ContentsData>
-            <UserData>
-              <img src="https://i.imgur.com/nXnTowV.jpg" alt="profile icon" />
-              <span className="username_color">zth_codes</span>
-              <span>1 asked 43 secs ago</span>
-            </UserData>
-          </li>
-        </QuestionList>
-      </Questionscomponent>
-    </>
-  );
-}
-
-export default Questions;
