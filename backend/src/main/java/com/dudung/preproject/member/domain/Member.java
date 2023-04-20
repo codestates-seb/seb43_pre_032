@@ -30,7 +30,10 @@ public class Member {
     private String password;
 
     private String name;
+
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    private int reputation;
 
     @OneToMany(mappedBy = "member")
     private List<Question> questions = new ArrayList<>();
