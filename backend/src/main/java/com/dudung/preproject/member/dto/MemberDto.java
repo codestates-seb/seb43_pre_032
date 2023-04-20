@@ -26,7 +26,7 @@ public class MemberDto {
         @NotBlank (message = "공백이 아니어야 합니다.")
         private String password;
         @NotBlank (message = "공백이 아니어야 합니다.")
-        @Size(min = 1, max = 10, message = "이름은 10자리까지 가능합니다.")
+        @Size(min = 1, max = 50, message = "이름은 50자리까지 가능합니다.")
         private String name;
     }
     @Getter
