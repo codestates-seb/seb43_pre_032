@@ -1,32 +1,34 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { data } from '../data/tagdata';
-// import axios from 'axios';
+import axios from 'axios';
+import InfiniteScroll from '../components/InfiniteScroll';
 
 function Taglists() {
   const [tagData, setTagData] = useState([]);
+  const [page, setPage] = useState(1);
   useEffect(() => {
-    setTagData(data.data);
-  }, []);
-  console.log(tagData);
-  //   const [data, setData] = useState(null);
-  //   useEffect(() => {
-  //     axios
-  //       .get(
-  //         'https://190d-61-254-8-200.ngrok-free.app/tags?page=1&size=20&sortBy=tagId'
-  //       )
-  //       .then(function (response) {
-  //         // 성공한 경우 실행
-  //         setData(response.data);
-  //         console.log(data);
-  //         console.log('wkfwkrehdgksek');
-  //       })
-  //       .catch(function (error) {
-  //         // 에러인 경우 실행
-  //         console.log('왜...에러났지...?');
-  //         console.log(error);
-  //       });
-  //   }, []);
+    axios
+      .get(
+        `https://3596-61-254-8-200.ngrok-free.app/tags?page=${page}&size=40&sortBy=tagId`,
+        {
+          headers: {
+            'ngrok-skip-browser-warning': '69420',
+          },
+        }
+      )
+      .then(function (response) {
+        // 성공한 경우 실행
+        setTagData((prevData) => [...prevData, ...response.data.data]);
+      })
+      .catch(function (error) {
+        // 에러인 경우 실행
+        console.log(error);
+      });
+  }, [page]);
+
+  const handleLoadMore = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
   return (
     <>
       <TagsPage>
@@ -61,6 +63,7 @@ function Taglists() {
               </div>
             </div>
           ))}
+          <InfiniteScroll onLoadMore={handleLoadMore} />
         </TagContainer>
       </TagsPage>
     </>
@@ -95,6 +98,10 @@ const TagContainer = styled.div`
     padding: 4.8px 6px;
     border-radius: 3px;
     color: #60849e;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
   }
   .singleTag {
     display: grid;
