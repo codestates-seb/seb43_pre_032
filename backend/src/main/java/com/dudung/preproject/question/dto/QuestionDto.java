@@ -45,7 +45,9 @@ public class QuestionDto {
         private int questionVoteSum;
         private LocalDateTime createdAt;
         private List<QuestionTagDto.Response> tagName;
+        private long memberId;
         private String memberName;
+        private int memberReputation;
         private int answerCount;
     }
 }
