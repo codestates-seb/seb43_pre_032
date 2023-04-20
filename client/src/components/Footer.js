@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import logo from '../logo-stackoverflow-icon.png';
+import logo from '../assets/logo-stackoverflow-icon.png';
 
 function Footer() {
   const stackoverflowMenu = [

@@ -8,6 +8,7 @@ import MyinfoPage from './MyinfoPage.js';
 import ModifyAskPage from './ModifyAsk.js';
 import Taglist from './Taglist.js';
 import TaggedQuestion from '../components/Tags/TaggedQuestion.js';
+import Logout from './Logout.js';
 
 const Paging = () => {
   let showNav = useSelector((state) => state.showCom.showNav); // showNav 가져옴
@@ -33,6 +34,7 @@ const Paging = () => {
               <Route path="/question/ask" element={<CreateAsk />} />
               <Route path="/tags" element={<Taglist />} />
               <Route path="/tags/:tagId" element={<TaggedQuestion />} />
+              <Route path="/logout" element={<Logout />} />
               <Route path="/question/modify" element={<ModifyAskPage />} />
             </Routes>
           </article>
