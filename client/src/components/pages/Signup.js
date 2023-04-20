@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-// import { useNavigate } from 'react-router-dom';
+// import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import Header from '../Header/HeaderCom';
@@ -44,11 +44,16 @@ const Signup = () => {
       })
       .then((res) => {
         if (res.status === 201 || res.status === 200) {
+          alert('Register now complete.');
           console.log('완료');
           // navigate('/login');
         }
       })
       .catch((err) => {
+        //이메일 중복 유효성
+        if (err.response.status === 409) {
+          alert('Email address is already in use.');
+        }
         console.log(err);
       });
   };
@@ -118,6 +123,29 @@ const Signup = () => {
     }
   };
 
+  //  Oauth 클라이언트 ID
+  const GITHUB_CLIENT_ID = '6fec513b9c45ba90c613';
+
+  // Oauth 함수
+  const googleLoginRequestHandler = () => {
+    // return window.location.assign(
+    //   `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}`
+    // );
+    console.log('준비완료');
+  };
+  const githubLoginRequestHandler = () => {
+    return window.location.assign(
+      `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}`
+    );
+    // console.log('준비완료');
+  };
+  const facebookLoginRequestHandler = () => {
+    // return window.location.assign(
+    //   `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}`
+    // );
+    console.log('준비완료');
+  };
+
   return (
     <>
       <Header />
@@ -181,19 +209,22 @@ const Signup = () => {
               minute.
             </div>
             <OauthButtonDiv>
-              <button className="google">
+              <button className="google" onClick={googleLoginRequestHandler}>
                 <span>
                   <FontAwesomeIcon icon={faGoogle} size="xl" />
                 </span>
                 Sign up with Google
               </button>
-              <button className="github">
+              <button className="github" onClick={githubLoginRequestHandler}>
                 <span>
                   <FontAwesomeIcon icon={faGithub} size="xl" />
                 </span>
                 Sign up with GitHub
               </button>
-              <button className="facebook">
+              <button
+                className="facebook"
+                onClick={facebookLoginRequestHandler}
+              >
                 <span>
                   <FontAwesomeIcon icon={faFacebook} size="xl" />
                 </span>
@@ -327,8 +358,11 @@ const Signup = () => {
                   <button name="submit-button">Sign up</button>
                 </div>
               </FormContainer>
-              <div></div>
             </SignupDiv>
+            <div>
+              Already have an account?
+              {/* <Link to={'/login'} className="link-login">Log in</Link> */}
+            </div>
           </RightDiv>
         </DivContent>
       </DivContainer>
@@ -443,6 +477,17 @@ const RightDiv = styled.div`
       text-align: center;
       width: 421px;
       color: #232629;
+    }
+  }
+
+  > div:last-child {
+    margin-top: 50px;
+
+    .link-login {
+      color: #0074cc;
+      :hover {
+        color: #0995ff;
+      }
     }
   }
 `;
