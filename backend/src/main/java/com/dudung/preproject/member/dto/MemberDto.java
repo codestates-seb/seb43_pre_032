@@ -8,7 +8,11 @@ import com.dudung.preproject.question.dto.QuestionResponseDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.Singular;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,16 +20,26 @@ public class MemberDto {
     @Getter
     @Setter
     public static class Post {
+        @NotBlank(message = "공백이 아니어야 합니다.")
+        @Email (message = "이메일 형식을 지켜주세요.")
         private String email;
+        @NotBlank (message = "공백이 아니어야 합니다.")
         private String password;
+        @NotBlank (message = "공백이 아니어야 합니다.")
+        @Size(min = 1, max = 10, message = "이름은 10자리까지 가능합니다.")
         private String name;
     }
     @Getter
     @Setter
     public static class Patch {
         private long memberId;
+        @NotBlank (message = "공백이 아니어야 합니다.")
+        @Email (message = "이메일 형식을 지켜주세요.")
         private String email;
+        @NotBlank (message = "공백이 아니어야 합니다.")
         private String password;
+        @NotBlank (message = "공백이 아니어야 합니다.")
+        @Size(min = 1, max = 10, message = "이름은 10자리까지 가능합니다.")
         private String name;
     }
     @Getter
