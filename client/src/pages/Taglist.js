@@ -13,7 +13,7 @@ function Taglist() {
   useEffect(() => {
     axios
       .get(
-        `https://8625-61-254-8-200.ngrok-free.app/tags?page=${page}&size=10&sortBy=tagId`,
+        `https://8625-61-254-8-200.ngrok-free.app/tags?page=${page}&size=12&sortBy=tagId`,
         {
           headers: {
             'ngrok-skip-browser-warning': '69420',

@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 import MyinfoPage from './MyinfoPage.js';
 import ModifyAskPage from './ModifyAsk.js';
 import Taglist from './Taglist.js';
-import TagSearch from '../components/Tags/TagSearch.js';
 import TaggedQuestion from '../components/Tags/TaggedQuestion.js';
 
 const Paging = () => {
