@@ -1,37 +1,93 @@
 import styled from 'styled-components';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
+import { faMessage } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStackOverflow } from '@fortawesome/free-brands-svg-icons';
 
 function Sidebanner() {
+  const link = [
+    'https://stackoverflow.blog/2023/04/19/ops-teams-are-pets-not-cattle/?cb=1&_ga=2.257486667.1725787379.1681729300-541917846.1681721665',
+    'https://meta.stackexchange.com/questions/388030/improving-the-copy-in-the-close-modal-and-post-notices-2023-edition?cb=1',
+    'https://meta.stackexchange.com/questions/388401/new-blog-post-from-our-ceo-prashanth-community-is-the-future-of-ai?cb=1',
+    'https://meta.stackoverflow.com/questions/421831/temporary-policy-chatgpt-is-banned?cb=1',
+    'https://meta.stackoverflow.com/questions/423798/content-discovery-initiative-4-13-update-related-questions-using-a-machine-lear?cb=1',
+    'https://meta.stackoverflow.com/questions/424218/whats-the-preferred-tag-for-protection-in-spreadsheets?cb=1',
+  ];
   return (
     <Bannercomponent>
       <Sidebanners>
         <ul>
           <Bannertitle>The Overflow Blog</Bannertitle>
           <Bannercontents>
-            Are meetings making you less productive?
+            <span>
+              <FontAwesomeIcon icon={faPen} size="xs" />
+            </span>
+            <span>
+              <a href={link[0]}>Are meetings making you less productive?</a>
+            </span>
           </Bannercontents>
           <Bannercontents>
-            The philosopher who believes in Web Assembly
+            <span>
+              <FontAwesomeIcon icon={faPen} size="xs" />
+            </span>
+            <span>
+              <a href={link[0]}>The philosopher who believes in Web Assembly</a>
+            </span>
           </Bannercontents>
         </ul>
         <ul>
           <Bannertitle>Featured on Meta</Bannertitle>
           <Bannercontents>
-            Improving the copy in the close modal and post notices - 2023
-            edition
+            <span className="font-blue">
+              <FontAwesomeIcon icon={faMessage} size="xs" />
+            </span>
+            <span>
+              <a href={link[1]}>
+                Improving the copy in the close modal and post notices - 2023
+                edition
+              </a>
+            </span>
           </Bannercontents>
-          <Bannercontents>Temporary policy: ChatGPT is banned</Bannercontents>
           <Bannercontents>
-            The [protection] tag is being burninated
+            <span className="font-blue">
+              <FontAwesomeIcon icon={faMessage} size="xs" />
+            </span>
+            <span>
+              <a href={link[2]}>
+                New blog post from our CEO Prashanth: Community is the future of
+                AI
+              </a>
+            </span>
           </Bannercontents>
           <Bannercontents>
-            Content Discovery initiative 4/13 update: Related questions using a
-            Machine...
+            <span>
+              <FontAwesomeIcon icon={faStackOverflow} size="sm" />
+            </span>
+            <span>
+              <a href={link[3]}>Temporary policy: ChatGPT is banned</a>
+            </span>
+          </Bannercontents>
+          <Bannercontents>
+            <span>
+              <FontAwesomeIcon icon={faStackOverflow} size="sm" />
+            </span>
+            <span>
+              <a href={link[4]}>
+                Content Discovery initiative 4/13 update: Related questions
+                using a Machine...
+              </a>
+            </span>
           </Bannercontents>
         </ul>
         <ul>
           <Bannertitle>Hot Meta Posts</Bannertitle>
           <Bannercontents>
-            47 Voting reversal for smaller tags with few answerers
+            <span>47</span>
+            <span>
+              <a href={link[5]}>
+                Voting reversal for smaller tags with few answerers
+              </a>
+            </span>
           </Bannercontents>
         </ul>
       </Sidebanners>
@@ -71,6 +127,11 @@ const Bannercomponent = styled.section`
   padding: 20px;
   color: #232629;
   font-size: 13px;
+  a {
+    color: #232629;
+    text-decoration: none;
+    outline: none;
+  }
 `;
 
 const Sidebanners = styled.aside`
@@ -89,12 +150,15 @@ const Sidebanners = styled.aside`
 
 const Bannertitle = styled.li`
   background-color: #fbeec4;
-  border: 1px solid #e8ddb3;
+  border-top: 1px solid #e8ddb3;
+  border-bottom: 1px solid #e8ddb3;
   padding: 15px;
   font-weight: 800;
 `;
 
 const Bannercontents = styled.li`
+  display: flex;
+  flex-direction: row;
   padding: 15px;
   font-weight: 500;
   :nth-child(3) {
@@ -103,6 +167,12 @@ const Bannercontents = styled.li`
   :nth-child(4) {
     padding-top: 2px;
     padding-bottom: 2px;
+  }
+  span:nth-child(1) {
+    margin-right: 10px;
+  }
+  .font-blue {
+    color: #2097ff;
   }
 `;
 

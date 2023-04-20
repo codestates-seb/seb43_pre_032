@@ -4,7 +4,11 @@ import Footer from './components/Footer';
 import Nav from './components/Nav';
 import styled from 'styled-components';
 // import MyPage from './pages/MyinfoPage';
+import Question from './pages/QusetionList.jsx';
+import axios from 'axios';
+// import { useEffect, useState } from 'react';
 
+axios.defaults.withCredentials = true;
 function App() {
   return (
     <div className="App">
@@ -18,7 +22,9 @@ function App() {
               <Nav />
             </div>
           </article>
-          <article className="main_view"></article>
+          <article className="main_view">
+            <Question />
+          </article>
         </Maincontents>
       </Maingroup>
       <Footersection>
