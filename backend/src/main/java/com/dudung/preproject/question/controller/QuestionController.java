@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
@@ -32,7 +33,7 @@ public class QuestionController {
     private final AnswerService answerService;
 
     @PostMapping
-    public ResponseEntity postQuestion(@RequestBody QuestionDto.Post requestBody) {
+    public ResponseEntity postQuestion(@Valid @RequestBody QuestionDto.Post requestBody) {
         Question question = questionService.createQuestion(questionMapper.questionPostToQuestion(requestBody));
         URI location = UriComponentsBuilder
                 .newInstance()
@@ -44,8 +45,8 @@ public class QuestionController {
     }
 
     @PatchMapping("/{question-id}")
-    public ResponseEntity patchQuestion(@PathVariable("question-id") long questionId,
-                                        @RequestBody QuestionDto.Patch requestBody) {
+    public ResponseEntity patchQuestion(@Positive @PathVariable("question-id") long questionId,
+                                        @Valid @RequestBody QuestionDto.Patch requestBody) {
         requestBody.setQuestionId(questionId);
         Question question = questionService.updateQuestion(questionMapper.questionPatchToQuestion(requestBody));
 

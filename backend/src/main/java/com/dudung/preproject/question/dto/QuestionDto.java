@@ -4,6 +4,8 @@ import com.dudung.preproject.answer.dto.AnswerDto;
 import com.dudung.preproject.tag.dto.TagDto;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,7 +14,10 @@ public class QuestionDto {
     @Setter
     public static class Post {
         private long memberId;
+        @NotBlank (message = "제목을 입력하세요.")
+        @Size (min = 1, max = 500, message = "질문제목은 500자를 넘을 수 없습니다.")
         private String questionTitle;
+        @NotBlank (message = "내용을 입력하세요.")
         private String questionContent;
         private List<QuestionTagDto.Add> tagName;
         private LocalDateTime createdAt = LocalDateTime.now();
@@ -22,7 +27,10 @@ public class QuestionDto {
     public static class Patch {
         private long memberId;
         private long questionId;
+        @NotBlank (message = "제목을 입력하세요.")
+        @Size (min = 1, max = 500, message = "질문제목은 500자를 넘을 수 없습니다.")
         private String questionTitle;
+        @NotBlank (message = "내용을 입력하세요.")
         private String questionContent;
         private List<QuestionTagDto.Add> tagName;
         private LocalDateTime modifiedAt = LocalDateTime.now();

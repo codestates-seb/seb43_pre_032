@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,6 +21,7 @@ public class AnswerDto {
 
         private Long memberId;
         private Long questionId;
+        @NotBlank(message = "내용을 입력하세요")
         private String answerContent;
 
     }
@@ -32,7 +35,7 @@ public class AnswerDto {
         private Long answerId;
 
         private Question question;
-
+        @NotBlank(message = "내용을 입력하세요.")
         private String answerContent;
 
         private LocalDateTime modifiedAt = LocalDateTime.now();
