@@ -71,6 +71,8 @@ class AnswerControllerTest implements AnswerControllerHelper {
 
         actions
                 .andExpect(status().isCreated());
+
+
     }
 
 
@@ -101,7 +103,7 @@ class AnswerControllerTest implements AnswerControllerHelper {
                         .answerVoteSum(0)
                         .createdAt(LocalDateTime.now())
                         .modifiedAt(LocalDateTime.now())
-                        .answerName("Tester")
+                        .memberName("Tester")
                         .build()
                 );
 
@@ -144,6 +146,8 @@ class AnswerControllerTest implements AnswerControllerHelper {
 
         actions
                 .andExpect(status().isOk());
+
+
 
     }
 

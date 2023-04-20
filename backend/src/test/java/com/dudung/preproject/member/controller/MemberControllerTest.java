@@ -36,10 +36,8 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -73,8 +71,19 @@ public class MemberControllerTest {
                 );
         actions
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", is(startsWith("/"))))
-                .andDo(print());
+                .andExpect(header().string("Location", is(startsWith("/members"))))
+                .andDo(print())
+                .andDo(document("post-member",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        requestFields(
+                                List.of(
+                                        fieldWithPath("email").type(JsonFieldType.STRING).description("회원 이메일"),
+                                        fieldWithPath("password").type(JsonFieldType.STRING).description("회원 비밀번호"),
+                                        fieldWithPath("name").type(JsonFieldType.STRING).description("회원 이름")
+                                )
+                        )
+                ));
     }
     @Test
     @DisplayName("Member Patch Test")
@@ -95,7 +104,18 @@ public class MemberControllerTest {
         actions
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("두둥탁"))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("patch-member",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        responseFields(
+
+                                List.of(
+                                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별 번호").optional(),
+                                        fieldWithPath("name").type(JsonFieldType.STRING).description("회원 이름"),
+                                        fieldWithPath("reputation").type(JsonFieldType.NUMBER).description("회원 명성도")
+                                )
+                        )));
     }
 
     @Test
@@ -113,7 +133,18 @@ public class MemberControllerTest {
         actions
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("두둥탁"))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("get-member",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        responseFields(
+
+                                List.of(
+                                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별 번호").optional(),
+                                        fieldWithPath("name").type(JsonFieldType.STRING).description("회원 이름"),
+                                        fieldWithPath("reputation").type(JsonFieldType.NUMBER).description("회원 명성도")
+                                )
+                        )));;
     }
 
     @Test
@@ -158,6 +189,7 @@ public class MemberControllerTest {
                                         fieldWithPath("data[]").type(JsonFieldType.ARRAY).description("회원 정보 리스트"),
                                         fieldWithPath("data[].memberId").type(JsonFieldType.NUMBER).description("회원 식별 번호"),
                                         fieldWithPath("data[].name").type(JsonFieldType.STRING).description("회원명"),
+                                        fieldWithPath("data[].reputation").type(JsonFieldType.NUMBER).description("명성도"),
                                         fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
                                         fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("현재 페이지"),
                                         fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("한 페이지에 표시 될 회원 수"),
