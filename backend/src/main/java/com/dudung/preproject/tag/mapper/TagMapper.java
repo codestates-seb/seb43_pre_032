@@ -35,7 +35,9 @@ public interface TagMapper {
                 .questionVoteSum(question.getQuestionVoteSum())
                 .createdAt(question.getCreatedAt())
                 .tagName(tagsToTagNames(question.getQuestionTags()))
+                .memberId(question.getMember().getMemberId())
                 .memberName(question.getMember().getName())
+                .memberReputation(question.getMember().getReputation())
                 .answerCount(question.getAnswerCount()).build();
     }
 
