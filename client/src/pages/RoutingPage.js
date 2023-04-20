@@ -6,6 +6,9 @@ import CreateAsk from './CreateAsk.js';
 import { useSelector } from 'react-redux';
 import MyinfoPage from './MyinfoPage.js';
 import ModifyAskPage from './ModifyAsk.js';
+import Taglist from './Taglist.js';
+import TagSearch from '../components/Tags/TagSearch.js';
+import TaggedQuestion from '../components/Tags/TaggedQuestion.js';
 
 const Paging = () => {
   let showNav = useSelector((state) => state.showCom.showNav); // showNav 가져옴
@@ -27,9 +30,10 @@ const Paging = () => {
             {/* 페이지 경로 및 네이밍 확인 필요 */}
             <Routes>
               <Route path="/" element={<Navigate replace to="/signup" />} />
-
               <Route path="/users/3355" element={<MyinfoPage />} />
               <Route path="/question/ask" element={<CreateAsk />} />
+              <Route path="/tags" element={<Taglist />} />
+              <Route path="/tags/:tagId" element={<TaggedQuestion />} />
               <Route path="/question/modify" element={<ModifyAskPage />} />
             </Routes>
           </article>
