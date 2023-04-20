@@ -6,11 +6,8 @@ import Paging from './pages/RoutingPage';
 import { Provider } from 'react-redux';
 import store from './store/store';
 
-
-axios.defaults.withCredentials = true;
 function App() {
   return (
-
     <Provider store={store}>
       <div className="App">
         <Headersection>
@@ -19,7 +16,6 @@ function App() {
         <Paging />
       </div>
     </Provider>
-
   );
 }
 
