@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/members")
 public class MemberController {
-    private final static String MEMBER_DEFAULT_URL = "/";
+    private final static String MEMBER_DEFAULT_URL = "/members";
     private final MemberService memberService;
     private final MemberMapper mapper;
 
@@ -30,7 +30,7 @@ public class MemberController {
         Member createdMember = memberService.createMember(member);
         URI location = UriComponentsBuilder
                 .newInstance()
-                .path(MEMBER_DEFAULT_URL + "{id}")
+                .path(MEMBER_DEFAULT_URL + "{member-id}")
                 .buildAndExpand(createdMember.getMemberId())
                 .toUri();
 
