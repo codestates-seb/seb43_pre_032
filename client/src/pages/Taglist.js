@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import InfiniteScroll from '../components/InfiniteScroll';
 import TagSearch from '../components/Tags/TagSearch';
+import { Link } from 'react-router-dom';
 
 function Taglist() {
   const [tagData, setTagData] = useState([]);
@@ -12,7 +13,7 @@ function Taglist() {
   useEffect(() => {
     axios
       .get(
-        `https://8625-61-254-8-200.ngrok-free.app/tags?page=${page}&size=20&sortBy=tagId`,
+        `https://8625-61-254-8-200.ngrok-free.app/tags?page=${page}&size=10&sortBy=tagId`,
         {
           headers: {
             'ngrok-skip-browser-warning': '69420',
@@ -55,9 +56,9 @@ function Taglist() {
             {tagData.map((tag) => (
               <div className="singleTag" key={tag.tagId}>
                 <div className="singleTagNamePosition">
-                  <button className="singleTagNameBtn">
+                  <Link to={'/tags/' + tag.tagId} className="singleTagNameBtn">
                     <span>{tag.tagName}</span>
-                  </button>
+                  </Link>
                 </div>
                 <div className="singleTagTagDescription">
                   {tag.tagDescription}
@@ -94,6 +95,7 @@ export const TagContainer = styled.div`
     margin-bottom: 12px;
   }
   .singleTagNameBtn {
+    text-decoration: none;
     background-color: hsl(205, 54%, 88%);
     border: none;
     margin: 2px 2px 2px 0px;
