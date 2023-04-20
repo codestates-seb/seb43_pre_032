@@ -29,10 +29,15 @@ function Header() {
           <OtherButtons />
         ) : (
           <div className="flex-center log-sign">
-            <LoginBtn className="flex-center" onClick={clickLogin}>
+            <LoginBtn
+              className="flex-center btn-skyblue-style"
+              onClick={clickLogin}
+            >
               Log in
             </LoginBtn>
-            <SignInBtn className="flex-center">Sign up</SignInBtn>
+            <SignInBtn className="flex-center btn-blue-style">
+              Sign up
+            </SignInBtn>
           </div>
         )}
       </ContentsContainer>
