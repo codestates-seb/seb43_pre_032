@@ -21,7 +21,9 @@ public class QuestionResponseDto {
     private List<QuestionTagDto.Response> tagName;
     private int questionVoteSum;
     private int viewCount;
+    private long memberId;
     private String memberName;
+    private int memberReputation;
 
     @Getter
     @Builder

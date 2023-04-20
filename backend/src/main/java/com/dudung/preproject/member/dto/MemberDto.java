@@ -33,6 +33,7 @@ public class MemberDto {
     public static class Response {
         private Long memberId;
         private String name;
+        private int reputation;
     }
 
     @Getter
@@ -40,6 +41,7 @@ public class MemberDto {
     public  static class ResponseForList {
         private Long memberId;
         private String name;
+        private int reputation;
     }
 
     @Getter
@@ -49,6 +51,7 @@ public class MemberDto {
         private String name;
         private String email;
         private LocalDateTime createAt;
+        private int reputation;
         private int questionCount;
         private int answerCount;
         private List<QuestionResponseDto.QuestionMemberResponseForList> questionTitle;
