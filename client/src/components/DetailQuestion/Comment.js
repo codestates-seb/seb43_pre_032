@@ -7,26 +7,24 @@ function Comment() {
     <>
       <CommentView>
         <div className="comment-list">
-          <span className="comment-text">여기는 코멘트를 쓰는 곳입니다</span>
+          <span>이렇게 코멘트가 써질 예정이에요!</span>
           <span className="comment-user">-JUBEE</span>
-          <span className="comment-creatAt">1 hour ago</span>
+          <span>1 hour ago</span>
         </div>
         <div className="comment-list">
-          <span className="comment-text">이렇게 코멘트가 써질 예정이에요!</span>
+          <span>이렇게 코멘트가 써질 예정이에요!</span>
           <span className="comment-user">-JUBEE</span>
-          <span className="comment-creatAt">1 hour ago</span>
+          <span>1 hour ago</span>
         </div>
         <div className="comment-list">
-          <span className="comment-text">
-            잠이 깬김에 모든걸 완성하겠다는의지
-          </span>
+          <span>이렇게 코멘트가 써질 예정이에요!</span>
           <span className="comment-user">-JUBEE</span>
-          <span className="comment-creatAt">1 hour ago</span>
+          <span>1 hour ago</span>
         </div>
         <div className="comment-list">
-          <span className="comment-text">제가 보여드립니다</span>
+          <span>이렇게 코멘트가 써질 예정이에요!</span>
           <span className="comment-user">-JUBEE</span>
-          <span className="comment-creatAt">1 hour ago</span>
+          <span>1 hour ago</span>
         </div>
       </CommentView>
       <CommentOpenBtn>
@@ -51,22 +49,23 @@ function Comment() {
 export default Comment;
 
 const CommentView = styled.div`
-  display: flex;
-  flex-direction: column;
   margin-top: 20px;
+
   .comment-list {
+    display: flex;
+    justify-content: flex-start;
     border-bottom: 1px solid #ddd;
     padding: 10px;
     font-size: 14px;
+  }
+  .comment-list > * {
+    border: 1px solid red;
   }
   .comment-list:nth-child(1) {
     border-top: 1px solid #ddd;
   }
   .comment-user {
-    background-color: hsl(205, 46%, 92%);
     color: hsl(205, 47%, 42%);
-    border-radius: 3px;
-    padding: 0px 10px;
     margin: 0px 10px;
   }
 `;

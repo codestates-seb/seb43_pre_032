@@ -2,12 +2,29 @@ import styled from 'styled-components';
 import Answer from './Answer';
 import YourAnswer from './YourAnswer';
 import Comment from './Comment';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlay, faClockRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark } from '@fortawesome/free-regular-svg-icons';
 
 function DetailContent() {
   return (
     <DetailContents>
       <div>
-        <VoteIcon></VoteIcon>
+        <VoteIcon>
+          <span className="side-icon-color">
+            <FontAwesomeIcon icon={faPlay} rotation={270} />
+          </span>
+          <span>0</span>
+          <span className="side-icon-color">
+            <FontAwesomeIcon icon={faPlay} rotation={90} />
+          </span>
+          <span className="side-icon-size side-icon-color">
+            <FontAwesomeIcon icon={faBookmark} />
+          </span>
+          <span className="side-icon-size side-icon-color">
+            <FontAwesomeIcon icon={faClockRotateLeft} />
+          </span>
+        </VoteIcon>
         <TextContents>
           <span>
             I am a react native beginner struggling with concurrency. I would
@@ -65,8 +82,20 @@ const DetailContents = styled.div`
 `;
 
 const VoteIcon = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font-size: 30px;
   min-width: 50px;
-  border: 1px solid red;
+  > span {
+    margin-bottom: 10px;
+  }
+  .side-icon-size {
+    font-size: 16px;
+  }
+  .side-icon-color {
+    color: #ccc;
+  }
 `;
 
 const TextContents = styled.div`

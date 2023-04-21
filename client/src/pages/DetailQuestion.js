@@ -8,7 +8,9 @@ function DetailQuestion() {
       <DetailTitle />
       <ContentsGroup>
         <DetailContent />
-        <Sidebanner></Sidebanner>
+        <div className="media-fade">
+          <Sidebanner></Sidebanner>
+        </div>
       </ContentsGroup>
     </DetailSection>
   );
@@ -23,4 +25,9 @@ const DetailSection = styled.section`
 
 const ContentsGroup = styled.section`
   display: flex;
+  @media (max-width: 1000px) {
+    .media-fade {
+      display: none;
+    }
+  }
 `;
