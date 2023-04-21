@@ -45,7 +45,7 @@ const Signup = () => {
 
   const signupAxios = () => {
     axios
-      .post('https://8625-61-254-8-200.ngrok-free.app/members', {
+      .post('https://0272-61-254-8-200.ngrok-free.app/members', {
         email,
         password,
         name,
@@ -626,14 +626,16 @@ const FormContainer = styled.form`
       padding-left: 5px;
       padding-right: 5px;
 
-      border-color: ${(props) => (props.isName ? 'red' : '')};
-      box-shadow: ${(props) => (props.isName ? '0 0 5px red' : '')};
+      border-color: ${(props) => (props.isName ? '#f87171' : '')};
+      box-shadow: ${(props) => (props.isName ? '0 0 0 2px #fca5a5' : '')};
 
       :focus {
+        /* #DDEAF7 */
+        /* border-color: #58a4de;
+      outline: none; */
         outline: none !important;
-        border-color: ${(props) => (props.isName ? 'red' : '#58a4de')};
-        box-shadow: ${(props) =>
-          props.isName ? '0 0 5px red' : '0 0 5px #58a4de'};
+        border-color: #58a4de;
+        box-shadow: 0 0 0 2px #ddeaf7;
       }
     }
   }
@@ -644,13 +646,13 @@ const FormContainer = styled.form`
       padding-left: 5px;
       padding-right: 5px;
 
-      border-color: ${(props) => (props.isEmail ? 'red' : '')};
-      box-shadow: ${(props) => (props.isEmail ? '0 0 5px red' : '')};
+      border-color: ${(props) => (props.isName ? '#f87171' : '')};
+      box-shadow: ${(props) => (props.isName ? '0 0 0 2px #fca5a5' : '')};
 
       :focus {
         outline: none !important;
         border-color: #58a4de;
-        box-shadow: 0 0 5px #58a4de;
+        box-shadow: 0 0 0 2px #ddeaf7;
       }
     }
   }
@@ -661,13 +663,13 @@ const FormContainer = styled.form`
       padding-left: 5px;
       padding-right: 5px;
 
-      border-color: ${(props) => (props.isPassword ? 'red' : '')};
-      box-shadow: ${(props) => (props.isPassword ? '0 0 5px red' : '')};
+      border-color: ${(props) => (props.isName ? '#f87171' : '')};
+      box-shadow: ${(props) => (props.isName ? '0 0 0 2px #fca5a5' : '')};
 
       :focus {
         outline: none !important;
         border-color: #58a4de;
-        box-shadow: 0 0 5px #58a4de;
+        box-shadow: 0 0 0 2px #ddeaf7;
       }
     }
   }

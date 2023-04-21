@@ -35,7 +35,7 @@ const Login = () => {
 
   const loginAxios = () => {
     axios
-      .post('https://8625-61-254-8-200.ngrok-free.app/auth/login', {
+      .post('https://0272-61-254-8-200.ngrok-free.app/auth/login', {
         username: id,
         password,
       })
@@ -64,10 +64,10 @@ const Login = () => {
 
   // Oauth 함수
   const googleLoginRequestHandler = () => {
-    // return window.location.assign(
-    //   `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}`
-    // );
-    console.log('준비완료');
+    return window.location.assign(
+      `https://0272-61-254-8-200.ngrok-free.app/oauth2/authorization/google`
+    );
+    // console.log('준비완료');
   };
   const githubLoginRequestHandler = () => {
     return window.location.assign(
@@ -164,26 +164,13 @@ const Login = () => {
                   <span>Forgot password?</span>
                 </div>
                 <div>
-                  {isLogin ? (
-                    <>
-                      <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        autoComplete="off"
-                        ref={PasswordInputRef}
-                      ></input>
-                      <div>Invalid username or password.</div>
-                    </>
-                  ) : (
-                    <input
-                      type="password"
-                      id="password"
-                      name="password"
-                      autoComplete="off"
-                      ref={PasswordInputRef}
-                    ></input>
-                  )}
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    autoComplete="off"
+                    ref={PasswordInputRef}
+                  ></input>
                 </div>
               </DivUserInput>
               <DivButton>
@@ -358,8 +345,8 @@ const DivUserInput = styled.div`
       /* border-color: #58a4de;
       outline: none; */
       outline: none !important;
-      border-color: #ddeaf7;
-      box-shadow: 0 0 10px #ddeaf7;
+      border-color: #58a4de;
+      box-shadow: 0 0 0 2px #ddeaf7;
     }
   }
 
