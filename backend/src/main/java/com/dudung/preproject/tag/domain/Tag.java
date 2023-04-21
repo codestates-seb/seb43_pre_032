@@ -22,8 +22,15 @@ public class Tag {
 
     private String tagDescription;
 
+    private int questions;
+
     @OneToMany(mappedBy = "tag")
     private List<QuestionTag> questionTags = new ArrayList<>();
+
+    public int getQuestionNum() {
+        this.questions = this.questionTags.size();
+        return this.questions;
+    }
 
     public void addQuestionTag(QuestionTag questionTag) {
         this.questionTags.add(questionTag);
