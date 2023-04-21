@@ -13,6 +13,7 @@ import Login from './Login.js';
 import Signup from './Signup.js';
 import DetailQuestion from './DetailQuestion.js';
 import Viewcomponent from './QusetionList.jsx';
+import MyInfoEdit from './MyInfoEdit.js';
 
 const Paging = () => {
   let showNav = useSelector((state) => state.showCom.showNav); // showNav 가져옴
@@ -43,6 +44,7 @@ const Paging = () => {
               <Route path="/detailquestion" element={<DetailQuestion />} />
               <Route path="/question" element={<Viewcomponent />} />
               <Route path="/users/3355" element={<MyinfoPage />} />
+              <Route path="/users/edit/3355" element={<MyInfoEdit />} />
               <Route path="/question/ask" element={<CreateAsk />} />
               <Route path="/tags" element={<Taglist />} />
               <Route path="/tags/:tagId" element={<TaggedQuestion />} />

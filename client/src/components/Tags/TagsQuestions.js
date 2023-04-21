@@ -10,7 +10,7 @@ function TagsQuestions({ tagId }) {
   useEffect(() => {
     axios
       .get(
-        `https://8625-61-254-8-200.ngrok-free.app/tags/${tagId}?page=1&size=20&sortBy=questionId`,
+        `https://0272-61-254-8-200.ngrok-free.app/tags/${tagId}?page=1&size=20&sortBy=questionId`,
         {
           headers: {
             'ngrok-skip-browser-warning': '69420',
