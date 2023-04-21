@@ -9,11 +9,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -76,5 +84,23 @@ public class MemberService {
         Member findedMember = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         return findedMember;
+    }
+    public Boolean uploading(MultipartFile file, String dirName) {
+        Boolean result = Boolean.TRUE;
+        try {
+            File folder = new File(dirName);
+            if (!folder.exists()) folder.mkdirs();
+
+            File destination = new File(folder.getAbsolutePath() , file.getOriginalFilename());
+            file.transferTo(destination);
+
+            result = Boolean.FALSE;
+        }catch (Exception e) {
+            System.out.println("step 3");
+            e.printStackTrace();
+        } finally {
+            System.out.println("step 4");
+            return result;
+        }
     }
 }
