@@ -122,7 +122,7 @@ function Sidebanner() {
 export default Sidebanner;
 
 /** 2023.04.18 사이드 배너 스타일드 컴포넌트 - by 김주비*/
-const Bannercomponent = styled.section`
+export const Bannercomponent = styled.section`
   width: 300px;
   padding: 20px;
   color: #232629;
@@ -134,7 +134,7 @@ const Bannercomponent = styled.section`
   }
 `;
 
-const Sidebanners = styled.aside`
+export const Sidebanners = styled.aside`
   box-shadow: 0px 0px 5px #f1e6b9;
   border: 1px solid #e8ddb3;
   border-radius: 5px;
@@ -148,7 +148,7 @@ const Sidebanners = styled.aside`
   }
 `;
 
-const Bannertitle = styled.li`
+export const Bannertitle = styled.li`
   background-color: #fbeec4;
   border-top: 1px solid #e8ddb3;
   border-bottom: 1px solid #e8ddb3;
@@ -156,7 +156,7 @@ const Bannertitle = styled.li`
   font-weight: 800;
 `;
 
-const Bannercontents = styled.li`
+export const Bannercontents = styled.li`
   display: flex;
   flex-direction: row;
   padding: 15px;

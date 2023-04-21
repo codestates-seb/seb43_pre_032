@@ -1,16 +1,12 @@
 import './App.css';
 import Header from './components/Header/HeaderCom';
 import styled from 'styled-components';
-
 import Paging from './pages/RoutingPage';
 import { Provider } from 'react-redux';
 import store from './store/store';
 
-
-axios.defaults.withCredentials = true;
 function App() {
   return (
-
     <Provider store={store}>
       <div className="App">
         <Headersection>
@@ -19,13 +15,11 @@ function App() {
         <Paging />
       </div>
     </Provider>
-
   );
 }
 
 export default App;
 
-//서칭바 - Header
 const Headersection = styled.section`
   position: fixed;
   display: flex;
