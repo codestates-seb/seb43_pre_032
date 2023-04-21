@@ -9,6 +9,10 @@ import ModifyAskPage from './ModifyAsk.js';
 import Taglist from './Taglist.js';
 import TaggedQuestion from '../components/Tags/TaggedQuestion.js';
 import Logout from './Logout.js';
+import Login from './Login.js';
+import Signup from './Signup.js';
+import DetailQuestion from './DetailQuestion.js';
+import Viewcomponent from './QusetionList.jsx';
 
 const Paging = () => {
   let showNav = useSelector((state) => state.showCom.showNav); // showNav 가져옴
@@ -33,7 +37,11 @@ const Paging = () => {
           <article className="main_view">
             {/* 페이지 경로 및 네이밍 확인 필요 */}
             <Routes>
-              <Route path="/" element={<Navigate replace to="/signup" />} />
+              <Route path="/" element={<Navigate replace to="/members" />} />
+              <Route path="/members" element={<Signup />} />
+              <Route path="/auth/login" element={<Login />} />
+              <Route path="/detailquestion" element={<DetailQuestion />} />
+              <Route path="/question" element={<Viewcomponent />} />
               <Route path="/users/3355" element={<MyinfoPage />} />
               <Route path="/question/ask" element={<CreateAsk />} />
               <Route path="/tags" element={<Taglist />} />
