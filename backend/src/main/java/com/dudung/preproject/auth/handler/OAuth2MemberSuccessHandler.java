@@ -36,14 +36,16 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         var oAuth2User = (OAuth2User)authentication.getPrincipal();
         String email = String.valueOf(oAuth2User.getAttributes().get("email"));
+        String name = String.valueOf(oAuth2User.getAttributes().get("name"));
+        String password = String.valueOf(oAuth2User.getAttributes().get("sub"));
         List<String> authorities = authorityUtils.createRoles(email);
 
-        saveMember(email);
+        saveMember(email, name, password);
         redirect(request, response, email, authorities);
     }
 
-    private void saveMember(String email) {
-        Member member = new Member(email);
+    private void saveMember(String email, String name, String password) {
+        Member member = new Member(email, name, password);
         memberService.createMember(member);
     }
 

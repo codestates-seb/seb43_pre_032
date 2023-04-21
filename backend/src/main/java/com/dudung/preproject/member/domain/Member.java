@@ -94,7 +94,9 @@ public class Member {
         return this.answers.size();
     }
 
-    public Member(String email) {
+    public Member(String email, String name, String password) {
         this.email = email;
+        this.name = name;
+        this.password = password;
     }
 }

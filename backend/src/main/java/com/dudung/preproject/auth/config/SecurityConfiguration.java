@@ -7,7 +7,10 @@ import com.dudung.preproject.auth.interceptor.JwtParseInterceptor;
 import com.dudung.preproject.auth.jwt.JwtTokenizer;
 import com.dudung.preproject.auth.utils.CustomAuthorityUtils;
 import com.dudung.preproject.auth.utils.JwtUtils;
+import com.dudung.preproject.member.repository.MemberRepository;
 import com.dudung.preproject.member.service.MemberService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,10 +33,11 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity(debug = true)
+@RequiredArgsConstructor
 public class SecurityConfiguration implements WebMvcConfigurer {
     private final long MAX_AGE_SECS = 3600;
 
-    private MemberService memberService;
+    private final MemberService memberService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

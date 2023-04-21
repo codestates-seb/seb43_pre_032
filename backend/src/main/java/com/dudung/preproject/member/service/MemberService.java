@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +20,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final CustomAuthorityUtils authorityUtils;
 
     public Member createMember(Member member) {
+        CustomAuthorityUtils authorityUtils = new CustomAuthorityUtils();
+        PasswordEncoder passwordEncoder =  PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
         verifyExistEmailAndName(member.getEmail(), member.getName());
 
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
