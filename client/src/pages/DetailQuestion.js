@@ -21,6 +21,7 @@ export default DetailQuestion;
 const DetailSection = styled.section`
   display: flex;
   flex-direction: column;
+  padding: 30px;
 `;
 
 const ContentsGroup = styled.section`

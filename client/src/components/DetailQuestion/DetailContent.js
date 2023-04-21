@@ -93,7 +93,7 @@ export default DetailContent;
 export const DetailContents = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 30px;
+  margin-top: 30px;
   div:nth-child(1) {
     display: flex;
   }

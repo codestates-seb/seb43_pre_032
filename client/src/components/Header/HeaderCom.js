@@ -1,36 +1,72 @@
 import styled from 'styled-components';
-import logo from '../../assets/logo.png';
+import '../../assets/logo.png';
 import { LoginBtn, SignInBtn, OtherButtons } from './HeaderButton';
 import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faMagnifyingGlass,
+  faBars,
+  faXmark,
+} from '@fortawesome/free-solid-svg-icons';
+import Nav from '../Nav';
 
 function Header() {
   let [isLogin, setIsLogin] = useState(false);
+  let [menuOpen, setMenuOpen] = useState(false);
   const clickLogin = () => {
     setIsLogin((pre) => !pre);
   };
   return (
     <HeaderContainer>
       <ContentsContainer className="flex-space-between">
-        {isLogin ? (
-          <>
-            <img className="logo" src={logo} alt="로고" />
-            <Menu className="hover">Products</Menu>
-          </>
-        ) : (
-          <>
-            <img className="logo" src={logo} alt="로고" />
-            <Menu className="hover moblie-none flex-center">About</Menu>
-            <Menu className="hover flex-center">Products</Menu>
-            <Menu className="hover moblie-none flex-center">For Teams</Menu>
-          </>
-        )}
-        <SerachBar placeholder=" 🔍 Search..."></SerachBar>
+        {menuOpen ? (
+          <NavBox>
+            <Nav />
+          </NavBox>
+        ) : null}
+        <SidemenuGroup>
+          <button
+            onClick={() => {
+              setMenuOpen(!menuOpen);
+            }}
+          >
+            {menuOpen ? (
+              <FontAwesomeIcon icon={faXmark} size="lg" />
+            ) : (
+              <FontAwesomeIcon icon={faBars} />
+            )}
+          </button>
+        </SidemenuGroup>
+        <Logogroup>
+          <div className="logo"></div>
+          <MenuGroup>
+            <Menu
+              className={`flex-center display-none ${
+                isLogin ? 'moblie-none' : null
+              }`}
+            >
+              <a href="https://stackoverflow.co/">About</a>
+            </Menu>
+            <Menu className="flex-center">Products</Menu>
+            <Menu
+              className={`flex-center display-none ${
+                isLogin ? 'moblie-none' : null
+              }`}
+            >
+              <a href="https://stackoverflow.co/teams/">For Teams</a>
+            </Menu>
+          </MenuGroup>
+        </Logogroup>
+        <SerachGroup>
+          <FontAwesomeIcon icon={faMagnifyingGlass} className="serch-icon" />
+          <SerachBar placeholder="Search..."></SerachBar>
+        </SerachGroup>
         {isLogin ? (
           <OtherButtons />
         ) : (
-          <div className="flex-center log-sign">
+          <div className="flex-center log-sign margin-10">
             <LoginBtn
-              className="flex-center btn-skyblue-style"
+              className="flex-center btn-skyblue-style temp-width"
               onClick={clickLogin}
             >
               Log in
@@ -46,14 +82,10 @@ function Header() {
 }
 const HeaderContainer = styled.header`
   width: 100vw;
-  height: 40px;
-
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 3px;
-  padding-bottom: 3px;
-
   -webkit-box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.01);
   box-shadow: 0px 1px 1px -1px rgba(0, 0, 0, 0.03);
   border-top: 1spx solid #f48225;
@@ -61,34 +93,133 @@ const HeaderContainer = styled.header`
 `;
 
 const ContentsContainer = styled.div`
+  position: relative;
   width: 1250px;
-  margin-top: 3px;
   display: flex;
   flex-direction: row;
-  height: 80%;
+  height: 100%;
+  padding: 0px 10px;
   & > :hover.hover {
     background-color: var(--menu-hover-background);
   }
-  @media (max-width: 1250px) {
-    padding-left: 20px;
-    padding-right: 20px;
+  .logo {
+    width: 150px;
+    height: 30px;
+    background: url('/assets/logo.png');
+    background-size: cover;
+  }
+  .display-login {
+    display: none;
+  }
+  .margin-10 {
+    margin: 0px 10px;
+  }
+  .temp-width {
+    width: 50px;
+  }
+  @media (max-width: 800px) {
+    .display-none {
+      display: none;
+    }
+    .logo {
+      width: 30px;
+      height: 30px;
+      background: url('/assets/logo-stackoverflow-icon.png');
+      background-size: cover;
+    }
   }
 `;
-const Menu = styled.div`
-  color: black;
-  font-size: 13px;
-  padding: 5px;
-  border-radius: 13px;
-  width: 70px;
+
+const NavBox = styled.div`
+  position: absolute;
+  top: 45px;
+  width: 250px;
+  background-color: #fff;
+  box-shadow: 0px 0px 6px rgb(0, 0, 0, 0.1);
+  padding-bottom: 20px;
+  @media (min-width: 640px) {
+    display: none;
+  }
 `;
+
+const SidemenuGroup = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 100%;
+  margin: 0px 20px;
+  > button {
+    background: none;
+    border-style: none;
+  }
+  @media (min-width: 640px) {
+    display: none;
+  }
+`;
+
+const Logogroup = styled.div`
+  display: flex;
+`;
+
+const MenuGroup = styled.div`
+  display: flex;
+  margin: 0px 10px;
+`;
+const SerachGroup = styled.div`
+  display: flex;
+  position: relative;
+  width: 100%;
+  .serch-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+  }
+  @media (max-width: 640px) {
+    justify-content: right;
+    align-items: center;
+    height: 100%;
+    .serch-icon {
+      position: relative;
+      transform: none;
+      top: 0;
+      left: 0;
+    }
+  }
+`;
+
+const Menu = styled.div`
+  font-size: 13px;
+  padding: 0px 15px;
+  border-radius: 20px;
+  height: 30px;
+  a {
+    color: black;
+    text-decoration: none;
+  }
+  :hover {
+    background-color: var(--menu-hover-background);
+  }
+  :nth-child(3) {
+    width: 70px;
+  }
+  .moblie-none {
+    display: none;
+  }
+`;
+
 const SerachBar = styled.input`
-  width: 680px;
-  height: 25px;
+  width: 100%;
+  height: 20px;
   border: 1px solid lightgray;
   border-radius: 2px;
   font-size: 13px;
-  @media (max-width: 1250px) {
-    width: 40%;
+  padding: 5px 30px;
+  @media (max-width: 640px) {
+    display: none;
   }
 `;
+
 export default Header;

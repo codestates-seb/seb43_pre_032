@@ -1,8 +1,12 @@
 import styled from 'styled-components';
-import achieve from '../../assets/achieve.png';
-import event from '../../assets/event.png';
-import help from '../../assets/help.png';
-import info from '../../assets/info.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faInbox,
+  faCircleQuestion,
+  faTrophy,
+} from '@fortawesome/free-solid-svg-icons';
+import { faStackExchange } from '@fortawesome/free-brands-svg-icons';
+
 // import { selectNav } from '../../store/store';
 // import { useDispatch } from 'react-redux';
 
@@ -12,21 +16,21 @@ const OtherButtons = () => {
 
   return (
     <OtherContainer className="flex-center">
-      <Menu>
+      <Menu className="section-size">
         <Profile>호재</Profile>
         {example.length}
       </Menu>
       <Menu>
-        <img className="other-img-size" src={event} alt="이벤트" />
+        <FontAwesomeIcon icon={faInbox} />
       </Menu>
       <Menu>
-        <img className="other-img-size" src={achieve} alt="성취" />
+        <FontAwesomeIcon icon={faTrophy} />
       </Menu>
       <Menu>
-        <img className="other-img-size" src={help} alt="도움" />
+        <FontAwesomeIcon icon={faCircleQuestion} />
       </Menu>
       <Menu>
-        <img className="other-img-size" src={info} alt="기타정보" />
+        <FontAwesomeIcon icon={faStackExchange} />
       </Menu>
     </OtherContainer>
   );
@@ -51,6 +55,7 @@ export const SignInBtn = styled.div`
 const OtherContainer = styled.div`
   width: 230px;
   height: 100%;
+  margin-left: 20px;
 `;
 const Menu = styled.div`
   display: flex;
@@ -58,17 +63,26 @@ const Menu = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 5px;
+  padding: 0px 10px;
+  color: hsl(210, 8%, 35%);
   :hover {
     background-color: var(--menu-hover-background);
   }
+  .section-size {
+    padding: 0px 20px;
+  }
 `;
 const Profile = styled.div`
-  padding-top: 7px;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: brown;
+  /* padding-top: 7px;
   padding-bottom: 7px;
   padding-left: 4px;
-  padding-right: 4px;
-  background-color: brown;
+  padding-right: 4px; */
   margin-right: 2px;
   border-radius: 4px;
   color: white;
