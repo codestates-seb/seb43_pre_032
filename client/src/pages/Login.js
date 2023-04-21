@@ -1,6 +1,8 @@
-import { useState, useRef } from 'react';
-// import { Link } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { selectFooter, selectNav } from '../store/store';
+import { useDispatch } from 'react-redux';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -19,6 +21,13 @@ const Login = () => {
   const IdInputRef = useRef(null);
   const PasswordInputRef = useRef(null);
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(selectFooter(false));
+    dispatch(selectNav(false));
+  }, []);
+
   // const authorizationToken =
   //   'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjoxLCJ1c2VybmFtZSI6ImhnZEBnbWFpbC5jb20iLCJzdWIiOiJoZ2RAZ21haWwuY29tIiwiaWF0IjoxNjgxOTk5NDM0LCJleHAiOjE2ODIwMDEyMzR9.NLDsKQIVrAjy8UKEBBtklaQnZl82BALpSYHYTwJe1w4';
   // const refreshToken =
@@ -31,14 +40,18 @@ const Login = () => {
         password,
       })
       .then((response) => {
-        console.log(response.headers.get('authorization'));
+        // console.log(response.headers.get('authorization'));
         if (response.status === 200 || response.status === 201) {
           setIsLogin(false);
           console.log('로그인 성공');
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.name === 'AxiosError');
+        if (err.name === 'AxiosError') {
+          setIsLogin(true);
+        }
+
         if (err.response.status === 401) {
           setIsLogin(true);
           console.log('아이디 혹은 비밀번호를 잘못 적었습니다.');
@@ -131,7 +144,7 @@ const Login = () => {
                         name="email"
                         ref={IdInputRef}
                       ></input>
-                      <div>아이디 혹은 비밀번호가 틀렸습니다.</div>
+                      <div>Invalid username or password.</div>
                     </>
                   ) : (
                     <input
@@ -151,13 +164,26 @@ const Login = () => {
                   <span>Forgot password?</span>
                 </div>
                 <div>
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    autoComplete="off"
-                    ref={PasswordInputRef}
-                  ></input>
+                  {isLogin ? (
+                    <>
+                      <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        autoComplete="off"
+                        ref={PasswordInputRef}
+                      ></input>
+                      <div>Invalid username or password.</div>
+                    </>
+                  ) : (
+                    <input
+                      type="password"
+                      id="password"
+                      name="password"
+                      autoComplete="off"
+                      ref={PasswordInputRef}
+                    ></input>
+                  )}
                 </div>
               </DivUserInput>
               <DivButton>
@@ -167,9 +193,9 @@ const Login = () => {
           </DivFormContainer>
           <div>
             Don’t have an account?
-            {/* <Link to={'/signup'} className="link-signup">
+            <Link to={'/members'} className="link-signup">
               Sign up
-            </Link> */}
+            </Link>
           </div>
         </DivItem>
       </DivContent>
@@ -314,6 +340,11 @@ const DivUserInput = styled.div`
   > div {
     width: 240px;
     height: 30px;
+
+    > div {
+      color: red;
+      font-size: 12px;
+    }
 
     > input {
       width: 220px;

@@ -1,5 +1,7 @@
-import { useState, useRef } from 'react';
-// import { useNavigate, Link } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { selectFooter, selectNav } from '../store/store';
 import axios from 'axios';
 import styled from 'styled-components';
 
@@ -28,11 +30,18 @@ const Signup = () => {
   const [isPassword, setIsPassword] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
 
-  // const navigate = useNavigate();
-
   const NameInputRef = useRef(null);
   const EamilInputRef = useRef(null);
   const PasswordInputRef = useRef(null);
+
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(selectFooter(false));
+    dispatch(selectNav(false));
+  }, []);
 
   const signupAxios = () => {
     axios
@@ -45,7 +54,7 @@ const Signup = () => {
         if (res.status === 201 || res.status === 200) {
           alert('Register now complete.');
           console.log('완료');
-          // navigate('/login');
+          navigate('/auth/login');
         }
       })
       .catch((err) => {
@@ -92,10 +101,8 @@ const Signup = () => {
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
     if (!passwordRegex.test(passwordInputText)) {
       setIsPassword(true);
-      console.log('이게 실패?');
     } else {
       setIsPassword(false);
-      console.log('아니면 이게 실패?');
     }
   };
 
@@ -118,7 +125,7 @@ const Signup = () => {
     if (isVaild) {
       signupAxios();
     } else {
-      console.log('다시 입력해');
+      return;
     }
   };
 
@@ -359,7 +366,9 @@ const Signup = () => {
             </SignupDiv>
             <div>
               Already have an account?
-              {/* <Link to={'/login'} className="link-login">Log in</Link> */}
+              <Link to={'/auth/login'} className="link-login">
+                Log in
+              </Link>
             </div>
           </RightDiv>
         </DivContent>
@@ -377,7 +386,7 @@ const DivContainer = styled.div`
   padding: 0px;
 
   /* height: 100vh; */
-  width: 100vw;
+  /* width: 100vw; */
   background-color: #f1f2f3;
 
   @media (min-height: 985px) {
@@ -612,12 +621,55 @@ const FormContainer = styled.form`
 
   .isName {
     color: red;
+
+    > input {
+      padding-left: 5px;
+      padding-right: 5px;
+
+      border-color: ${(props) => (props.isName ? 'red' : '')};
+      box-shadow: ${(props) => (props.isName ? '0 0 5px red' : '')};
+
+      :focus {
+        outline: none !important;
+        border-color: ${(props) => (props.isName ? 'red' : '#58a4de')};
+        box-shadow: ${(props) =>
+          props.isName ? '0 0 5px red' : '0 0 5px #58a4de'};
+      }
+    }
   }
   .isEmail {
     color: red;
+
+    > input {
+      padding-left: 5px;
+      padding-right: 5px;
+
+      border-color: ${(props) => (props.isEmail ? 'red' : '')};
+      box-shadow: ${(props) => (props.isEmail ? '0 0 5px red' : '')};
+
+      :focus {
+        outline: none !important;
+        border-color: #58a4de;
+        box-shadow: 0 0 5px #58a4de;
+      }
+    }
   }
   .isPassword {
     color: red;
+
+    > input {
+      padding-left: 5px;
+      padding-right: 5px;
+
+      border-color: ${(props) => (props.isPassword ? 'red' : '')};
+      box-shadow: ${(props) => (props.isPassword ? '0 0 5px red' : '')};
+
+      :focus {
+        outline: none !important;
+        border-color: #58a4de;
+        box-shadow: 0 0 5px #58a4de;
+      }
+    }
   }
   .checkBox > div {
     color: red;
@@ -636,7 +688,7 @@ const FormContainer = styled.form`
   }
 
   > div:not(:nth-child(4)) input {
-    width: 268px;
+    width: 250px;
     height: 32px;
   }
 `;
