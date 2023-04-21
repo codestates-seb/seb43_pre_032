@@ -12,7 +12,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,5 +80,24 @@ public class MemberService {
         Member findedMember = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         return findedMember;
+    }
+
+    public Boolean uploading(MultipartFile file, String dirName) {
+        Boolean result = Boolean.TRUE;
+        try {
+            File folder = new File(dirName);
+            if (!folder.exists()) folder.mkdirs();
+
+            File destination = new File(folder.getAbsolutePath() , file.getOriginalFilename());
+            file.transferTo(destination);
+
+            result = Boolean.FALSE;
+        }catch (Exception e) {
+            System.out.println("step 3");
+            e.printStackTrace();
+        } finally {
+            System.out.println("step 4");
+            return result;
+        }
     }
 }
