@@ -16,8 +16,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+
 import java.io.File;
 import java.io.IOException;
+
 import java.net.URI;
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class MemberController {
     private final MemberMapper mapper;
 
     @PostMapping
-    public ResponseEntity postMember(@RequestBody MemberDto.Post requestBody) {
+    public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post requestBody) {
         Member member = mapper.memeberPostToMember(requestBody);
 
         Member createdMember = memberService.createMember(member);
@@ -52,8 +54,8 @@ public class MemberController {
     }
 
     @PatchMapping("/{member-id}")
-    public ResponseEntity patchMember(@PathVariable("member-id") long memberId,
-                                      @RequestBody MemberDto.Patch requestBody) {
+    public ResponseEntity patchMember(@Positive @PathVariable("member-id") long memberId,
+                                      @Valid @RequestBody MemberDto.Patch requestBody) {
         requestBody.setMemberId(memberId);
 
         Member member = memberService.updateMember(mapper.memberPatchToMember(requestBody));
@@ -62,7 +64,7 @@ public class MemberController {
     }
 
     @GetMapping("/{member-id}")
-    public ResponseEntity getMember(@PathVariable("member-id") long memberId) {
+    public ResponseEntity getMember(@Positive @PathVariable("member-id") long memberId) {
 
         Member member = memberService.findMember(memberId);
 
@@ -70,7 +72,7 @@ public class MemberController {
     }
 
     @GetMapping
-    public ResponseEntity getMembers(@RequestParam int page, @RequestParam int size) {
+    public ResponseEntity getMembers(@Positive @RequestParam int page, @RequestParam int size) {
 
         Page<Member> pageMembers = memberService.findMembers(page -1, size);
         List<Member> members = pageMembers.getContent();
@@ -81,7 +83,7 @@ public class MemberController {
     }
 
     @DeleteMapping("/{member-id}")
-    public ResponseEntity deleteMember(@PathVariable("member-id") long memberId) {
+    public ResponseEntity deleteMember(@Positive @PathVariable("member-id") long memberId) {
 
         memberService.deleteMember(memberId);
 
@@ -89,7 +91,7 @@ public class MemberController {
     }
 
     @GetMapping("/{member-id}/mypage")
-    public ResponseEntity getMemberMyPage(@PathVariable("member-id") long memberId) {
+    public ResponseEntity getMemberMyPage(@Positive @PathVariable("member-id") long memberId) {
 
         return new ResponseEntity<>(mapper.memberToMyPage
                 (memberService.findMember(memberId)), HttpStatus.OK);

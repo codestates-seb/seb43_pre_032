@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class AnswerController {
     private final MemberService memberService;
 
     @PostMapping
-    public ResponseEntity postAnswer(@RequestBody AnswerDto.Post requestBody) {
+    public ResponseEntity postAnswer(@Valid @RequestBody AnswerDto.Post requestBody) {
         Answer answer = mapper.answerPostToAnswer(requestBody);
         answer.setMember(memberService.findMember(requestBody.getMemberId()));
         answer.setQuestion(questionService.findVerifiedQuestion(requestBody.getQuestionId()));
@@ -39,8 +40,8 @@ public class AnswerController {
     }
 
     @PatchMapping("{answer-id}")
-    public ResponseEntity patchAnswer(@PathVariable("answer-id") Long answerId,
-                                      @RequestBody AnswerDto.Patch requestBody){
+    public ResponseEntity patchAnswer(@Positive @PathVariable("answer-id") Long answerId,
+                                      @Valid @RequestBody AnswerDto.Patch requestBody){
         requestBody.setAnswerId(answerId);
 
         Answer answer = answerService.updateAnswer(mapper.answerPatchAnswer(requestBody));
@@ -50,7 +51,7 @@ public class AnswerController {
     }
 
     @GetMapping("{answer-id}")
-    public ResponseEntity getAnswer(@PathVariable("answer-id") Long answerId) {
+    public ResponseEntity getAnswer(@Positive @PathVariable("answer-id") Long answerId) {
 
         Answer answer = answerService.findAnswer(answerId);
 

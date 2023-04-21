@@ -2,17 +2,16 @@ package com.dudung.preproject.auth.config;
 
 import com.dudung.preproject.auth.filter.JwtAuthenticationFilter;
 import com.dudung.preproject.auth.filter.JwtVerificationFilter;
-import com.dudung.preproject.auth.handler.MemberAccessDeniedHandler;
-import com.dudung.preproject.auth.handler.MemberAuthenticationEntryPoint;
-import com.dudung.preproject.auth.handler.MemberAuthenticationFailureHandler;
-import com.dudung.preproject.auth.handler.MemberAuthenticationSuccessHandler;
+import com.dudung.preproject.auth.handler.*;
 import com.dudung.preproject.auth.interceptor.JwtParseInterceptor;
 import com.dudung.preproject.auth.jwt.JwtTokenizer;
 import com.dudung.preproject.auth.utils.CustomAuthorityUtils;
 import com.dudung.preproject.auth.utils.JwtUtils;
+import com.dudung.preproject.member.service.MemberService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -33,6 +32,8 @@ import java.util.Arrays;
 @EnableWebSecurity(debug = true)
 public class SecurityConfiguration implements WebMvcConfigurer {
     private final long MAX_AGE_SECS = 3600;
+
+    private MemberService memberService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -57,7 +58,10 @@ public class SecurityConfiguration implements WebMvcConfigurer {
 //                        .antMatchers(HttpMethod.PATCH, "/**").permitAll()
 //                        .antMatchers(HttpMethod.GET, "/**").permitAll()
 //                        .antMatchers(HttpMethod.DELETE, "/**").permitAll()
-                        .anyRequest().permitAll());
+                        .anyRequest().permitAll())
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer(), authorityUtils(), memberService))
+                );
 
 
 

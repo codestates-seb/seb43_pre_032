@@ -158,7 +158,7 @@ public class StubData {
                     .answerVoteSum(32)
                     .createdAt(time)
                     .modifiedAt(time)
-                    .answerName("답변 작성자")
+                    .memberName("답변 작성자")
                     .build());
         }
 
@@ -233,6 +233,7 @@ public class StubData {
                             .createdAt(time)
                             .tagName(responseQuestionTag)
                             .memberName("작성자 이름")
+                            .questionContent("질문 내용")
                             .answerCount(1)
                             .build()
             );
