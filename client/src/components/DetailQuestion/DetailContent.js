@@ -3,10 +3,16 @@ import Answer from './Answer';
 import YourAnswer from './YourAnswer';
 import Comment from './Comment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faClockRotateLeft } from '@fortawesome/free-solid-svg-icons';
-import { faBookmark } from '@fortawesome/free-regular-svg-icons';
+import {
+  faPlay,
+  faClockRotateLeft,
+  faBookmark as faSolidBookmark,
+} from '@fortawesome/free-solid-svg-icons';
+import { faBookmark as faRegularBookmark } from '@fortawesome/free-regular-svg-icons';
+import { useState } from 'react';
 
 function DetailContent() {
+  const [bookmark, setBookmark] = useState(false);
   return (
     <DetailContents>
       <div>
@@ -18,9 +24,21 @@ function DetailContent() {
           <span className="side-icon-color">
             <FontAwesomeIcon icon={faPlay} rotation={90} />
           </span>
-          <span className="side-icon-size side-icon-color">
-            <FontAwesomeIcon icon={faBookmark} />
-          </span>
+          <button
+            className="side-icon-size side-icon-color"
+            onClick={() => {
+              setBookmark(!bookmark);
+            }}
+          >
+            {bookmark ? (
+              <FontAwesomeIcon
+                icon={faSolidBookmark}
+                className="color-orange"
+              />
+            ) : (
+              <FontAwesomeIcon icon={faRegularBookmark} />
+            )}
+          </button>
           <span className="side-icon-size side-icon-color">
             <FontAwesomeIcon icon={faClockRotateLeft} />
           </span>
@@ -72,7 +90,7 @@ function DetailContent() {
 
 export default DetailContent;
 
-const DetailContents = styled.div`
+export const DetailContents = styled.div`
   display: flex;
   flex-direction: column;
   padding: 30px;
@@ -81,13 +99,13 @@ const DetailContents = styled.div`
   }
 `;
 
-const VoteIcon = styled.div`
+export const VoteIcon = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
   font-size: 30px;
   min-width: 50px;
-  > span {
+  > * {
     margin-bottom: 10px;
   }
   .side-icon-size {
@@ -96,9 +114,20 @@ const VoteIcon = styled.div`
   .side-icon-color {
     color: #ccc;
   }
+  .side-icon-color:hover {
+    color: hsl(206, 100%, 60%);
+  }
+  > button {
+    background: none;
+    border-style: none;
+    cursor: pointer;
+  }
+  .color-orange {
+    color: hsl(27, 90%, 55%);
+  }
 `;
 
-const TextContents = styled.div`
+export const TextContents = styled.div`
   width: 100%;
   padding: 0px 20px;
   line-height: 150%;
@@ -126,7 +155,7 @@ const TextContents = styled.div`
   }
 `;
 
-const SideContents = styled.div`
+export const SideContents = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
