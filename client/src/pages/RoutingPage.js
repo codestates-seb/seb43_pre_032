@@ -17,7 +17,11 @@ const Paging = () => {
   return (
     <>
       <Maingroup>
-        <Maincontents>
+        <Maincontents
+          className={
+            showNav === false && showFooter === false ? 'flex-center' : ''
+          }
+        >
           {showNav ? (
             <article className="side_menu">
               <div className="fixed_contents">

@@ -1,7 +1,6 @@
 import './App.css';
 import Header from './components/Header/HeaderCom';
 import styled from 'styled-components';
-
 import Paging from './pages/RoutingPage';
 import { Provider } from 'react-redux';
 import store from './store/store';
@@ -21,7 +20,6 @@ function App() {
 
 export default App;
 
-//서칭바 - Header
 const Headersection = styled.section`
   position: fixed;
   display: flex;
