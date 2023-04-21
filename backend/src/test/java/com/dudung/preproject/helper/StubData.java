@@ -233,6 +233,7 @@ public class StubData {
                             .createdAt(time)
                             .tagName(responseQuestionTag)
                             .memberName("작성자 이름")
+                            .questionContent("질문 내용")
                             .answerCount(1)
                             .build()
             );
