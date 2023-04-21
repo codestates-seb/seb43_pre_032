@@ -13,23 +13,6 @@ let showCom = createSlice({
   },
 });
 
-// let createQuestion = createSlice({
-//   name: 'createQuestion',
-// initialState: {
-//   memberId: null,
-//   questionTitle: '',
-//   questionContent: '',
-//   tagName: [],
-// },
-//   reducers: {
-//     create(state, action) {
-//       let target = action.payload.target;
-//       let data = action.payload.data;
-//       return { ...state, [target]: data };
-//     },
-//   },
-// });
-
 export let { selectFooter, selectNav } = showCom.actions;
 // export let { create } = createQuestion.actions;
 
