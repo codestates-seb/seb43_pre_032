@@ -13,7 +13,19 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface TagMapper {
-    List<TagDto.ResponseForList> tagsToTagsResponse(List<Tag> tagList);
+    default List<TagDto.ResponseForList> tagsToTagsResponse(List<Tag> tagList) {
+        return tagList.stream()
+                .map(tag -> tagToTagsResponseForList(tag))
+                .collect(Collectors.toList());
+    }
+
+    default TagDto.ResponseForList tagToTagsResponseForList(Tag tag) {
+        return TagDto.ResponseForList.builder()
+                .tagId(tag.getTagId())
+                .tagName(tag.getTagName())
+                .tagDescription(tag.getTagDescription())
+                .questions(tag.getQuestionNum()).build();
+    }
 
     default TagDto.Response tagTotagResponse(Tag tag, List<Question> questions) {
         List<QuestionDto.ResponseForList> responseQuestions = questions.stream()
