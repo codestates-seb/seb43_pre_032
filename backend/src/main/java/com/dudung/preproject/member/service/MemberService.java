@@ -6,11 +6,9 @@ import com.dudung.preproject.exception.ExceptionCode;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,7 +26,7 @@ public class MemberService {
 
     public Member createMember(Member member) {
 
-        verifyExistEmailAndName(member.getEmail(), member.getName());
+        verifyExistEmailAndName(member.getEmail());
 
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encryptedPassword);
@@ -65,14 +63,10 @@ public class MemberService {
         memberRepository.delete(findedMember);
     }
 
-    private void verifyExistEmailAndName(String email, String name) {
+    private void verifyExistEmailAndName(String email) {
         Optional<Member> findedMemberByEamil = memberRepository.findByEmail(email);
         if (findedMemberByEamil.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_EMAIL_EXISTS);
-        }
-        Optional<Member> findedMemberByName = memberRepository.findByName(name);
-        if (findedMemberByName.isPresent()) {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_NAME_EXISTS);
         }
     }
 
