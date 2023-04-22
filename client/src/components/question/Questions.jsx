@@ -5,12 +5,12 @@ import axios from 'axios';
 function Questions() {
   const [qsData, setQsData] = useState([]);
   const [index, setIndex] = useState(0);
-  // console.log(qsData);
+  console.log(qsData);
 
   useEffect(() => {
     axios
       .get(
-        'https://3596-61-254-8-200.ngrok-free.app/questions?page=1&size=20&sortBy=questionId',
+        'http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions?page=1&size=5&sortBy=questionId',
         {
           headers: {
             'ngrok-skip-browser-warning': '69420',
@@ -100,12 +100,7 @@ function Questions() {
               </IntData>
               <ContentsData>
                 <h3>{el.questionTitle}</h3>
-                <span>
-                  Scenario: I am populating a dropdown menu with data from MySQL
-                  database. Upon clicking submit button, script should take the
-                  user to the results page and show data based on their
-                  selection.
-                </span>
+                <span>{el.questionContent}</span>
                 <div className="tagData">
                   {el.tagName.map((tag) => (
                     <p key={tag.tagId}>{tag.tagName}</p>
@@ -115,7 +110,10 @@ function Questions() {
               <UserData>
                 <img src="https://i.imgur.com/nXnTowV.jpg" alt="profile icon" />
                 <span className="username_color">{el.memberName}</span>
-                <span>1 asked {displayedAt(new Date(el.createdAt))}</span>
+                <span>
+                  {el.memberReputation} asked{' '}
+                  {displayedAt(new Date(el.createdAt))}
+                </span>
               </UserData>
             </li>
           </QuestionList>
@@ -251,6 +249,7 @@ const IntData = styled.div`
   }
 `;
 const ContentsData = styled.div`
+  width: 100%;
   > * {
     margin: 10px 0px;
   }
