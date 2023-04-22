@@ -72,7 +72,7 @@ public class QuestionControllerTest implements QuestionControllerHelper {
 
         Question mockResultQuestion = new Question();
         mockResultQuestion.setQuestionId(1L);
-        given(questionService.createQuestion(Mockito.any(Question.class))).willReturn(mockResultQuestion);
+        given(questionService.createQuestion(Mockito.any(Question.class), Mockito.anyLong())).willReturn(mockResultQuestion);
 
         //when
         ResultActions actions =
@@ -108,7 +108,7 @@ public class QuestionControllerTest implements QuestionControllerHelper {
         String content = toJsonContent(patch);
 
         given(questionMapper.questionPatchToQuestion(Mockito.any(QuestionDto.Patch.class))).willReturn(new Question());
-        given(questionService.updateQuestion(Mockito.any(Question.class))).willReturn(new Question());
+        given(questionService.updateQuestion(Mockito.any(Question.class), Mockito.anyLong())).willReturn(new Question());
         given(questionMapper.questionToQuestionResponse(Mockito.any(Question.class), Mockito.anyList())).willReturn(StubData.MockQuestion.getResponseBody());
 
         // when

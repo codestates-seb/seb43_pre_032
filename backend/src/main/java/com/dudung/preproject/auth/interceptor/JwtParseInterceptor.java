@@ -31,8 +31,15 @@ public class JwtParseInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         try {
             Map<String, Object> claims = jwtUtils.getJwsClaimsFromRequest(request);
-            authenicatedMemberId.set(Long.valueOf(claims.get("memberId").toString()));
-            return true;
+            Object memberId = claims.get("memberId");
+            if (memberId != null) {
+                authenicatedMemberId.set(Long.valueOf(memberId.toString()));
+                return true;
+            } else {
+                // memberId가 null인 경우에 대한 예외 처리
+                ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED);
+                return false;
+            }
         } catch (Exception e) {
             ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED);
             return false;

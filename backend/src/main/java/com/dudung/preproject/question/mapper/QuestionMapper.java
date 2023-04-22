@@ -2,8 +2,6 @@ package com.dudung.preproject.question.mapper;
 
 import com.dudung.preproject.answer.domain.Answer;
 import com.dudung.preproject.answer.dto.AnswerDto;
-import com.dudung.preproject.exception.BusinessLogicException;
-import com.dudung.preproject.exception.ExceptionCode;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.question.domain.Question;
 import com.dudung.preproject.question.domain.QuestionTag;
@@ -11,11 +9,7 @@ import com.dudung.preproject.question.dto.QuestionDto;
 import com.dudung.preproject.question.dto.QuestionResponseDto;
 import com.dudung.preproject.question.dto.QuestionTagDto;
 import com.dudung.preproject.tag.domain.Tag;
-import com.dudung.preproject.tag.dto.TagDto;
-import com.dudung.preproject.tag.repository.TagRepository;
-import com.dudung.preproject.tag.service.TagService;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,7 +20,6 @@ public interface QuestionMapper {
     default Question questionPostToQuestion(QuestionDto.Post requestBody) {
         Question question = new Question();
         Member member = new Member();
-        member.setMemberId(requestBody.getMemberId());
 
         question.setQuestionTitle(requestBody.getQuestionTitle());
         question.setQuestionContent(requestBody.getQuestionContent());

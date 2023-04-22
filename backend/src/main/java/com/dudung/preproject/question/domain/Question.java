@@ -37,7 +37,7 @@ public class Question {
 
     @OneToMany(mappedBy = "question")
     private List<QuestionVote> questionVotes = new ArrayList<>();
-
+    @Column
     private int questionVoteSum;
     public int getQuestionVoteSum() {
 
