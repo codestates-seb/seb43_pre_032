@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { selectFooter, selectNav } from '../store/store';
@@ -18,9 +18,6 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(false);
 
-  const IdInputRef = useRef(null);
-  const PasswordInputRef = useRef(null);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,22 +25,36 @@ const Login = () => {
     dispatch(selectNav(false));
   }, []);
 
-  // const authorizationToken =
-  //   'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjoxLCJ1c2VybmFtZSI6ImhnZEBnbWFpbC5jb20iLCJzdWIiOiJoZ2RAZ21haWwuY29tIiwiaWF0IjoxNjgxOTk5NDM0LCJleHAiOjE2ODIwMDEyMzR9.NLDsKQIVrAjy8UKEBBtklaQnZl82BALpSYHYTwJe1w4';
-  // const refreshToken =
-  //   'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoZ2RAZ21haWwuY29tIiwiaWF0IjoxNjgxOTk5NDM0LCJleHAiOjE2ODIwMjQ2MzR9.oTavrta9wNNHhzOE6O4IKbnl1GPsoaPEZRqfJ6H_Auw';
-
   const loginAxios = () => {
+    console.log(id);
+    console.log(password);
+    axios.defaults.withCredentials = true;
     axios
-      .post('https://0272-61-254-8-200.ngrok-free.app/auth/login', {
-        username: id,
-        password,
-      })
+      .post(
+        'http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/auth/login',
+        {
+          id,
+          password,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': 'http://localhost:3000',
+            'Access-Control-Allow-Headers':
+              'Origin, X-Requested-With, Content-Type, Accept',
+            'Access-Control-Expose-Headers': 'Authorization',
+          },
+        }
+      )
       .then((response) => {
-        // console.log(response.headers.get('authorization'));
+        const token = response.headers.authorization;
+        const saveToken = (token) => {
+          localStorage.setItem('token', token);
+        };
+
         if (response.status === 200 || response.status === 201) {
           setIsLogin(false);
-          console.log('로그인 성공');
+          saveToken(token);
         }
       })
       .catch((err) => {
@@ -65,7 +76,7 @@ const Login = () => {
   // Oauth 함수
   const googleLoginRequestHandler = () => {
     return window.location.assign(
-      `https://0272-61-254-8-200.ngrok-free.app/oauth2/authorization/google`
+      `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google`
     );
     // console.log('준비완료');
   };
@@ -82,19 +93,16 @@ const Login = () => {
     console.log('준비완료');
   };
 
-  const emailHandler = () => {
-    setId(IdInputRef.current.value);
+  const emailHandler = (event) => {
+    setId(event.target.value);
   };
 
-  const passwordHandler = () => {
-    setPassword(PasswordInputRef.current.value);
+  const passwordHandler = (event) => {
+    setPassword(event.target.value);
   };
 
   const loginFormHandler = (event) => {
     event.preventDefault();
-
-    emailHandler();
-    passwordHandler();
 
     loginAxios();
   };
@@ -131,7 +139,7 @@ const Login = () => {
           </OauthButtonDiv>
           <DivFormContainer>
             <FormContent onSubmit={loginFormHandler}>
-              <DivUserInput>
+              <DivUserInput isLogin={isLogin}>
                 <label htmlFor="email" className="email">
                   Email
                 </label>
@@ -142,7 +150,8 @@ const Login = () => {
                         id="email"
                         type="email"
                         name="email"
-                        ref={IdInputRef}
+                        // ref={IdInputRef}
+                        onChange={emailHandler}
                       ></input>
                       <div>Invalid username or password.</div>
                     </>
@@ -151,7 +160,8 @@ const Login = () => {
                       id="email"
                       type="email"
                       name="email"
-                      ref={IdInputRef}
+                      // ref={IdInputRef}
+                      onChange={emailHandler}
                     ></input>
                   )}
                 </div>
@@ -169,7 +179,8 @@ const Login = () => {
                     id="password"
                     name="password"
                     autoComplete="off"
-                    ref={PasswordInputRef}
+                    onChange={passwordHandler}
+                    // ref={PasswordInputRef}
                   ></input>
                 </div>
               </DivUserInput>
@@ -338,6 +349,12 @@ const DivUserInput = styled.div`
       height: 14px;
 
       padding: 7px 9px;
+    }
+
+    outline: none !important;
+    > input {
+      border-color: ${(props) => (props.isLogin ? '#f87171' : '')};
+      box-shadow: ${(props) => (props.isLogin ? '0 0 0 2px #fca5a5' : '')};
     }
 
     > input:focus {

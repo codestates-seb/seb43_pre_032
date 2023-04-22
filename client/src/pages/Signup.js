@@ -43,13 +43,33 @@ const Signup = () => {
     dispatch(selectNav(false));
   }, []);
 
+  useEffect(() => {
+    if (email !== '') signupAxios();
+  }, [email, password, name]);
+
+  //이게 찐
   const signupAxios = () => {
+    console.log(email);
+    console.log(password);
+    console.log(name);
+    axios.defaults.withCredentials = true;
     axios
-      .post('https://0272-61-254-8-200.ngrok-free.app/members', {
-        email,
-        password,
-        name,
-      })
+      .post(
+        'http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members',
+        {
+          email,
+          password,
+          name,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': 'http://localhost:3000',
+            'Access-Control-Allow-Headers':
+              'Origin, X-Requested-With, Content-Type, Accept',
+          },
+        }
+      )
       .then((res) => {
         if (res.status === 201 || res.status === 200) {
           alert('Register now complete.');
@@ -61,6 +81,7 @@ const Signup = () => {
         //이메일 중복 유효성
         if (err.response.status === 409) {
           alert('Email address is already in use.');
+          setIsEmail(true);
         }
         console.log(err);
       });
@@ -120,6 +141,7 @@ const Signup = () => {
     passwordHandler();
 
     const isVaild = !isName && !isEmail && !isPassword && isCheck;
+    console.log(isVaild);
 
     //유효성 검사 통과하면 axios요청 보내기
     if (isVaild) {
