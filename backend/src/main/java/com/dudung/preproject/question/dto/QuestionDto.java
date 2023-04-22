@@ -13,7 +13,6 @@ public class QuestionDto {
     @Getter
     @Setter
     public static class Post {
-        private long memberId;
         @NotBlank (message = "제목을 입력하세요.")
         @Size (min = 1, max = 500, message = "질문제목은 500자를 넘을 수 없습니다.")
         private String questionTitle;
@@ -25,7 +24,6 @@ public class QuestionDto {
     @Getter
     @Setter
     public static class Patch {
-        private long memberId;
         private long questionId;
         @NotBlank (message = "제목을 입력하세요.")
         @Size (min = 1, max = 500, message = "질문제목은 500자를 넘을 수 없습니다.")

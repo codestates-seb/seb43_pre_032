@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -32,10 +33,9 @@ public class QuestionService {
     private final QuestionTagRepository questionTagRepository;
 
 
-    public Question createQuestion(Question question) {
-        Member member = memberService.findVerifiedMember(question.getMember().getMemberId());
+    public Question createQuestion(Question question, long authenticationMemeberId) {
+        Member member = memberService.findMember(authenticationMemeberId);
         question.setMember(member);
-
 
         Question createdQuestion = questionRepository.save(question);
         insertTag(createdQuestion);
@@ -45,13 +45,17 @@ public class QuestionService {
         return createdQuestion;
     }
 
-    public Question updateQuestion(Question question) {
+    public Question updateQuestion(Question question, long authenticationMemberId) {
         Question findedQuestion = findVerifiedQuestion(question.getQuestionId());
+
+        patchPermission(findedQuestion, memberService.findMember(authenticationMemberId));
 
         Optional.ofNullable(question.getQuestionContent())
                 .ifPresent(content -> findedQuestion.setQuestionContent(content));
         Optional.ofNullable(question.getQuestionTags())
                 .ifPresent(tagList -> insertTag(tagList, findedQuestion));
+
+        findedQuestion.setModifiedAt(LocalDateTime.now());
 
         return questionRepository.save(findedQuestion);
     }
@@ -74,8 +78,10 @@ public class QuestionService {
         return questionRepository.findAllByTag(tag, PageRequest.of(page, size, Sort.by(sortBy).descending()));
     }
 
-    public void deleteQuestion(long questionId) {
-        questionRepository.delete(findVerifiedQuestion(questionId));
+    public void deleteQuestion(long questionId, long authenticationMemberId) {
+        Question findQuestion = findVerifiedQuestion(questionId);
+        deletePermission(findQuestion, memberService.findMember(authenticationMemberId));
+        questionRepository.delete(findQuestion);
     }
 
     public Question findVerifiedQuestion(long questionId) {
@@ -126,5 +132,17 @@ public class QuestionService {
         }
 
         question.setQuestionTags(questionsTags);
+    }
+
+    private void patchPermission(Question question, Member member) {
+        if (!question.getMember().getMemberId().equals(member.getMemberId())) {
+            throw new BusinessLogicException(ExceptionCode.ONLY_AUTHOR);
+        }
+    }
+
+    private void deletePermission(Question question, Member member) {
+        if (!question.getMember().getMemberId().equals(member.getMemberId()) && !member.getEmail().equals("admin@gmail.com")) {
+            throw new BusinessLogicException(ExceptionCode.ONLY_AUTHOR);
+        }
     }
 }

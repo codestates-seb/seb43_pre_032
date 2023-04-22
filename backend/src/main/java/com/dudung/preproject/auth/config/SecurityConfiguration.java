@@ -11,6 +11,7 @@ import com.dudung.preproject.member.service.MemberService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -62,6 +63,9 @@ public class SecurityConfiguration implements WebMvcConfigurer {
 //                        .antMatchers(HttpMethod.PATCH, "/**").permitAll()
 //                        .antMatchers(HttpMethod.GET, "/**").permitAll()
 //                        .antMatchers(HttpMethod.DELETE, "/**").permitAll()
+                        .antMatchers(HttpMethod.POST, "/questions").authenticated()
+                        .antMatchers(HttpMethod.PATCH, "/questions/**").hasRole("USER")
+                        .antMatchers(HttpMethod.GET, "/questions").permitAll()
                         .anyRequest().permitAll())
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer(), authorityUtils(), memberService))
@@ -128,7 +132,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new JwtParseInterceptor(jwtUtils()))
-                .addPathPatterns("/*/any/**");
+                .addPathPatterns("/questions/**");
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.dudung.preproject.question.controller;
 import com.dudung.preproject.answer.domain.Answer;
 import com.dudung.preproject.answer.mapper.AnswerMapper;
 import com.dudung.preproject.answer.service.AnswerService;
+import com.dudung.preproject.auth.interceptor.JwtParseInterceptor;
 import com.dudung.preproject.dto.DataListResponseDto;
 import com.dudung.preproject.dto.MultiResponseDto;
 import com.dudung.preproject.member.domain.Member;
@@ -34,7 +35,9 @@ public class QuestionController {
 
     @PostMapping
     public ResponseEntity postQuestion(@Valid @RequestBody QuestionDto.Post requestBody) {
-        Question question = questionService.createQuestion(questionMapper.questionPostToQuestion(requestBody));
+        long authenticationMemeberId = JwtParseInterceptor.getAuthenticatedMemberId();
+
+        Question question = questionService.createQuestion(questionMapper.questionPostToQuestion(requestBody), authenticationMemeberId);
         URI location = UriComponentsBuilder
                 .newInstance()
                 .path(QUESTION_DEFAULT_URL + "{question-id}")
@@ -47,8 +50,10 @@ public class QuestionController {
     @PatchMapping("/{question-id}")
     public ResponseEntity patchQuestion(@Positive @PathVariable("question-id") long questionId,
                                         @Valid @RequestBody QuestionDto.Patch requestBody) {
+        long authenticationMemeberId = JwtParseInterceptor.getAuthenticatedMemberId();
+
         requestBody.setQuestionId(questionId);
-        Question question = questionService.updateQuestion(questionMapper.questionPatchToQuestion(requestBody));
+        Question question = questionService.updateQuestion(questionMapper.questionPatchToQuestion(requestBody), authenticationMemeberId);
 
         return new ResponseEntity<>(questionMapper.questionToQuestionResponse(question, question.getAnswers()), HttpStatus.OK);
     }
@@ -72,7 +77,9 @@ public class QuestionController {
 
     @DeleteMapping("/{question-id}")
     public ResponseEntity deleteQuestion(@PathVariable("question-id") @Positive long questionId) {
-        questionService.deleteQuestion(questionId);
+        long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();
+
+        questionService.deleteQuestion(questionId, authenticationMemberId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
