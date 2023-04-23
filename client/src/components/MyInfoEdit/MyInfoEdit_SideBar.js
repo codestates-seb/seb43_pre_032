@@ -71,10 +71,15 @@ const Sidebar_conatiner = styled.div`
     font-size: 13px;
     font-weight: 400;
     color: rgba(0, 0, 0, 0.6);
-    padding: 6px 0px;
+    padding: 6px 6px;
+    margin: 6px;
     :hover {
       border-radius: 13px;
       background-color: var(--menu-hover-background);
+    }
+    :active {
+      background-color: #f48825;
+      color: white;
     }
   }
 `;
