@@ -92,9 +92,9 @@ public class QuestionController {
     @PostMapping("/{question-id}")
     public ResponseEntity postQuestionAnswer(@PathVariable("question-id") @Positive long questionId,
                                              @RequestBody QuestionAnswerDto.Post requestBody) {
-        long authenticationMemeberId = JwtParseInterceptor.getAuthenticatedMemberId();
+        long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();
         requestBody.setQuestionId(questionId);
-        questionAnswerService.createQuestionAnswer(questionAnswerMapper.questionAnswerPostToQuestionAnswer(requestBody), authenticationMemeberId);
+        questionAnswerService.createQuestionAnswer(questionAnswerMapper.questionAnswerPostToQuestionAnswer(requestBody), authenticationMemberId);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
