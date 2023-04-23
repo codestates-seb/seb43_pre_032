@@ -3,6 +3,7 @@ package com.dudung.preproject.member.domain;
 import com.dudung.preproject.answer.domain.Answer;
 import com.dudung.preproject.answerVote.domain.AnswerVote;
 import com.dudung.preproject.question.domain.Question;
+import com.dudung.preproject.question.domain.QuestionAnswer;
 import com.dudung.preproject.questionVote.domain.QuestionVote;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -67,6 +68,9 @@ public class Member {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<AnswerVote> answerVotes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member")
+    private List<QuestionAnswer> questionAnswers = new ArrayList<>();
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
@@ -84,6 +88,9 @@ public class Member {
 
     public void addAnswerVote(AnswerVote answerVote) {
         this.answerVotes.add(answerVote);
+    }
+    public void addQuestionAnswer(QuestionAnswer questionAnswer) {
+        this.questionAnswers.add(questionAnswer);
     }
 
     public int getQuestionCount() {
