@@ -39,7 +39,29 @@ public interface QuestionMapper {
 
         return question;
     }
-    Question questionPatchToQuestion(QuestionDto.Patch requestBody);
+    default Question questionPatchToQuestion(QuestionDto.Patch requestBody) {
+        Question question = new Question();
+        Member member = new Member();
+
+        question.setQuestionId(requestBody.getQuestionId());
+        question.setQuestionTitle(requestBody.getQuestionTitle());
+        question.setQuestionContent(requestBody.getQuestionContent());
+        question.setModifiedAt(requestBody.getModifiedAt());
+
+        List<QuestionTag> questionTags = requestBody.getTagName().stream()
+                .map(ADD -> {
+                    Tag tag = new Tag();
+                    QuestionTag questionTag = new QuestionTag();
+                    tag.setTagId(ADD.getTagId());
+                    questionTag.addTag(tag);
+                    questionTag.addQuestion(question);
+                    return questionTag;
+                }).collect(Collectors.toList());
+        question.setQuestionTags(questionTags);
+        question.setMember(member);
+
+        return question;
+    }
     default QuestionDto.Response questionToQuestionResponse(Question question, List<Answer> answers) {
         List<AnswerDto.ResponseForList> answerResponseDto = answers.size() == 0 ? null :
                 question.getAnswers().stream()
