@@ -1,13 +1,10 @@
 package com.dudung.preproject.question.controller;
 
 import com.dudung.preproject.answer.domain.Answer;
-import com.dudung.preproject.answer.mapper.AnswerMapper;
 import com.dudung.preproject.answer.service.AnswerService;
 import com.dudung.preproject.auth.interceptor.JwtParseInterceptor;
 import com.dudung.preproject.dto.DataListResponseDto;
 import com.dudung.preproject.dto.MultiResponseDto;
-import com.dudung.preproject.member.domain.Member;
-import com.dudung.preproject.member.service.MemberService;
 import com.dudung.preproject.question.domain.Question;
 import com.dudung.preproject.question.dto.QuestionDto;
 import com.dudung.preproject.question.mapper.QuestionMapper;
@@ -19,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
@@ -59,8 +58,9 @@ public class QuestionController {
     }
 
     @GetMapping("/{question-id}")
-    public ResponseEntity getQuestion(@PathVariable("question-id") @Positive long qustionId, @Positive @RequestParam int page, @Positive @RequestParam int size, @RequestParam String sortBy) {
+    public ResponseEntity getQuestion(@PathVariable("question-id") @Positive long qustionId, @Positive @RequestParam int page, @Positive @RequestParam int size, @RequestParam String sortBy, HttpServletRequest request, HttpServletResponse response) {
         Question question = questionService.findQuestion(qustionId);
+        questionService.viewCountValidation(question, request, response);
         Page<Answer> pageAnswers = answerService.findAnswers(page - 1, size, sortBy);
         List<Answer> answers = pageAnswers.getContent();
 
