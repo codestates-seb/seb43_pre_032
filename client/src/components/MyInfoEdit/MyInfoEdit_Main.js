@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import MyInfoEdit_imgSelect from './MyInfoEdit_imgSelect';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faLink } from '@fortawesome/free-solid-svg-icons';
 function MyInfoEdit_Main() {
   return (
     <>
@@ -38,19 +40,28 @@ function MyInfoEdit_Main() {
         <LinksContainer>
           <div className="links">
             <label htmlFor="websitelink">Website link</label>
-            <input id="websitelink"></input>
+            <div className="linkInput">
+              <FontAwesomeIcon className="icon" icon={faLink} />
+              <input id="websitelink"></input>
+            </div>
           </div>
           <div className="links">
             <label htmlFor="twitterlinkOrUsername">
               Twitter link or username
             </label>
-            <input id="twitterlinkOrUsername"></input>
+            <div className="linkInput">
+              <FontAwesomeIcon className="icon" icon={faTwitter} />
+              <input id="twitterlinkOrUsername"></input>
+            </div>
           </div>
           <div className="links">
             <label htmlFor="githublinkOrUsername">
               GitHub link or username
             </label>
-            <input id="githublinkOrUsername"></input>
+            <div className="linkInput">
+              <FontAwesomeIcon className="icon" icon={faGithub} />
+              <input id="githublinkOrUsername"></input>
+            </div>
           </div>
         </LinksContainer>
         <div className="subtitle">
@@ -164,6 +175,19 @@ const LinksContainer = styled(InformationContainer)`
     height: 34px;
     border-radius: 5px;
     padding: 0px 0px 0px 32px;
+  }
+  .linkInput {
+    display: flex;
+    position: relative;
+  }
+  .icon {
+    position: absolute;
+    margin-top: -9px;
+    top: 50%;
+    left: 1.2em;
+    width: 18px;
+    height: 18px;
+    color: hsl(210, 8%, 55%);
   }
 `;
 
