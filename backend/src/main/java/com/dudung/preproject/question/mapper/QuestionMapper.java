@@ -1,6 +1,8 @@
 package com.dudung.preproject.question.mapper;
 
 import com.dudung.preproject.answer.domain.Answer;
+import com.dudung.preproject.answer.domain.AnswerAnswer;
+import com.dudung.preproject.answer.dto.AnswerAnswerDto;
 import com.dudung.preproject.answer.dto.AnswerDto;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.question.domain.Question;
@@ -125,7 +127,23 @@ public interface QuestionMapper {
                 .memberId(answer.getMember().getMemberId())
                 .memberName(answer.getMember().getName())
                 .memberReputation(answer.getMember().getReputation())
+                .answerAnswers(answerAnswerForList(answer.getAnswerAnswers()))
                 .build();
+    }
+    default List<AnswerAnswerDto.Response> answerAnswerForList(List<AnswerAnswer> answerAnswers) {
+        return answerAnswers.stream()
+                .map(answerAnswer -> answerAnswerToResponse(answerAnswer))
+                .collect(Collectors.toList());
+    }
+    default AnswerAnswerDto.Response answerAnswerToResponse(AnswerAnswer answerAnswer) {
+        return AnswerAnswerDto.Response.builder()
+                .answerAnswerId(answerAnswer.getAnswerAnswerId())
+                .answerAnswerContent(answerAnswer.getAnswerAnswerContent())
+                .createdAt(answerAnswer.getAnswerAnswerModifiedAt())
+                .modifiedAt(answerAnswer.getAnswerAnswerModifiedAt())
+                .memberId(answerAnswer.getMember().getMemberId())
+                .memberName(answerAnswer.getMember().getName())
+                .memberReputation(answerAnswer.getMember().getReputation()).build();
     }
 
     default QuestionDto.ResponseForList questionToQuestionResponseForList(Question question) {

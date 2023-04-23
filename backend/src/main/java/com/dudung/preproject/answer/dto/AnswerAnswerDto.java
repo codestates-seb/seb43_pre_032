@@ -1,5 +1,6 @@
 package com.dudung.preproject.answer.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,5 +28,16 @@ public class AnswerAnswerDto {
         private LocalDateTime modifiedAt = LocalDateTime.now();
     }
 
+    @Getter
+    @Builder
+    public static class Response {
+        private Long answerAnswerId;
+        private String answerAnswerContent;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
+        private Long memberId;
+        private String memberName;
+        private Integer memberReputation;
+    }
 
 }

@@ -50,6 +50,9 @@ public class Answer {
         return answerVoteSum;
     }
 
+    @OneToMany(mappedBy = "answer")
+    private List<AnswerAnswer> answerAnswers = new ArrayList<>();
+
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime modifiedAt = LocalDateTime.now();
@@ -58,4 +61,7 @@ public class Answer {
         this.answerVotes.add(answerVote);
     }
 
+    public void addAnswerAnswer(AnswerAnswer answerAnswer) {
+        this.answerAnswers.add(answerAnswer);
+    }
 }

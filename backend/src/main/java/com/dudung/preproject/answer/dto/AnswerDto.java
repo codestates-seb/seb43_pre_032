@@ -74,6 +74,7 @@ public class AnswerDto {
         private long memberId;
         private String memberName;
         private int memberReputation;
+        private List<AnswerAnswerDto.Response> answerAnswers;
 
 
     }
