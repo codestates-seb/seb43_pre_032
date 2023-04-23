@@ -22,22 +22,12 @@ import java.util.*;
 
 public class StubData {
     public static class MockSecurity {
-        public static String getInvalidAccessToken() {
-            return "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sImlkIjoiaGdkQGdtYWlsLmNvbSIsIm1lbWJlcklkIjoxLCJzdWIiOiJoZ2RAZ21haWwuY29tIiwiaWF0IjoxNjgyMjMwNzY1LCJleHAiOjE2ODIyMzI1NjV9.IOqFgoe3DsMc2Zj0o_jrDBnXMqZKns3kHvsje6E3fqw";
-        }
-
-        /**
-         * 실제 사용할 수 있는 유효한 JWT를 생성한다.
-         *
-         * @param secretKey JwtVerificationFilter에서 사용되는 key와 일치해야 한다.
-         * @param role 원하는 role로 지정 가능 (USER, ADMIN)
-         * @return
-         */
-        public static String getValidAccessToken(String secretKey, String role) {
+        // 실제 사용할 수 있는 유효한 JWT를 생성한다.
+        // 하지만 유효하지 않다;;
+        public static String getValidAccessToken(String secretKey) {
             JwtTokenizer jwtTokenizer = new JwtTokenizer();
             Map<String, Object> claims = new HashMap<>();
             claims.put("memberId", 1L);
-            claims.put("roles", List.of(role));
 
             String subject = "test access token";
             Calendar calendar = Calendar.getInstance();

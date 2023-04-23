@@ -3,19 +3,23 @@ package com.dudung.preproject.question.controller;
 import com.dudung.preproject.answer.domain.Answer;
 import com.dudung.preproject.answer.dto.AnswerDto;
 import com.dudung.preproject.answer.service.AnswerService;
+import com.dudung.preproject.auth.jwt.JwtTokenizer;
 import com.dudung.preproject.helper.QuestionControllerHelper;
 import com.dudung.preproject.helper.StubData;
 import com.dudung.preproject.question.domain.Question;
 import com.dudung.preproject.question.dto.QuestionDto;
 import com.dudung.preproject.question.mapper.QuestionMapper;
 import com.dudung.preproject.question.service.QuestionService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
@@ -47,9 +51,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureRestDocs
 @MockBean(JpaMetamodelMappingContext.class)
+@AutoConfigureMockMvc(addFilters = false) // 발급한 토큰이 유효하지 않아 붙여줌
+@TestInstance(TestInstance.Lifecycle.PER_CLASS) // BeforeAll 사전작업
 public class QuestionControllerTest implements QuestionControllerHelper {
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private JwtTokenizer jwtTokenizer;
     @MockBean
     private QuestionService questionService;
     @MockBean
@@ -57,12 +65,18 @@ public class QuestionControllerTest implements QuestionControllerHelper {
     @MockBean
     private AnswerService answerService;
 
+    private String accessToken;
+    @BeforeAll
+    public void init() {
+        System.out.println("# BeforeAll");
+        accessToken = StubData.MockSecurity.getValidAccessToken(jwtTokenizer.getSecretKey());
+    }
+
     @Test
     @DisplayName("Question Create Test")
     public void createQuestionTest() throws  Exception {
         // given
         QuestionDto.Post post = (QuestionDto.Post) StubData.MockQuestion.getRequestBody(HttpMethod.POST);
-        String accessToken = StubData.MockSecurity.getInvalidAccessToken();
         String content = toJsonContent(post);
 
         given(questionMapper.questionPostToQuestion(Mockito.any(QuestionDto.Post.class))).willReturn(new Question());
@@ -104,7 +118,6 @@ public class QuestionControllerTest implements QuestionControllerHelper {
     public void patchQuestionTest() throws Exception {
         // given
         QuestionDto.Patch patch = (QuestionDto.Patch) StubData.MockQuestion.getRequestBody(HttpMethod.PATCH);
-        String accessToken = StubData.MockSecurity.getInvalidAccessToken();
         String content = toJsonContent(patch);
 
         given(questionMapper.questionPatchToQuestion(Mockito.any(QuestionDto.Patch.class))).willReturn(new Question());
@@ -320,7 +333,6 @@ public class QuestionControllerTest implements QuestionControllerHelper {
     @Test
     @DisplayName("Question Delete Test")
     public void deleteQuestionTest() throws Exception {
-        String accessToken = StubData.MockSecurity.getInvalidAccessToken();
         doNothing().when(questionService).deleteQuestion(Mockito.anyLong(), Mockito.anyLong());
 
         mockMvc.perform(deleteRequestBuilder(QUESTION_RESOURCE_URI, 1L, accessToken))
