@@ -5,6 +5,7 @@ import com.dudung.preproject.answer.dto.AnswerAnswerDto;
 import com.dudung.preproject.answer.mapper.AnswerAnswerMapper;
 import com.dudung.preproject.answer.service.AnswerAnswerService;
 import com.dudung.preproject.answer.service.AnswerService;
+import com.dudung.preproject.auth.interceptor.JwtParseInterceptor;
 import com.dudung.preproject.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,7 @@ public class AnswerAnswerController {
 
     @PostMapping
     public ResponseEntity postAnswerAnswer(@Valid @RequestBody AnswerAnswerDto.Post requestBody) {
+        long authenticationAnswerId = JwtParseInterceptor.getAuthenticatedMemberId();
         AnswerAnswer answerAnswer = mapper.answerAnswerPostAnswerANswer(requestBody);
 
         answerAnswer.setMember(memberService.findMember(requestBody.getMemberId()));
@@ -40,6 +42,7 @@ public class AnswerAnswerController {
     @PatchMapping("{answeranswer-id}")
     public ResponseEntity patchAnswerAnswer(@Positive @PathVariable("answeranswer-id") Long answeranswerId,
                                             @Valid @RequestBody AnswerAnswerDto.Patch requestBody) {
+        long authenticationAnswerId = JwtParseInterceptor.getAuthenticatedMemberId();
         requestBody.setAnswerId(answeranswerId);
 
         AnswerAnswer answerAnswer = answerAnswerService.updateAnswerAnswer(mapper.answerAnswerPatchAnswerAnswer(requestBody));
@@ -49,6 +52,7 @@ public class AnswerAnswerController {
 
     @DeleteMapping("{answeranswer-id}")
     public ResponseEntity deleteAnswerAnswer(@PathVariable("answeranswer-id") Long answeranswerId) {
+        long authenticationAnswerId = JwtParseInterceptor.getAuthenticatedMemberId();
         answerAnswerService.deleteAnswerAnswer(answeranswerId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

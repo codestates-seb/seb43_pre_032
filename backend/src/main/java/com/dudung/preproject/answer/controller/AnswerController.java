@@ -4,6 +4,8 @@ import com.dudung.preproject.answer.domain.Answer;
 import com.dudung.preproject.answer.dto.AnswerDto;
 import com.dudung.preproject.answer.mapper.AnswerMapper;
 import com.dudung.preproject.answer.service.AnswerService;
+import com.dudung.preproject.auth.interceptor.JwtParseInterceptor;
+import com.dudung.preproject.auth.jwt.JwtTokenizer;
 import com.dudung.preproject.dto.MultiResponseDto;
 import com.dudung.preproject.member.service.MemberService;
 import com.dudung.preproject.question.service.QuestionService;
@@ -31,6 +33,7 @@ public class AnswerController {
 
     @PostMapping
     public ResponseEntity postAnswer(@Valid @RequestBody AnswerDto.Post requestBody) {
+        long authenticationAnswerId = JwtParseInterceptor.getAuthenticatedMemberId();
         Answer answer = mapper.answerPostToAnswer(requestBody);
         answer.setMember(memberService.findMember(requestBody.getMemberId()));
         answer.setQuestion(questionService.findVerifiedQuestion(requestBody.getQuestionId()));
@@ -42,6 +45,7 @@ public class AnswerController {
     @PatchMapping("{answer-id}")
     public ResponseEntity patchAnswer(@Positive @PathVariable("answer-id") Long answerId,
                                       @Valid @RequestBody AnswerDto.Patch requestBody){
+        long authenticationAnswerId = JwtParseInterceptor.getAuthenticatedMemberId();
         requestBody.setAnswerId(answerId);
 
         Answer answer = answerService.updateAnswer(mapper.answerPatchAnswer(requestBody));
@@ -73,6 +77,7 @@ public class AnswerController {
 
     @DeleteMapping("{answer-id}")
     public ResponseEntity deleteAnswer(@PathVariable("answer-id") Long answerId) {
+        long authenticationAnswerId = JwtParseInterceptor.getAuthenticatedMemberId();
         answerService.deleteAnswer(answerId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
