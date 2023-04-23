@@ -1,6 +1,7 @@
 package com.dudung.preproject.question.dto;
 
 import com.dudung.preproject.question.domain.Question;
+import com.dudung.preproject.question.domain.QuestionAnswer;
 import com.dudung.preproject.tag.domain.Tag;
 import com.dudung.preproject.tag.dto.TagDto;
 import lombok.Builder;
@@ -19,6 +20,7 @@ public class QuestionResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private List<QuestionTagDto.Response> tagName;
+    private List<QuestionAnswerDto.Response> questionAnswers;
     private int questionVoteSum;
     private int viewCount;
     private long memberId;

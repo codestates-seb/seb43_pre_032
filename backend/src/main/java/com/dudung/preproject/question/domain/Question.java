@@ -57,6 +57,9 @@ public class Question {
     @OneToMany(mappedBy = "question")
     private List<Answer> answers = new ArrayList<>();
 
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
+    private List<QuestionAnswer> questionAnswers = new ArrayList<>();
+
     private LocalDateTime createdAt;
 
     private LocalDateTime modifiedAt;
@@ -67,9 +70,11 @@ public class Question {
     public void addQuestionVote(QuestionVote questionVote) {
         this.questionVotes.add(questionVote);
     }
-
     public void addAnswer(Answer answer) {
         this.answers.add(answer);
+    }
+    public void addQuestionAnswer(QuestionAnswer questionAnswer) {
+        this.questionAnswers.add(questionAnswer);
     }
 
 }

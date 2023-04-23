@@ -4,7 +4,9 @@ import com.dudung.preproject.answer.domain.Answer;
 import com.dudung.preproject.answer.dto.AnswerDto;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.question.domain.Question;
+import com.dudung.preproject.question.domain.QuestionAnswer;
 import com.dudung.preproject.question.domain.QuestionTag;
+import com.dudung.preproject.question.dto.QuestionAnswerDto;
 import com.dudung.preproject.question.dto.QuestionDto;
 import com.dudung.preproject.question.dto.QuestionResponseDto;
 import com.dudung.preproject.question.dto.QuestionTagDto;
@@ -75,6 +77,7 @@ public interface QuestionMapper {
                 .createdAt(question.getCreatedAt())
                 .modifiedAt(question.getModifiedAt())
                 .tagName(tagsToTagNames(question.getQuestionTags()))
+                .questionAnswers(questionAnswerForList(question.getQuestionAnswers()))
                 .questionVoteSum(question.getQuestionVoteSum())
                 .viewCount(question.getViewCount())
                 .memberId(question.getMember().getMemberId())
@@ -83,6 +86,21 @@ public interface QuestionMapper {
 
 
         return new QuestionDto.Response(questionResponseDto, answerResponseDto);
+    }
+    default List<QuestionAnswerDto.Response> questionAnswerForList(List<QuestionAnswer> questionAnswers) {
+        return questionAnswers.stream()
+                .map(questionAnswer -> questionAnswerToResponse(questionAnswer))
+                .collect(Collectors.toList());
+    }
+    default QuestionAnswerDto.Response questionAnswerToResponse(QuestionAnswer questionAnswer) {
+        return QuestionAnswerDto.Response.builder()
+                .questionAnswerId(questionAnswer.getQuestionAnswerId())
+                .questionAnswerContent(questionAnswer.getQuestionAnswerContent())
+                .createdAt(questionAnswer.getCreatedAt())
+                .modifiedAt(questionAnswer.getModifiedAt())
+                .memberId(questionAnswer.getMember().getMemberId())
+                .memberName(questionAnswer.getMember().getName())
+                .memberReputation(questionAnswer.getMember().getReputation()).build();
     }
     default List<QuestionTagDto.Response> tagsToTagNames(List<QuestionTag> questionTagList) {
         return questionTagList.stream()

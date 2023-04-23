@@ -6,8 +6,11 @@ import com.dudung.preproject.auth.interceptor.JwtParseInterceptor;
 import com.dudung.preproject.dto.DataListResponseDto;
 import com.dudung.preproject.dto.MultiResponseDto;
 import com.dudung.preproject.question.domain.Question;
+import com.dudung.preproject.question.dto.QuestionAnswerDto;
 import com.dudung.preproject.question.dto.QuestionDto;
+import com.dudung.preproject.question.mapper.QuestionAnswerMapper;
 import com.dudung.preproject.question.mapper.QuestionMapper;
+import com.dudung.preproject.question.service.QuestionAnswerService;
 import com.dudung.preproject.question.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,6 +34,8 @@ public class QuestionController {
     private final QuestionService questionService;
     private final QuestionMapper questionMapper;
     private final AnswerService answerService;
+    private final QuestionAnswerService questionAnswerService;
+    private final QuestionAnswerMapper questionAnswerMapper;
 
     @PostMapping
     public ResponseEntity postQuestion(@Valid @RequestBody QuestionDto.Post requestBody) {
@@ -82,5 +87,15 @@ public class QuestionController {
         questionService.deleteQuestion(questionId, authenticationMemberId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/{question-id}")
+    public ResponseEntity postQuestionAnswer(@PathVariable("question-id") @Positive long questionId,
+                                             @RequestBody QuestionAnswerDto.Post requestBody) {
+        long authenticationMemeberId = JwtParseInterceptor.getAuthenticatedMemberId();
+        requestBody.setQuestionId(questionId);
+        questionAnswerService.createQuestionAnswer(questionAnswerMapper.questionAnswerPostToQuestionAnswer(requestBody), authenticationMemeberId);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
