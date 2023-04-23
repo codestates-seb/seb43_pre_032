@@ -349,6 +349,9 @@ const ContentsData = styled.div`
     font-weight: 500;
     color: #0074cc;
   }
+  a {
+    text-decoration: none;
+  }
   span {
     font-size: 14px;
   }
