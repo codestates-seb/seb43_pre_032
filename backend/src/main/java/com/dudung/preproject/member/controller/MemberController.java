@@ -7,27 +7,29 @@ import com.dudung.preproject.member.mapper.MemberMapper;
 import com.dudung.preproject.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-
+import java.io.InputStream;
 import java.net.URI;
 import java.util.List;
+import org.apache.commons.io.IOUtils;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/members")
 public class MemberController {
     private final static String MEMBER_DEFAULT_URL = "/members";
+
+    private final static String IMAGE_DEFAULT_URL = "/Users/jaewoosim/Desktop/project/pre-project/seb43_pre_032/backend/image/";
     private final MemberService memberService;
     private final MemberMapper mapper;
 
@@ -45,13 +47,6 @@ public class MemberController {
         return ResponseEntity.created(location).build();
     }
 
-    @PostMapping(path = "/{member-id}/upload")
-    public ResponseEntity postImageUpload(@PathVariable("member-id") long memberId,
-                                          @RequestPart(required = false) MultipartFile file){
-        String dir = Long.toString(memberId);
-        memberService.uploading(file, dir);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
 
     @PatchMapping("/{member-id}")
     public ResponseEntity patchMember(@Positive @PathVariable("member-id") long memberId,
@@ -95,5 +90,34 @@ public class MemberController {
 
         return new ResponseEntity<>(mapper.memberToMyPage
                 (memberService.findMember(memberId)), HttpStatus.OK);
+    }
+    @PostMapping(path = "/{member-id}/upload")
+    public ResponseEntity postImageUpload(@PathVariable("member-id") long memberId,
+                                          @RequestPart(required = false) MultipartFile file){
+
+        memberService.uploading(file, memberId);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/profileimage/{member-id}")
+    public ResponseEntity<byte[]> getProfileImage(@PathVariable("member-id") long memberId) throws IOException {
+        String dir = Long.toString(memberId);
+        String fileExtension = ".png";
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(IMAGE_DEFAULT_URL + dir + "/" + dir + ".jpeg");
+        } catch (Exception e) {
+            inputStream = new FileInputStream(IMAGE_DEFAULT_URL + dir + "/" + dir + ".png");
+        } finally {
+            byte[] imageByteArray = IOUtils.toByteArray(inputStream);
+            inputStream.close();
+
+            HttpHeaders httpHeaders = new HttpHeaders();
+            if (".png".equals(fileExtension)) {
+                httpHeaders.setContentType(MediaType.IMAGE_PNG);
+            } else if (".jpeg".equals(fileExtension)) {
+                httpHeaders.setContentType(MediaType.IMAGE_JPEG);
+            } return new ResponseEntity<>(imageByteArray, httpHeaders, HttpStatus.OK);
+        }
     }
 }

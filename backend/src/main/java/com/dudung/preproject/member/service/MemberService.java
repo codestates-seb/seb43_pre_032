@@ -1,11 +1,13 @@
 package com.dudung.preproject.member.service;
 
+import ch.qos.logback.core.util.FileUtil;
 import com.dudung.preproject.auth.utils.CustomAuthorityUtils;
 import com.dudung.preproject.exception.BusinessLogicException;
 import com.dudung.preproject.exception.ExceptionCode;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FileUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -77,21 +79,32 @@ public class MemberService {
         return findedMember;
     }
 
-    public Boolean uploading(MultipartFile file, String dirName) {
+    public Boolean uploading(MultipartFile file, long memberId) {
         Boolean result = Boolean.TRUE;
-        try {
-            File folder = new File(dirName);
-            if (!folder.exists()) folder.mkdirs();
 
-            File destination = new File(folder.getAbsolutePath() , file.getOriginalFilename());
+        String dir = Long.toString(memberId);
+        String extiension = file.getOriginalFilename()
+                .substring(file.getOriginalFilename().lastIndexOf(".")).toLowerCase();
+
+        String newFileName = dir + extiension;
+
+        try {
+            File folder = new File("image" + File.separator + dir);
+            File[] files = folder.listFiles();
+            if (!folder.exists()) {
+                folder.mkdirs();
+            } else if (files != null) {
+                for (File file1 : files) {
+                    file1.delete();
+                }
+            }
+            File destination = new File(folder.getAbsolutePath() , newFileName);
             file.transferTo(destination);
 
             result = Boolean.FALSE;
         }catch (Exception e) {
-            System.out.println("step 3");
             e.printStackTrace();
         } finally {
-            System.out.println("step 4");
             return result;
         }
     }
