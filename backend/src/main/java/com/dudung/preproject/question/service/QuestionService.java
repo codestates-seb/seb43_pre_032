@@ -17,7 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -55,9 +54,11 @@ public class QuestionService {
         Optional.ofNullable(question.getQuestionContent())
                 .ifPresent(content -> findedQuestion.setQuestionContent(content));
         Optional.ofNullable(question.getQuestionTags())
-                .ifPresent(tagList -> insertTag(tagList, findedQuestion));
-
-        findedQuestion.setModifiedAt(LocalDateTime.now());
+                .ifPresent(tagList -> {
+                    deleteTag(findedQuestion);
+                    insertTag(tagList, findedQuestion);
+                });
+        findedQuestion.setModifiedAt(question.getModifiedAt());
 
         return questionRepository.save(findedQuestion);
     }
@@ -135,6 +136,13 @@ public class QuestionService {
         }
 
         question.setQuestionTags(questionsTags);
+    }
+
+    private void deleteTag(Question question) {
+        List<QuestionTag> questionTags = question.getQuestionTags();
+
+        questionTags.stream()
+                .forEach(questionTag -> questionTagRepository.delete(questionTag));
     }
 
     private void checkVerifiedId(long authenticationMemeberId) { // 임의로 넣은 값 '-1'

@@ -2,6 +2,7 @@ package com.dudung.preproject.helper;
 
 import com.dudung.preproject.answer.domain.Answer;
 import com.dudung.preproject.answer.dto.AnswerDto;
+import com.dudung.preproject.auth.jwt.JwtTokenizer;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.member.dto.MemberDto;
 import com.dudung.preproject.question.domain.Question;
@@ -17,11 +18,39 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpMethod;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class StubData {
+    public static class MockSecurity {
+        public static String getInvalidAccessToken() {
+            return "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sImlkIjoiaGdkQGdtYWlsLmNvbSIsIm1lbWJlcklkIjoxLCJzdWIiOiJoZ2RAZ21haWwuY29tIiwiaWF0IjoxNjgyMjMwNzY1LCJleHAiOjE2ODIyMzI1NjV9.IOqFgoe3DsMc2Zj0o_jrDBnXMqZKns3kHvsje6E3fqw";
+        }
+
+        /**
+         * 실제 사용할 수 있는 유효한 JWT를 생성한다.
+         *
+         * @param secretKey JwtVerificationFilter에서 사용되는 key와 일치해야 한다.
+         * @param role 원하는 role로 지정 가능 (USER, ADMIN)
+         * @return
+         */
+        public static String getValidAccessToken(String secretKey, String role) {
+            JwtTokenizer jwtTokenizer = new JwtTokenizer();
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("memberId", 1L);
+            claims.put("roles", List.of(role));
+
+            String subject = "test access token";
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MINUTE, 1);
+            Date expiration = calendar.getTime();
+
+            String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(secretKey);
+
+            String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
+
+            return accessToken;
+        }
+    }
     public static String getPostMemberContent() {
         return "{\n" +
                 "\"email\": \"dudung@gamil.com\",\n" +
@@ -99,16 +128,14 @@ public class StubData {
         static {
 
             QuestionDto.Post post = new QuestionDto.Post();
-            post.setMemberId(1L);
-            post.setQuestionTitle("두둥탁");
-            post.setQuestionContent("두둥두둥");
+            post.setQuestionTitle("질문 제목");
+            post.setQuestionContent("질문 내용");
             post.setTagName(getTagName());
 
             QuestionDto.Patch patch = new QuestionDto.Patch();
-            patch.setMemberId(1L);
             patch.setQuestionId(1L);
-            patch.setQuestionTitle("두둥탁");
-            patch.setQuestionContent("두둥두둥");
+            patch.setQuestionTitle("질문 제목");
+            patch.setQuestionContent("질문 내용");
             patch.setTagName(getTagName());
 
             stubRequestBody = new HashMap<>();
@@ -134,14 +161,14 @@ public class StubData {
 
             QuestionResponseDto questionResponseDto = QuestionResponseDto.builder()
                     .questionId(1L)
-                    .questionTitle("두둥탁")
-                    .questionContent("두둥두둥")
+                    .questionTitle("질문 제목")
+                    .questionContent("질문 내용")
                     .createdAt(time)
                     .modifiedAt(time)
                     .tagName(getTagNameForMultiResponse())
                     .questionVoteSum(0)
                     .viewCount(1)
-                    .memberName("두둥탁")
+                    .memberName("질문 작성자")
                     .build();
 
 
@@ -186,22 +213,22 @@ public class StubData {
             return List.of(
                     QuestionDto.ResponseForList.builder()
                             .questionId(1L)
-                            .questionTitle("두둥탁")
+                            .questionTitle("제목 1")
                             .viewCount(0)
                             .questionVoteSum(0)
                             .createdAt(time)
                             .tagName(getTagNameForMultiResponse())
-                            .memberName("두둥탁")
+                            .memberName("질문 작성자")
                             .answerCount(0)
                             .build(),
                     QuestionDto.ResponseForList.builder()
                             .questionId(2L)
-                            .questionTitle("두둥두둥")
+                            .questionTitle("제목 2")
                             .viewCount(0)
                             .questionVoteSum(0)
                             .createdAt(time)
                             .tagName(getTagNameForMultiResponse())
-                            .memberName("두둥두둥")
+                            .memberName("질문 작성자")
                             .answerCount(0)
                             .build()
             );
