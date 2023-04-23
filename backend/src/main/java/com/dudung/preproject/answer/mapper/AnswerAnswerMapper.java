@@ -6,6 +6,8 @@ import com.dudung.preproject.answer.dto.AnswerAnswerDto;
 import com.dudung.preproject.member.domain.Member;
 import org.mapstruct.Mapper;
 
+import java.time.LocalDateTime;
+
 @Mapper(componentModel = "spring")
 public interface AnswerAnswerMapper {
     AnswerAnswer answerAnswerPostAnswerANswer(AnswerAnswerDto.Post requestBody);
@@ -21,7 +23,7 @@ public interface AnswerAnswerMapper {
         answerAnswer.setAnswer(answer);
         answerAnswer.setMember(member);
         answerAnswer.setAnswerAnswerContent(requestBody.getAnswerAnswerContent());
-        answerAnswer.setAnswerAnswerCreateAt(requestBody.getCreatedAt());
+        answerAnswer.setAnswerAnswerCreateAt(LocalDateTime.now());
 
         return answerAnswer;
     }
@@ -36,7 +38,7 @@ public interface AnswerAnswerMapper {
         answerAnswer.setAnswer(answer);
         answerAnswer.setMember(member);
         answerAnswer.setAnswerAnswerContent(requestBody.getAnswerAnswerContent());
-        answerAnswer.setAnswerAnswerModifiedAt(requestBody.getModifiedAt());
+        answerAnswer.setAnswerAnswerModifiedAt(LocalDateTime.now());
         return answerAnswer;
     }
 
