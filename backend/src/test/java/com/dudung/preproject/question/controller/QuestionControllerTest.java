@@ -318,7 +318,7 @@ public class QuestionControllerTest implements QuestionControllerHelper {
     @Test
     @DisplayName("Question Delete Test")
     public void deleteQuestionTest() throws Exception {
-        doNothing().when(questionService).deleteQuestion(Mockito.anyLong());
+        doNothing().when(questionService).deleteQuestion(Mockito.anyLong(), Mockito.anyLong());
 
         mockMvc.perform(deleteRequestBuilder(QUESTION_RESOURCE_URI, 1L))
                 .andExpect(status().isNoContent())
