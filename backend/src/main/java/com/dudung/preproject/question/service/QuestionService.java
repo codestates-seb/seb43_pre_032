@@ -34,6 +34,7 @@ public class QuestionService {
 
 
     public Question createQuestion(Question question, long authenticationMemeberId) {
+        checkVerifiedId(authenticationMemeberId);
         Member member = memberService.findMember(authenticationMemeberId);
         question.setMember(member);
 
@@ -46,6 +47,7 @@ public class QuestionService {
     }
 
     public Question updateQuestion(Question question, long authenticationMemberId) {
+        checkVerifiedId(authenticationMemberId);
         Question findedQuestion = findVerifiedQuestion(question.getQuestionId());
 
         patchPermission(findedQuestion, memberService.findMember(authenticationMemberId));
@@ -79,6 +81,7 @@ public class QuestionService {
     }
 
     public void deleteQuestion(long questionId, long authenticationMemberId) {
+        checkVerifiedId(authenticationMemberId);
         Question findQuestion = findVerifiedQuestion(questionId);
         deletePermission(findQuestion, memberService.findMember(authenticationMemberId));
         questionRepository.delete(findQuestion);
@@ -132,6 +135,10 @@ public class QuestionService {
         }
 
         question.setQuestionTags(questionsTags);
+    }
+
+    private void checkVerifiedId(long authenticationMemeberId) { // 임의로 넣은 값 '-1'
+        if (authenticationMemeberId == -1) throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
     }
 
     private void patchPermission(Question question, Member member) {

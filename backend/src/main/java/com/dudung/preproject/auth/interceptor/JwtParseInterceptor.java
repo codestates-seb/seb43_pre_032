@@ -41,8 +41,10 @@ public class JwtParseInterceptor implements HandlerInterceptor {
                 return false;
             }
         } catch (Exception e) {
-            ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED);
-            return false;
+//            ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED);
+//            return false;
+            authenicatedMemberId.set(-1L);  // 유효하지 않는 id 값을 설정하여 로그인이 필요한 기능 호출 시 진행되지 않도록 함
+            return true;
         }
     }
 

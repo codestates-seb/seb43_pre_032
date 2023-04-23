@@ -1,6 +1,7 @@
 package com.dudung.preproject.exception;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 public enum ExceptionCode {
     MEMBER_NOT_FOUND(404, "Member not found"),
@@ -9,7 +10,8 @@ public enum ExceptionCode {
     ANSWER_NOT_FOUND(404, "Answer not found"),
     QUESTION_NOT_FOUND(404, "Question not found"),
     TAG_NOT_FOUND(404, "Tag not found"),
-    ONLY_AUTHOR(403, "You don't have permission"),;
+    ONLY_AUTHOR(403, "You don't have permission"),
+    UNAUTHORIZED(401,  "Unauthorized");
 
     @Getter
     private int status;
