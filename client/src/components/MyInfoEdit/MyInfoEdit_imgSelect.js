@@ -17,6 +17,7 @@ function MyInfoEdit_imgSelect() {
   return (
     <>
       <ImgSelectContainer>
+        <label htmlFor="imgSelect">Profile image</label>
         <input
           onChange={fileSelectedHandler}
           className="img-select-input"

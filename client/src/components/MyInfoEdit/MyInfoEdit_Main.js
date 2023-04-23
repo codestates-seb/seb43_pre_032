@@ -13,7 +13,6 @@ function MyInfoEdit_Main() {
         </div>
         <InformationContainer>
           <div>
-            <h3>Profile image</h3>
             <MyInfoEdit_imgSelect></MyInfoEdit_imgSelect>
           </div>
           <div className="simpleModifyContainer">
@@ -21,18 +20,53 @@ function MyInfoEdit_Main() {
             <input id="display-name" className="simpleModify"></input>
           </div>
           <div className="simpleModifyContainer">
-            <h3>Location</h3>
-            <input className="simpleModify"></input>
+            <label htmlFor="location">Location</label>
+            <input id="location" className="simpleModify"></input>
           </div>
           <div className="simpleModifyContainer">
-            <h3>Title</h3>
-            <input className="simpleModify"></input>
+            <label htmlFor="title">Title</label>
+            <input id="title" className="simpleModify"></input>
           </div>
-          <div>
-            <h3>About me</h3>
-            <textarea></textarea>
+          <div className="abouteditContainer">
+            <label htmlFor="aboutme">About me</label>
+            <input id="aboutme" className="aboutedit"></input>
           </div>
         </InformationContainer>
+        <div className="subtitle">
+          <h2>Links</h2>
+        </div>
+        <LinksContainer>
+          <div className="links">
+            <label htmlFor="websitelink">Website link</label>
+            <input id="websitelink"></input>
+          </div>
+          <div className="links">
+            <label htmlFor="twitterlinkOrUsername">
+              Twitter link or username
+            </label>
+            <input id="twitterlinkOrUsername"></input>
+          </div>
+          <div className="links">
+            <label htmlFor="githublinkOrUsername">
+              GitHub link or username
+            </label>
+            <input id="githublinkOrUsername"></input>
+          </div>
+        </LinksContainer>
+        <div className="subtitle">
+          <h2>Private information</h2>
+        </div>
+        <PrivateinfoContainer>
+          <div className="simpleModifyContainer">
+            <label htmlFor="fullName">Full name</label>
+            <input id="fullName" className="simpleModify"></input>
+          </div>
+        </PrivateinfoContainer>
+
+        <div className="profileEdit-btns">
+          <button className="profileEdit-btn">Save profile</button>
+          <button className="cancel-btn">Cancel</button>
+        </div>
       </MainContainer>
     </>
   );
@@ -41,7 +75,9 @@ function MyInfoEdit_Main() {
 export default MyInfoEdit_Main;
 
 const MainContainer = styled.div`
-  width: 100%;
+  padding: 24px 16px;
+  flex-grow: 1;
+  margin: 0px;
   h1 {
     font-size: 27px;
     font-weight: 500;
@@ -56,8 +92,32 @@ const MainContainer = styled.div`
   }
   label {
     font-size: 15px;
+    font-weight: 700;
     height: 20px;
     margin-bottom: 5px;
+  }
+
+  button {
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    margin: 2px;
+    border-radius: 4px;
+  }
+  .profileEdit-btn {
+    background-color: #0a95ff;
+    color: white;
+    margin: 0px 10px 0px 0px;
+    :hover {
+      background-color: #0074cc;
+    }
+  }
+  .cancel-btn {
+    color: #0a95ff;
+    background-color: white;
+    :hover {
+      background-color: #f0f8ff;
+    }
   }
 `;
 
@@ -66,14 +126,50 @@ const InformationContainer = styled.div`
   padding: 24px;
   margin: 0px 0px 48px;
   border-radius: 5px;
+  div {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
   .simpleModifyContainer {
     height: 60px;
-    margin-bottom: 10px;
   }
   .simpleModify {
     width: 422px;
     height: 34px;
-    border-radius: 5px;
     padding: 0px 10px;
+    border-radius: 5px;
+  }
+  .aboutedit {
+    height: 250px;
+    width: 97%;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 6px 0px;
+  }
+`;
+
+const LinksContainer = styled(InformationContainer)`
+  display: flex;
+  justify-content: space-between;
+  div {
+    width: 100%;
+    justify-content: center;
+  }
+  label {
+    margin: 5px 10px;
+  }
+  input {
+    margin: 0px 10px;
+    height: 34px;
+    border-radius: 5px;
+    padding: 0px 0px 0px 32px;
+  }
+`;
+
+const PrivateinfoContainer = styled(InformationContainer)`
+  div {
+    display: flex;
+    flex-direction: column;
   }
 `;

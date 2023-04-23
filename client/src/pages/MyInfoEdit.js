@@ -8,6 +8,9 @@ const MyPageContainer = styled.main`
   font-size: 14px;
   width: calc(100%-200px);
   height: 100%;
+  .flex-row {
+    display: flex;
+  }
 `;
 const MyPageBarSection = styled.section`
   padding-left: 20px;
