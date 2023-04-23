@@ -5,7 +5,6 @@ import com.dudung.preproject.answer.dto.AnswerDto;
 import com.dudung.preproject.answer.service.AnswerService;
 import com.dudung.preproject.helper.QuestionControllerHelper;
 import com.dudung.preproject.helper.StubData;
-import com.dudung.preproject.member.service.MemberService;
 import com.dudung.preproject.question.domain.Question;
 import com.dudung.preproject.question.dto.QuestionDto;
 import com.dudung.preproject.question.mapper.QuestionMapper;
@@ -23,7 +22,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -38,10 +36,8 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -66,6 +62,7 @@ public class QuestionControllerTest implements QuestionControllerHelper {
     public void createQuestionTest() throws  Exception {
         // given
         QuestionDto.Post post = (QuestionDto.Post) StubData.MockQuestion.getRequestBody(HttpMethod.POST);
+        String accessToken = StubData.MockSecurity.getInvalidAccessToken();
         String content = toJsonContent(post);
 
         given(questionMapper.questionPostToQuestion(Mockito.any(QuestionDto.Post.class))).willReturn(new Question());
@@ -76,7 +73,7 @@ public class QuestionControllerTest implements QuestionControllerHelper {
 
         //when
         ResultActions actions =
-                mockMvc.perform(postRequestBuilder(QUESTION_DEFAULT_URL, content));
+                mockMvc.perform(postRequestBuilder(QUESTION_DEFAULT_URL, content, accessToken));
         actions
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", is(startsWith("/questions"))))
@@ -84,9 +81,11 @@ public class QuestionControllerTest implements QuestionControllerHelper {
                 .andDo(document("post-question",
                         getRequestPreProcessor(),
                         getResponsePreProcessor(),
+                        requestHeaders(
+                                getDefaultRequestHeaderDescriptor()
+                        ),
                         requestFields(
                                 List.of(
-                                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별 번호"),
                                         fieldWithPath("questionTitle").type(JsonFieldType.STRING).description("질문 제목"),
                                         fieldWithPath("questionContent").type(JsonFieldType.STRING).description("질문 내용"),
                                         fieldWithPath("tagName[]").type(JsonFieldType.ARRAY).description("질문 태그 리스트"),
@@ -105,6 +104,7 @@ public class QuestionControllerTest implements QuestionControllerHelper {
     public void patchQuestionTest() throws Exception {
         // given
         QuestionDto.Patch patch = (QuestionDto.Patch) StubData.MockQuestion.getRequestBody(HttpMethod.PATCH);
+        String accessToken = StubData.MockSecurity.getInvalidAccessToken();
         String content = toJsonContent(patch);
 
         given(questionMapper.questionPatchToQuestion(Mockito.any(QuestionDto.Patch.class))).willReturn(new Question());
@@ -113,28 +113,30 @@ public class QuestionControllerTest implements QuestionControllerHelper {
 
         // when
         ResultActions actions =
-                mockMvc.perform(patchRequestBuilder(QUESTION_RESOURCE_URI, 1L, content));
+                mockMvc.perform(patchRequestBuilder(QUESTION_RESOURCE_URI, 1L, content, accessToken));
 
         // then
         actions
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.question.questionTitle").value("두둥탁"))
-                .andExpect(jsonPath("$.question.questionContent").value("두둥두둥"))
+                .andExpect(jsonPath("$.question.questionTitle").value("질문 제목"))
+                .andExpect(jsonPath("$.question.questionContent").value("질문 내용"))
 //                .andExpect(jsonPath("$.question.createdAt").value(time))
 //                .andExpect(jsonPath("$.question.modifiedAt").value(LocalDateTime.now())) // 시간 테스팅 보류
                 .andExpect(jsonPath("$.question.questionVoteSum").value(0))
                 .andExpect(jsonPath("$.question.viewCount").value(1))
-                .andExpect(jsonPath("$.question.memberName").value("두둥탁"))
+                .andExpect(jsonPath("$.question.memberName").value("질문 작성자"))
                 .andDo(print())
                 .andDo(document("patch-question",
                         getRequestPreProcessor(),
                         getResponsePreProcessor(),
+                        requestHeaders(
+                                getDefaultRequestHeaderDescriptor()
+                        ),
                         pathParameters(
                                 parameterWithName("question-id").description("질문 식별자")
                         ),
                         requestFields(
                                 List.of(
-                                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별 번호").optional(),
                                         fieldWithPath("questionId").type(JsonFieldType.NUMBER).description("질문 식별 번호").ignored(),
                                         fieldWithPath("questionTitle").type(JsonFieldType.STRING).description("질문 제목").optional(),
                                         fieldWithPath("questionContent").type(JsonFieldType.STRING).description("질문 내용").optional(),
@@ -199,13 +201,13 @@ public class QuestionControllerTest implements QuestionControllerHelper {
         // then
         actions
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.question.questionTitle").value("두둥탁"))
-                .andExpect(jsonPath("$.data.question.questionContent").value("두둥두둥"))
+                .andExpect(jsonPath("$.data.question.questionTitle").value("질문 제목"))
+                .andExpect(jsonPath("$.data.question.questionContent").value("질문 내용"))
 //                .andExpect(jsonPath("$.question.createdAt").value(time))
 //                .andExpect(jsonPath("$.question.modifiedAt").value(LocalDateTime.now())) // 시간 테스팅 보류
                 .andExpect(jsonPath("$.data.question.questionVoteSum").value(0))
                 .andExpect(jsonPath("$.data.question.viewCount").value(1))
-                .andExpect(jsonPath("$.data.question.memberName").value("두둥탁"))
+                .andExpect(jsonPath("$.data.question.memberName").value("질문 작성자"))
                 .andDo(print())
                 .andDo(document("get-question",
                         getRequestPreProcessor(),
@@ -226,12 +228,12 @@ public class QuestionControllerTest implements QuestionControllerHelper {
                                         fieldWithPath("data.question.tagName[].tagName").type(JsonFieldType.STRING).description("태그 이름"),
                                         fieldWithPath("data.question.questionVoteSum").type(JsonFieldType.NUMBER).description("질문 투표 합계").optional(),
                                         fieldWithPath("data.question.viewCount").type(JsonFieldType.NUMBER).description("질문 조회수").optional(),
-                                        fieldWithPath("data.question.memberName").type(JsonFieldType.STRING).description("회원 이름").optional(),
+                                        fieldWithPath("data.question.memberName").type(JsonFieldType.STRING).description("질문 작성자").optional(),
                                         fieldWithPath("data.question.memberReputation").type(JsonFieldType.NUMBER).description("회원 명성도").optional(),
                                         fieldWithPath("data.answer[]").type(JsonFieldType.ARRAY).description("답변 리스트").optional(),
                                         fieldWithPath("data.answer[].answerId").type(JsonFieldType.NUMBER).description("답변 식별 번호").optional(),
                                         fieldWithPath("data.answer[].memberId").type(JsonFieldType.NUMBER).description("회원 식별 번호").optional(),
-                                        fieldWithPath("data.answer[].memberName").type(JsonFieldType.STRING).description("회원 이름").optional(),
+                                        fieldWithPath("data.answer[].memberName").type(JsonFieldType.STRING).description("답변 작성자").optional(),
                                         fieldWithPath("data.answer[].answerContent").type(JsonFieldType.STRING).description("답변 내용").optional(),
                                         fieldWithPath("data.answer[].answerVoteSum").type(JsonFieldType.NUMBER).description("답변 투표 합계").optional(),
                                         fieldWithPath("data.answer[].createdAt").type(JsonFieldType.STRING).description("답변 생성 일자").optional(),
@@ -300,7 +302,7 @@ public class QuestionControllerTest implements QuestionControllerHelper {
                                         fieldWithPath("data[].tagName[].tagName").type(JsonFieldType.STRING).description("태그 이름"),
                                         fieldWithPath("data[].questionVoteSum").type(JsonFieldType.NUMBER).description("질문 투표 합계").optional(),
                                         fieldWithPath("data[].viewCount").type(JsonFieldType.NUMBER).description("질문 조회수").optional(),
-                                        fieldWithPath("data[].memberName").type(JsonFieldType.STRING).description("회원 이름").optional(),
+                                        fieldWithPath("data[].memberName").type(JsonFieldType.STRING).description("질문 작성자").optional(),
                                         fieldWithPath("data[].answerCount").type(JsonFieldType.NUMBER).description("답변 갯수").optional(),
                                         fieldWithPath("data[].questionContent").type(JsonFieldType.STRING).description("질문 내용").optional(),
                                         fieldWithPath("data[].memberId").type(JsonFieldType.NUMBER).description("회원 식별 번호").optional(),
@@ -318,15 +320,19 @@ public class QuestionControllerTest implements QuestionControllerHelper {
     @Test
     @DisplayName("Question Delete Test")
     public void deleteQuestionTest() throws Exception {
+        String accessToken = StubData.MockSecurity.getInvalidAccessToken();
         doNothing().when(questionService).deleteQuestion(Mockito.anyLong(), Mockito.anyLong());
 
-        mockMvc.perform(deleteRequestBuilder(QUESTION_RESOURCE_URI, 1L))
+        mockMvc.perform(deleteRequestBuilder(QUESTION_RESOURCE_URI, 1L, accessToken))
                 .andExpect(status().isNoContent())
                 .andDo(
                         document(
                                 "delete-question",
                                 getRequestPreProcessor(),
                                 getResponsePreProcessor(),
+                                requestHeaders(
+                                        getDefaultRequestHeaderDescriptor()
+                                ),
                                 pathParameters(
                                         getMemberRequestPathParameterDescriptor()
                                 )
