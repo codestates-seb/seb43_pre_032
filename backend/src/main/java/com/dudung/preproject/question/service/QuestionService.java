@@ -17,6 +17,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -65,7 +72,6 @@ public class QuestionService {
 
     public Question findQuestion(long questionId) {
         Question findedQuestion = findVerifiedQuestion(questionId);
-        addViewCount(findedQuestion);
 
         return findedQuestion;
     }
@@ -93,6 +99,40 @@ public class QuestionService {
         Question findedQuestion = optionalQuestion.orElseThrow(() -> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
 
         return findedQuestion;
+    }
+
+    public void viewCountValidation(Question question, HttpServletRequest request, HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        Cookie cookie = null;
+        boolean isCookie = false;
+        // request에 쿠키들이 있을 때
+        for (int i = 0; cookies != null && i < cookies.length; i++) {
+            // postView 쿠키가 있을 때
+            if (cookies[i].getName().equals("questionView")) {
+                // cookie 변수에 저장
+                cookie = cookies[i];
+                // 만약 cookie 값에 현재 게시글 번호가 없을 때
+                if (!cookie.getValue().contains("[" + question.getQuestionId() + "]")) {
+                    // 해당 게시글 조회수를 증가시키고, 쿠키 값에 해당 게시글 번호를 추가
+                    addViewCount(question);
+                    cookie.setValue(cookie.getValue() + "[" + question.getQuestionId() + "]");
+                }
+                isCookie = true;
+                break;
+            }
+        }
+        // 만약 postView라는 쿠키가 없으면 처음 접속한 것이므로 새로 생성
+        if (!isCookie) {
+            addViewCount(question);
+            cookie = new Cookie("questionView", "[" + question.getQuestionId() + "]"); // oldCookie에 새 쿠키 생성
+        }
+
+        // 쿠키 유지시간을 오늘 하루 자정까지로 설정
+        long todayEndSecond = LocalDate.now().atTime(LocalTime.MAX).toEpochSecond(ZoneOffset.UTC);
+        long currentSecond = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
+        cookie.setPath("/"); // 모든 경로에서 접근 가능
+        cookie.setMaxAge((int) (todayEndSecond - currentSecond));
+        response.addCookie(cookie);
     }
 
     private void addViewCount(Question question) {
