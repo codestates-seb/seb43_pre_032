@@ -133,7 +133,7 @@ function Questions() {
                 </span>
               </IntData>
               <ContentsData>
-                <Link to={'/questions/' + el.questionId}>
+                <Link to={'/question/' + el.questionId}>
                   <h3>{el.questionTitle}</h3>
                 </Link>
                 <span>{el.questionContent}</span>
