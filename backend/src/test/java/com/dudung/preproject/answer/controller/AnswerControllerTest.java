@@ -176,7 +176,7 @@ class AnswerControllerTest implements AnswerControllerHelper {
         Page<Answer> answers = StubData.MockQuestion.getMultiResultAnswer();
         List<AnswerDto.ResponseForList> answerList = StubData.MockQuestion.getAnswerList();
 
-        given(answerService.findAnswers(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString())).willReturn(answers);
+        given(answerService.findAnswers(Mockito.anyInt(), Mockito.anyString())).willReturn(answers);
         given(mapper.answerToAnswerResponse(Mockito.anyList())).willReturn(answerList);
 
         ResultActions actions =

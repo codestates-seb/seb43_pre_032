@@ -75,11 +75,11 @@ public class QuestionService {
 
         return findedQuestion;
     }
-    public Page<Question> findQuestions(int page, int size, String sortBy, String keyword) { // sortBy == 정렬기준 e.g. "questionId"
+    public Page<Question> findQuestions(int page, String sortBy, String keyword) { // sortBy == 정렬기준 e.g. "questionId"
         if (keyword == null) {
-            return questionRepository.findAll(PageRequest.of(page, size, Sort.by(sortBy).descending()));
+            return questionRepository.findAll(PageRequest.of(page, 10, Sort.by(sortBy).descending()));
         }
-        return questionRepository.findAllByQuestionTitleContaining(keyword, PageRequest.of(page, size,
+        return questionRepository.findAllByQuestionTitleContaining(keyword, PageRequest.of(page, 10,
                 Sort.by(sortBy).descending()));
     }
 

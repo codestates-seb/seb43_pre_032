@@ -53,8 +53,8 @@ public class AnswerService {
         answerRepository.delete(findAnswer);
     }
 
-    public Page<Answer> findAnswers(int page, int size, String sortBy) {
+    public Page<Answer> findAnswers(int page, String sortBy) {
         return answerRepository.findAll(PageRequest.of
-                (page, size, Sort.by(sortBy).descending()));
+                (page, 5, Sort.by(sortBy).descending()));
     }
 }
