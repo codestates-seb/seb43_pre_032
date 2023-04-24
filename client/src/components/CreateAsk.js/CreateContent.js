@@ -1,21 +1,40 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const BtnContainer = styled.div`
-  margin-top: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 35px;
-  width: 75px;
-  font-size: 13px;
-  font-weight: 600;
-  color: white;
-  background-color: var(--signup-btn-before);
-  :hover {
-    background-color: var(--signup-btn-after);
-  }
-`;
+// eslint-disable-next-line react/display-name
+const InputItem = React.memo(({ handleData, title, help }) => {
+  let [text, setText] = useState('');
+
+  const textHandler = (e) => {
+    setText([title[1], e.target.value]);
+    handleData(text);
+  };
+
+  return (
+    <InputContainer>
+      <div className="title">{title[0]}</div>
+      <div className="help">{help}</div>
+      <input onChange={textHandler} className="modify-input-content"></input>
+    </InputContainer>
+  );
+});
+
+// eslint-disable-next-line react/display-name
+const TextareaItem = React.memo(({ handleData, title, help }) => {
+  let [text, setText] = useState('');
+  const textHandler = (e) => {
+    setText([title[1], e.target.value]);
+    handleData(text);
+  };
+
+  return (
+    <TextareaContainer>
+      <div className="title">{title[0]}</div>
+      <div className="help">{help}</div>
+      <input onChange={textHandler} className="modify-textarea-content"></input>
+    </TextareaContainer>
+  );
+});
 const InputContainer = styled.section`
   display: grid;
   grid-row-gap: 3px;
@@ -47,33 +66,4 @@ const TextareaContainer = styled.section`
   border: 1px solid lightgray;
   border-radius: 3px;
 `;
-const InputItem = ({ handleData, title, help }) => {
-  let [text, setText] = useState('');
-  const textHandler = (e) => {
-    setText(e.target.value);
-  };
-  console.log(handleData, text);
-  handleData(text);
-  return (
-    <InputContainer>
-      <div className="title">{title}</div>
-      <div className="help">{help}</div>
-      <input onChange={textHandler} className="modify-input-content"></input>
-    </InputContainer>
-  );
-};
-const TextareaItem = ({ title, help }) => {
-  let [text, setText] = useState('');
-  text.length;
-  const textHandler = (e) => {
-    setText(e.target.value);
-  };
-  return (
-    <TextareaContainer>
-      <div className="title">{title}</div>
-      <div className="help">{help}</div>
-      <input onChange={textHandler} className="modify-textarea-content"></input>
-    </TextareaContainer>
-  );
-};
-export { InputItem, TextareaItem, BtnContainer };
+export { InputItem, TextareaItem };

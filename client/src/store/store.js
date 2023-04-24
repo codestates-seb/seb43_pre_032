@@ -13,12 +13,25 @@ let showCom = createSlice({
   },
 });
 
+let isLogin = createSlice({
+  name: 'isLogin',
+  initialState: false,
+  reducers: {
+    setLogin() {
+      return true;
+    },
+    setLogout() {
+      return false;
+    },
+  },
+});
+
 export let { selectFooter, selectNav } = showCom.actions;
-// export let { create } = createQuestion.actions;
+export let { setLogin, setLogout } = isLogin.actions;
 
 export default configureStore({
   reducer: {
     showCom: showCom.reducer,
-    // createQuestion: createQuestion.reducer,
+    isLogin: isLogin.reducer,
   },
 });

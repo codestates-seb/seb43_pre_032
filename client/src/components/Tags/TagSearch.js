@@ -12,7 +12,7 @@ function TagSearch({ setIsSearch }) {
   useEffect(() => {
     axios
       .get(
-        `https://8625-61-254-8-200.ngrok-free.app/tags?page=1&size=3276&sortBy=tagId`,
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags?page=1&size=3276&sortBy=tagId`,
         {
           headers: {
             'ngrok-skip-browser-warning': '69420',
