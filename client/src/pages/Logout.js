@@ -6,7 +6,14 @@ import stackappslogo from '../assets/stackapps.png';
 import stackexchangelogo from '../assets/stackexchangelogo.png';
 import superuserlogo from '../assets/superuserlogo.png';
 import severfaultlogo from '../assets/serverfaultlogo.png';
+import { useDispatch } from 'react-redux';
+import { selectFooter, selectNav } from '../store/store';
+
 function Logout() {
+  const dispatch = useDispatch();
+  dispatch(selectNav(false));
+  dispatch(selectFooter(false));
+
   const flowingDomainsData = [
     { logo: askubuntulogo, domain: 'askubuntu.com' },
     { logo: mathoverflowlogo, domain: 'mathoverflow.net' },
@@ -26,7 +33,7 @@ function Logout() {
               device
             </h2>
           </div>
-          <LogoutBox>
+          <LogoutBox className="logoutbox">
             <div className="logout-domains">
               <ul>
                 {flowingDomainsData.map((domain, idx) => {
@@ -72,6 +79,11 @@ const LogoutView = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  @media (max-width: 600px) {
+    .logoutbox {
+      width: 267px;
+    }
+  }
 `;
 const LogoutContaioner = styled.div`
   width: 525px;
