@@ -17,7 +17,6 @@ const ModifyCom = () => {
   let data = {
     title: '수정될 질문의 제목',
     content: '여기가 본문의 내용이 될거 같은데 ~~~~~~~~~~~~~~~~~~~~~~',
-    tag: ['java', 'spring', '태그 !'],
   };
 
   let titleHelp = [
@@ -50,6 +49,7 @@ const ModifyCom = () => {
   const navigate = useNavigate();
   let [tagData, setTagData] = useState([]); // 전체 태그 데이터
   let [word, setWord] = useState(''); // 태그 검색어
+  let [original, setOriginal] = useState({});
   let [selected, setSelected] = useState([
     {
       tagDescription:
@@ -59,7 +59,7 @@ const ModifyCom = () => {
     },
   ]); // 선택한 태그
   let [filtered, setFiltered] = useState([]);
-
+  let qsId = 1;
   useEffect(() => {
     // 솔님이 작성하신 코드     modify, create, tag 에서 쓰여서 hooks로 만드는건..?
     axios
@@ -73,8 +73,28 @@ const ModifyCom = () => {
       )
       .then(function (response) {
         setTagData(response.data.data); // 태그 전체
+        console.log(original);
       })
       .catch(function (error) {
+        console.log(error);
+      });
+    axios
+      .get(
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}?page=1&size=5&sortBy=answerId`,
+        {
+          headers: {
+            'ngrok-skip-browser-warning': '69420',
+          },
+          withCredentials: true,
+          credentials: 'include',
+        }
+      )
+      .then(function (res) {
+        // 성공한 경우 실행
+        setOriginal(res.data.data.question);
+      })
+      .catch(function (error) {
+        // 에러인 경우 실행
         console.log(error);
       });
   }, []);
@@ -190,17 +210,15 @@ const ModifyCom = () => {
           <Sidebanners>
             <Bannertitle>{helpTitle}</Bannertitle>
             <Bannercontents>
-              <div className="test">
-                <HelpContainer>
-                  {help.map((el, idx) => {
-                    return (
-                      <li className="list-style" key={idx}>
-                        {el}
-                      </li>
-                    );
-                  })}
-                </HelpContainer>
-              </div>
+              <HelpContainer>
+                {help.map((el, idx) => {
+                  return (
+                    <li className="list-style" key={idx}>
+                      {el}
+                    </li>
+                  );
+                })}
+              </HelpContainer>
             </Bannercontents>
           </Sidebanners>
         </Bannercomponent>
