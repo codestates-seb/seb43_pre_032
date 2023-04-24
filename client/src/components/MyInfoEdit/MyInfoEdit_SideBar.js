@@ -1,33 +1,6 @@
 import styled from 'styled-components';
 
 function MyInfoEdit_SideBar() {
-  const menudata = [
-    {
-      title: 'PERSONAL INFORMATION',
-      subtitle: ['Edit profile', 'Delete profile'],
-    },
-    {
-      title: 'EMAIL SETTINGS',
-      subtitle: [
-        'Edit email settings',
-        'Tag watching & ignoring',
-        'Community digests',
-        'Question subscriptions',
-      ],
-    },
-    {
-      title: 'SITE SETTINGS',
-      subtitle: ['Preferences', 'Flair', 'Hide communities'],
-    },
-    {
-      title: 'ACCESS',
-      subtitle: ['Your Collectives', 'Your logins'],
-    },
-    {
-      title: 'API',
-      subtitle: ['Authorized applications'],
-    },
-  ];
   return (
     <>
       <Sidebar_conatiner>
@@ -82,6 +55,38 @@ const Sidebar_conatiner = styled.div`
       color: white;
     }
   }
+
+  @media (max-width: 1250px) {
+    display: none;
+  }
 `;
+
+export const menudata = [
+  {
+    title: 'PERSONAL INFORMATION',
+    subtitle: ['Edit profile', 'Delete profile'],
+  },
+  {
+    title: 'EMAIL SETTINGS',
+    subtitle: [
+      'Edit email settings',
+      'Tag watching & ignoring',
+      'Community digests',
+      'Question subscriptions',
+    ],
+  },
+  {
+    title: 'SITE SETTINGS',
+    subtitle: ['Preferences', 'Flair', 'Hide communities'],
+  },
+  {
+    title: 'ACCESS',
+    subtitle: ['Your Collectives', 'Your logins'],
+  },
+  {
+    title: 'API',
+    subtitle: ['Authorized applications'],
+  },
+];
 
 export default MyInfoEdit_SideBar;
