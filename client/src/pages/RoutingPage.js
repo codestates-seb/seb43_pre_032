@@ -43,8 +43,8 @@ const Paging = () => {
               <Route path="/" element={<Navigate replace to="/members" />} />
               <Route path="/members" element={<Signup />} />
               <Route path="/auth/login" element={<Login />} />
-              <Route path="/detailquestion" element={<DetailQuestion />} />
               <Route path="/question" element={<Viewcomponent />} />
+              <Route path="/question/:qId" element={<DetailQuestion />} />
               <Route path="/users/3355" element={<MyinfoPage />} />
               <Route path="/users/edit/3355" element={<MyInfoEdit />} />
               <Route path="/question/ask" element={<CreateAsk />} />
