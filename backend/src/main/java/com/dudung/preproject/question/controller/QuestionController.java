@@ -49,7 +49,7 @@ public class QuestionController {
                 .buildAndExpand(question.getQuestionId())
                 .toUri();
 
-        return ResponseEntity.status(HttpStatus.CREATED).location(location).body(questionMapper.questionToQuestionResponse(question, question.getAnswers()));
+        return ResponseEntity.created(location).build();
     }
 
     @PatchMapping("/{question-id}")
@@ -58,16 +58,16 @@ public class QuestionController {
         long authenticationMemeberId = JwtParseInterceptor.getAuthenticatedMemberId();
 
         requestBody.setQuestionId(questionId);
-        Question question = questionService.updateQuestion(questionMapper.questionPatchToQuestion(requestBody), authenticationMemeberId);
+        questionService.updateQuestion(questionMapper.questionPatchToQuestion(requestBody), authenticationMemeberId);
 
-        return new ResponseEntity<>(questionMapper.questionToQuestionResponse(question, question.getAnswers()), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{question-id}")
-    public ResponseEntity getQuestion(@PathVariable("question-id") @Positive long qustionId, @Positive @RequestParam int page, @RequestParam String sortBy, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity getQuestion(@PathVariable("question-id") @Positive long qustionId, @Positive @RequestParam int page, @RequestParam String tab, HttpServletRequest request, HttpServletResponse response) {
         Question question = questionService.findQuestion(qustionId);
         questionService.viewCountValidation(question, request, response);
-        Page<Answer> pageAnswers = answerService.findAnswers(page - 1, sortBy);
+        Page<Answer> pageAnswers = answerService.findAnswers(page - 1, tab);
         List<Answer> answers = pageAnswers.getContent();
 
         return new ResponseEntity<>(new DataListResponseDto(questionMapper.questionToQuestionResponse(question, answers), pageAnswers), HttpStatus.OK);
