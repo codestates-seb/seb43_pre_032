@@ -2,69 +2,40 @@ import styled from 'styled-components';
 import Answer from './Answer';
 import YourAnswer from './YourAnswer';
 import Comment from './Comment';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faPlay,
-  faClockRotateLeft,
-  faBookmark as faSolidBookmark,
-} from '@fortawesome/free-solid-svg-icons';
-import { faBookmark as faRegularBookmark } from '@fortawesome/free-regular-svg-icons';
-import { useState } from 'react';
+import VoteGroup from './VoteGroup';
 
-function DetailContent({ data, tagData }) {
-  const [bookmark, setBookmark] = useState(false);
+function DetailContent({ data, tagData, answerData }) {
+  console.log(data);
 
-  // const tagname = data.question.tagName;
-  console.log(data.question);
-  console.log(tagData);
+  //작성시간계산 : ~~시간전 으로 표기
+  function displayedAt(createdAt) {
+    const milliSeconds = new Date() - createdAt;
+    const seconds = milliSeconds / 1000;
+    if (seconds < 60) return `${Math.floor(seconds)} secs ago`;
+    const minutes = seconds / 60;
+    if (minutes < 60) return `${Math.floor(minutes)} min ago`;
+    const hours = minutes / 60;
+    if (hours < 24) return `${Math.floor(hours)} hour ago`;
+    const days = hours / 24;
+    if (days < 7) return `${Math.floor(days)} days ago`;
+    const weeks = days / 7;
+    if (weeks < 5) return `${Math.floor(weeks)} weeks ago`;
+    const months = days / 30;
+    if (months < 12) return `${Math.floor(months)} months ago`;
+    const years = days / 365;
+    return `${Math.floor(years)}years ago`;
+  }
 
   return (
     <DetailContents>
       <div>
-        <VoteIcon>
-          <span className="side-icon-color">
-            <FontAwesomeIcon icon={faPlay} rotation={270} />
-          </span>
-          <span>0</span>
-          <span className="side-icon-color">
-            <FontAwesomeIcon icon={faPlay} rotation={90} />
-          </span>
-          <button
-            className="side-icon-size side-icon-color"
-            onClick={() => {
-              setBookmark(!bookmark);
-            }}
-          >
-            {bookmark ? (
-              <FontAwesomeIcon
-                icon={faSolidBookmark}
-                className="color-orange"
-              />
-            ) : (
-              <FontAwesomeIcon icon={faRegularBookmark} />
-            )}
-          </button>
-          <span className="side-icon-size side-icon-color">
-            <FontAwesomeIcon icon={faClockRotateLeft} />
-          </span>
-        </VoteIcon>
+        <VoteGroup />
         <TextContents>
-          <span>
-            I am a react native beginner struggling with concurrency. I would
-            like to enforce within the handlePlay function that no new sound is
-            played while the current sound is playing. So if sound1.mp3 is
-            playing now and the handlePlay function is called, nothing will
-            happen. Once sound1.mp3 is finished playing and the handlePlay
-            function is called by useEffect being triggered again, sound2.mp3
-            should be played (should be sound2.mp3 because currentStepInc will
-            have been run to trigger the useEffect). However quickly the button
-            is pressed there should be no time at which two sounds are being
-            played at once.
-          </span>
+          <span>{data.questionContent}</span>
           <div className="tagData">
-            {/* {data.question.tagName.map((tag) => (
+            {tagData.map((tag) => (
               <p key={tag.tagId}>{tag.tagName}</p>
-            ))} */}
+            ))}
           </div>
           <SideContents>
             <div className="subMenus">
@@ -76,8 +47,8 @@ function DetailContent({ data, tagData }) {
               <div className="user-info">
                 <img src="https://i.imgur.com/4b1ExzY.png" alt="profileIcon" />
                 <span>
-                  <p>scotjam1981</p>
-                  <p>asked 3 mins ago</p>
+                  <p>{data.memberName}</p>
+                  <p>asked {displayedAt(new Date(data.createdAt))}</p>
                 </span>
               </div>
             </div>
@@ -86,7 +57,7 @@ function DetailContent({ data, tagData }) {
         </TextContents>
       </div>
       <div>
-        <Answer />
+        <Answer answerData={answerData} />
       </div>
       <div>
         <YourAnswer />
@@ -101,6 +72,7 @@ export const DetailContents = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 30px;
+  width: 100%;
   div:nth-child(1) {
     display: flex;
   }
@@ -183,6 +155,7 @@ export const SideContents = styled.div`
     align-items: center;
     font-size: 12px;
     padding: 10px 20px;
+    max-width: 150px;
     background-color: #f7f7f7;
     color: #5c666e;
     border-radius: 3px;
@@ -195,7 +168,7 @@ export const SideContents = styled.div`
     height: 30px;
     margin-right: 10px;
   }
-  @media (max-width: 640px) {
+  @media (max-width: 660px) {
     flex-direction: column;
     > div:nth-child(2) {
       display: flex;

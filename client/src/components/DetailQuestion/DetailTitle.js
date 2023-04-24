@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-function DetailTitle() {
+function DetailTitle({ data }) {
   return (
     <Detailtitle>
       <header className="question-header">
-        <h2>python pyodata & issues with parsing metadata</h2>
+        <h2>{data.questionTitle}</h2>
         <Address>
           <span>
             Asked <strong>today</strong>
