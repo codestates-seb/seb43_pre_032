@@ -16,7 +16,7 @@ function DetailQuestion() {
   useEffect(() => {
     axios
       .get(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}?page=1&sortBy=answerId`,
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}?page=1&tab=answerVoteSum`,
         {
           headers: {
             'ngrok-skip-browser-warning': '69420',
