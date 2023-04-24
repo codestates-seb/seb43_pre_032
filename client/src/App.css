@@ -95,10 +95,6 @@ textarea{
   color: var(--login-btn-border);
   margin: 5px;
 }
-.test{
-  background-color: orange;
-  padding: 10px;
-}
 .height-auto{
   height:auto;
 }

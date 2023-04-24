@@ -19,7 +19,7 @@ const Login = () => {
   const [isLogin, setIsLogin] = useState(false);
 
   const dispatch = useDispatch();
-  const navigator = useNavigate();
+
   useEffect(() => {
     dispatch(selectFooter(false));
     dispatch(selectNav(false));
