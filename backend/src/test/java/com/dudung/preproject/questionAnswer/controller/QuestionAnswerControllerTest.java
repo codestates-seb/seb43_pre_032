@@ -103,7 +103,7 @@ public class QuestionAnswerControllerTest implements QuestionAnswerControllerHel
                 .andExpect(status().isNoContent())
                 .andDo(
                         document(
-                                "delete-question",
+                                "delete-questionAnswer",
                                 getRequestPreProcessor(),
                                 getResponsePreProcessor(),
                                 requestHeaders(
