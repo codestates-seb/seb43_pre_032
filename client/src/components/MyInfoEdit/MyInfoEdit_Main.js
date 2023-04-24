@@ -132,7 +132,7 @@ const MainContainer = styled.div`
       background-color: #f0f8ff;
     }
   }
-  @media (max-width: 1250px) {
+  @media (max-width: 1050px) {
     .linksContainer {
       flex-direction: column;
     }
@@ -141,7 +141,6 @@ const MainContainer = styled.div`
     }
   }
   @media (max-width: 640px) {
-    background-color: wheat;
   }
 `;
 

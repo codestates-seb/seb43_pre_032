@@ -56,7 +56,7 @@ const Sidebar_conatiner = styled.div`
     }
   }
 
-  @media (max-width: 1250px) {
+  @media (max-width: 1050px) {
     display: none;
   }
 `;
