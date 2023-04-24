@@ -87,13 +87,13 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/{member-id}/mypage")
+    @GetMapping("/mypage/{member-id}")
     public ResponseEntity getMemberMyPage(@Positive @PathVariable("member-id") long memberId) {
 
         return new ResponseEntity<>(mapper.memberToMyPage
                 (memberService.findMember(memberId)), HttpStatus.OK);
     }
-    @PostMapping(path = "/{member-id}/upload")
+    @PostMapping(path = "/upload/{member-id}")
     public ResponseEntity postImageUpload(@PathVariable("member-id") long memberId,
                                           @RequestPart(required = false) MultipartFile file){
 
@@ -101,7 +101,7 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/profileimage/{member-id}")
+    @GetMapping("/image/{member-id}")
     public ResponseEntity<byte[]> getProfileImage(@PathVariable("member-id") long memberId) throws IOException {
         String dir = Long.toString(memberId);
         String fileExtension = ".png";
