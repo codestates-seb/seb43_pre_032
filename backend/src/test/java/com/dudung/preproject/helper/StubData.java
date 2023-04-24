@@ -322,4 +322,26 @@ public class StubData {
                     .build());
         }
     }
+    public static class MockQuestionAnswer {
+        private static Map<HttpMethod, Object> stubRequestBody;
+        static {
+            QuestionAnswerDto.Post post = new QuestionAnswerDto.Post();
+            post.setQuestionId(1L);
+            post.setMemberId(1L);
+            post.setQuestionAnswerContent("질문 댓글 내용");
+
+            QuestionAnswerDto.Patch patch = new QuestionAnswerDto.Patch();
+            patch.setQuestionAnswerId(1L);
+            patch.setQuestionId(1L);
+            patch.setMemberId(1L);
+            patch.setQuestionAnswerContent("질문 댓글 내용");
+
+            stubRequestBody = new HashMap<>();
+            stubRequestBody.put(HttpMethod.POST, post);
+            stubRequestBody.put(HttpMethod.PATCH, patch);
+        }
+        public static Object getRequestBody(HttpMethod method) {
+            return stubRequestBody.get(method);
+        }
+    }
 }
