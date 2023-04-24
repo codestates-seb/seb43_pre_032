@@ -1,11 +1,13 @@
 package com.dudung.preproject.helper;
 
 import com.dudung.preproject.answer.domain.Answer;
+import com.dudung.preproject.answer.dto.AnswerAnswerDto;
 import com.dudung.preproject.answer.dto.AnswerDto;
 import com.dudung.preproject.auth.jwt.JwtTokenizer;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.member.dto.MemberDto;
 import com.dudung.preproject.question.domain.Question;
+import com.dudung.preproject.question.dto.QuestionAnswerDto;
 import com.dudung.preproject.question.dto.QuestionDto;
 import com.dudung.preproject.question.dto.QuestionResponseDto;
 import com.dudung.preproject.question.dto.QuestionTagDto;
@@ -156,6 +158,7 @@ public class StubData {
                     .createdAt(time)
                     .modifiedAt(time)
                     .tagName(getTagNameForMultiResponse())
+                    .questionAnswers(getQuestionAnswers())
                     .questionVoteSum(0)
                     .viewCount(1)
                     .memberName("질문 작성자")
@@ -164,6 +167,21 @@ public class StubData {
 
 
             return new QuestionDto.Response(questionResponseDto, getAnswerList());
+        }
+
+        public static List<QuestionAnswerDto.Response> getQuestionAnswers() {
+            LocalDateTime time = LocalDateTime.now();
+
+            return List.of(
+                    QuestionAnswerDto.Response.builder()
+                            .questionAnswerId(1L)
+                            .questionAnswerContent("질문 댓글")
+                            .createdAt(time)
+                            .modifiedAt(time)
+                            .memberId(1L)
+                            .memberName("질문 댓글 작성자")
+                            .memberReputation(1).build()
+            );
         }
 
         public static List<AnswerDto.ResponseForList> getAnswerList() {
@@ -176,6 +194,19 @@ public class StubData {
                     .createdAt(time)
                     .modifiedAt(time)
                     .memberName("답변 작성자")
+                    .answerAnswers(getAnswerAnswers())
+                    .build());
+        }
+        public static List<AnswerAnswerDto.Response> getAnswerAnswers() {
+            LocalDateTime time = LocalDateTime.now();
+            return List.of(AnswerAnswerDto.Response.builder()
+                    .answerAnswerId(1L)
+                    .answerAnswerContent("답변 댓글 내용")
+                    .createdAt(time)
+                    .modifiedAt(time)
+                    .memberId(1L)
+                    .memberName("답변 댓글 작성자")
+                    .memberReputation(1)
                     .build());
         }
 

@@ -80,7 +80,7 @@ public class QuestionService {
             sortBy = "questionId";
         } else if (sortBy.equals("Active")) {
 
-        } else if (sortBy.equals("Votes")) {
+        } else if (sortBy.equals("Score")) {
             sortBy = "questionVoteSum";
         }
         if (keyword == null) {

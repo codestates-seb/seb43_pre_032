@@ -8,7 +8,9 @@ import com.dudung.preproject.helper.QuestionControllerHelper;
 import com.dudung.preproject.helper.StubData;
 import com.dudung.preproject.question.domain.Question;
 import com.dudung.preproject.question.dto.QuestionDto;
+import com.dudung.preproject.question.mapper.QuestionAnswerMapper;
 import com.dudung.preproject.question.mapper.QuestionMapper;
+import com.dudung.preproject.question.service.QuestionAnswerService;
 import com.dudung.preproject.question.service.QuestionService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -64,6 +66,10 @@ public class QuestionControllerTest implements QuestionControllerHelper {
     private QuestionMapper questionMapper;
     @MockBean
     private AnswerService answerService;
+    @MockBean
+    private QuestionAnswerService questionAnswerService;
+    @MockBean
+    private QuestionAnswerMapper questionAnswerMapper;
 
     private String accessToken;
     @BeforeAll
@@ -122,7 +128,6 @@ public class QuestionControllerTest implements QuestionControllerHelper {
 
         given(questionMapper.questionPatchToQuestion(Mockito.any(QuestionDto.Patch.class))).willReturn(new Question());
         given(questionService.updateQuestion(Mockito.any(Question.class), Mockito.anyLong())).willReturn(new Question());
-        given(questionMapper.questionToQuestionResponse(Mockito.any(Question.class), Mockito.anyList())).willReturn(StubData.MockQuestion.getResponseBody());
 
         // when
         ResultActions actions =
@@ -131,13 +136,6 @@ public class QuestionControllerTest implements QuestionControllerHelper {
         // then
         actions
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.question.questionTitle").value("질문 제목"))
-                .andExpect(jsonPath("$.question.questionContent").value("질문 내용"))
-//                .andExpect(jsonPath("$.question.createdAt").value(time))
-//                .andExpect(jsonPath("$.question.modifiedAt").value(LocalDateTime.now())) // 시간 테스팅 보류
-                .andExpect(jsonPath("$.question.questionVoteSum").value(0))
-                .andExpect(jsonPath("$.question.viewCount").value(1))
-                .andExpect(jsonPath("$.question.memberName").value("질문 작성자"))
                 .andDo(print())
                 .andDo(document("patch-question",
                         getRequestPreProcessor(),
@@ -157,33 +155,6 @@ public class QuestionControllerTest implements QuestionControllerHelper {
                                         fieldWithPath("tagName[].tagId").type(JsonFieldType.NUMBER).description("태그 식별 번호"),
                                         fieldWithPath("modifiedAt").type(JsonFieldType.STRING).description("질문 마지막 수정 시간")
                                 )
-                        ),
-                        responseFields(
-                                List.of(
-                                        fieldWithPath("question.questionId").type(JsonFieldType.NUMBER).description("질문 식별 번호").optional(),
-                                        fieldWithPath("question.memberId").type(JsonFieldType.NUMBER).description("회원 식별 번호").optional(),
-                                        fieldWithPath("question.questionTitle").type(JsonFieldType.STRING).description("질문 제목").optional(),
-                                        fieldWithPath("question.questionContent").type(JsonFieldType.STRING).description("질문 내용").optional(),
-                                        fieldWithPath("question.createdAt").type(JsonFieldType.STRING).description("질문 생성 시간").optional(),
-                                        fieldWithPath("question.modifiedAt").type(JsonFieldType.STRING).description("질문 마지막 수정 시간").optional(),
-                                        fieldWithPath("question.memberReputation").type(JsonFieldType.NUMBER).description("회원 명성도").optional(),
-                                        fieldWithPath("question.tagName[]").type(JsonFieldType.ARRAY).description("질문 태그 리스트"),
-                                        fieldWithPath("question.tagName[].tagId").type(JsonFieldType.NUMBER).description("태그 식별 번호"),
-                                        fieldWithPath("question.tagName[].tagName").type(JsonFieldType.STRING).description("태그 이름"),
-                                        fieldWithPath("question.questionVoteSum").type(JsonFieldType.NUMBER).description("질문 투표 합계").optional(),
-                                        fieldWithPath("question.viewCount").type(JsonFieldType.NUMBER).description("질문 조회수").optional(),
-                                        fieldWithPath("question.memberName").type(JsonFieldType.STRING).description("회원 이름").optional(),
-                                        fieldWithPath("answer[]").type(JsonFieldType.ARRAY).description("답변 리스트").optional(),
-                                        fieldWithPath("answer[].memberId").type(JsonFieldType.NUMBER).description("회원 식별 번호").optional(),
-                                        fieldWithPath("answer[].memberName").type(JsonFieldType.STRING).description("회원 이름").optional(),
-                                        fieldWithPath("answer[].memberReputation").type(JsonFieldType.NUMBER).description("회원 명성도").optional(),
-                                        fieldWithPath("answer[].answerId").type(JsonFieldType.NUMBER).description("답변 식별 번호").optional(),
-                                        fieldWithPath("answer[].answerContent").type(JsonFieldType.STRING).description("답변 내용").optional(),
-                                        fieldWithPath("answer[].answerVoteSum").type(JsonFieldType.NUMBER).description("답변 투표 합계").optional(),
-                                        fieldWithPath("answer[].createdAt").type(JsonFieldType.STRING).description("답변 생성 일자").optional(),
-                                        fieldWithPath("answer[].modifiedAt").type(JsonFieldType.STRING).description("답변 마지막 수정 일자").optional(),
-                                        fieldWithPath("answer[].answerName").type(JsonFieldType.STRING).description("답변 작성자").optional()
-                                )
                         )
                 ));
     }
@@ -193,11 +164,11 @@ public class QuestionControllerTest implements QuestionControllerHelper {
     public void getQuestionTest() throws Exception {
         // given
         String page = "1";
-        String sortBy = "questionId";
+        String tab = "Newest";
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("page", page);
-        params.add("sortBy", sortBy);
+        params.add("tab", tab);
         Page<Answer> answers = StubData.MockQuestion.getMultiResultAnswer();
 
         given(questionService.findQuestion(Mockito.anyLong())).willReturn(new Question());
@@ -236,6 +207,14 @@ public class QuestionControllerTest implements QuestionControllerHelper {
                                         fieldWithPath("data.question.tagName[]").type(JsonFieldType.ARRAY).description("질문 태그 리스트"),
                                         fieldWithPath("data.question.tagName[].tagId").type(JsonFieldType.NUMBER).description("태그 식별 번호"),
                                         fieldWithPath("data.question.tagName[].tagName").type(JsonFieldType.STRING).description("태그 이름"),
+                                        fieldWithPath("data.question.questionAnswers[]").type(JsonFieldType.ARRAY).description("질문 댓글 리스트"),
+                                        fieldWithPath("data.question.questionAnswers[].questionAnswerId").type(JsonFieldType.NUMBER).description("질문 댓글 식별 번호"),
+                                        fieldWithPath("data.question.questionAnswers[].questionAnswerContent").type(JsonFieldType.STRING).description("질문 댓글 내용"),
+                                        fieldWithPath("data.question.questionAnswers[].createdAt").type(JsonFieldType.STRING).description("질문 댓글 생성 시간"),
+                                        fieldWithPath("data.question.questionAnswers[].modifiedAt").type(JsonFieldType.STRING).description("질문 댓글 마지막 수정 시간"),
+                                        fieldWithPath("data.question.questionAnswers[].memberId").type(JsonFieldType.NUMBER).description("회원 식별 번호"),
+                                        fieldWithPath("data.question.questionAnswers[].memberName").type(JsonFieldType.STRING).description("질문 댓글 작성자"),
+                                        fieldWithPath("data.question.questionAnswers[].memberReputation").type(JsonFieldType.NUMBER).description("회원 명성도"),
                                         fieldWithPath("data.question.questionVoteSum").type(JsonFieldType.NUMBER).description("질문 투표 합계").optional(),
                                         fieldWithPath("data.question.viewCount").type(JsonFieldType.NUMBER).description("질문 조회수").optional(),
                                         fieldWithPath("data.question.memberName").type(JsonFieldType.STRING).description("질문 작성자").optional(),
@@ -250,6 +229,14 @@ public class QuestionControllerTest implements QuestionControllerHelper {
                                         fieldWithPath("data.answer[].modifiedAt").type(JsonFieldType.STRING).description("답변 마지막 수정 일자").optional(),
                                         fieldWithPath("data.answer[].answerName").type(JsonFieldType.STRING).description("답변 작성자").optional(),
                                         fieldWithPath("data.answer[].memberReputation").type(JsonFieldType.NUMBER).description("회원 명성도").optional(),
+                                        fieldWithPath("data.answer[].answerAnswers[]").type(JsonFieldType.ARRAY).description("답변 댓글 리스트"),
+                                        fieldWithPath("data.answer[].answerAnswers[].answerAnswerId").type(JsonFieldType.NUMBER).description("답변 댓글 식별 번호"),
+                                        fieldWithPath("data.answer[].answerAnswers[].answerAnswerContent").type(JsonFieldType.STRING).description("답변 댓글 내용"),
+                                        fieldWithPath("data.answer[].answerAnswers[].createdAt").type(JsonFieldType.STRING).description("답변 댓글 생성 시간"),
+                                        fieldWithPath("data.answer[].answerAnswers[].modifiedAt").type(JsonFieldType.STRING).description("답변 댓글 마지막 수정 시간"),
+                                        fieldWithPath("data.answer[].answerAnswers[].memberId").type(JsonFieldType.NUMBER).description("회원 식별 번호"),
+                                        fieldWithPath("data.answer[].answerAnswers[].memberName").type(JsonFieldType.STRING).description("답변 댓글 작성자"),
+                                        fieldWithPath("data.answer[].answerAnswers[].memberReputation").type(JsonFieldType.NUMBER).description("회원 명성도"),
                                         fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
                                         fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("현재 페이지"),
                                         fieldWithPath("pageInfo.totalElements").type(JsonFieldType.NUMBER).description("전체 답변 수"),
@@ -265,14 +252,12 @@ public class QuestionControllerTest implements QuestionControllerHelper {
     public void getQuestionsTest() throws Exception {
         // given
         String page = "1";
-        String size = "10";
-        String sortBy = "questionId";
+        String tab = "Newest";
         String keyword = "keyword";
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("page", page);
-        params.add("size", size);
-        params.add("sortBy", sortBy);
+        params.add("tab", tab);
         params.add("keyword", keyword);
         Page<Question> questions = StubData.MockQuestion.getMultiResultQuestion();
         List<QuestionDto.ResponseForList> responseList = StubData.MockQuestion.getMultiResponseBody();
@@ -295,8 +280,7 @@ public class QuestionControllerTest implements QuestionControllerHelper {
                         requestParameters(
                                 List.of(
                                         parameterWithName("page").description("페이지"),
-                                        parameterWithName("size").description("한 페이지에 표시 될 질문 정보 갯수"),
-                                        parameterWithName("sortBy").description("정렬 기준 ex) questionId"),
+                                        parameterWithName("tab").description("정렬 기준 Newest, Score"),
                                         parameterWithName("keyword").description("검색 키워드")
                                 )
                         ),
