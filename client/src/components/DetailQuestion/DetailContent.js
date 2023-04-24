@@ -11,8 +11,13 @@ import {
 import { faBookmark as faRegularBookmark } from '@fortawesome/free-regular-svg-icons';
 import { useState } from 'react';
 
-function DetailContent() {
+function DetailContent({ data, tagData }) {
   const [bookmark, setBookmark] = useState(false);
+
+  // const tagname = data.question.tagName;
+  console.log(data.question);
+  console.log(tagData);
+
   return (
     <DetailContents>
       <div>
@@ -57,9 +62,9 @@ function DetailContent() {
             played at once.
           </span>
           <div className="tagData">
-            <p>나는 왜 이시간까지 잠을안잤는가</p>
-            <p>javascript</p>
-            <p>styled-components</p>
+            {/* {data.question.tagName.map((tag) => (
+              <p key={tag.tagId}>{tag.tagName}</p>
+            ))} */}
           </div>
           <SideContents>
             <div className="subMenus">
@@ -67,12 +72,14 @@ function DetailContent() {
               <p>Edit</p>
               <p>Follow</p>
             </div>
-            <div className="user-info">
-              <img src="https://i.imgur.com/4b1ExzY.png" alt="profileIcon" />
-              <span>
-                <p>scotjam1981</p>
-                <p>asked 3 mins ago</p>
-              </span>
+            <div>
+              <div className="user-info">
+                <img src="https://i.imgur.com/4b1ExzY.png" alt="profileIcon" />
+                <span>
+                  <p>scotjam1981</p>
+                  <p>asked 3 mins ago</p>
+                </span>
+              </div>
             </div>
           </SideContents>
           <Comment />
@@ -187,5 +194,13 @@ export const SideContents = styled.div`
     width: 30px;
     height: 30px;
     margin-right: 10px;
+  }
+  @media (max-width: 640px) {
+    flex-direction: column;
+    > div:nth-child(2) {
+      display: flex;
+      width: 100%;
+      justify-content: right;
+    }
   }
 `;

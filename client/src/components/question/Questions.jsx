@@ -7,10 +7,9 @@ import axios from 'axios';
 function Questions() {
   const [qsData, setQsData] = useState([]);
   const [index, setIndex] = useState(0); // 탭메뉴 인덱스 상태
-  const [pageindex, setPageIndex] = useState(0); // 페이지 인덱스 상태
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [totalPages, setTotalPages] = useState(3); // 전체 페이지 수
-  console.log(pageindex);
+  const [totalcontetns, setTotalcontetns] = useState(0); // 전체 페이지 수
 
   useEffect(() => {
     axios
@@ -25,6 +24,7 @@ function Questions() {
       .then(function (response) {
         setQsData(response.data.data); //현재 페이지의 데이터
         setTotalPages(Math.ceil(response.data.pageInfo.totalElements / 10)); //전체페이지 계산
+        setTotalcontetns(response.data.pageInfo.totalElements);
         window.scrollTo(0, 0);
       })
       .catch(function (error) {
@@ -51,7 +51,6 @@ function Questions() {
         className={i === currentPage ? 'page-focused' : null}
         onClick={() => {
           setCurrentPage(i);
-          setPageIndex(i);
         }}
       >
         {i}
@@ -100,7 +99,7 @@ function Questions() {
             <buttom className="askquestion_Btn">Ask Question</buttom>
           </div>
           <div className="headContents flex-column">
-            <span>{qsData.length} questions</span>
+            <span>{totalcontetns} questions</span>
             <aside className="subFilterBtn">
               {buttomArr.map((el, i) => (
                 <button
@@ -156,19 +155,22 @@ function Questions() {
           </QuestionList>
         ))}
         <Pagination>
-          <button
-            onClick={handlePreviousPageClick}
-            disabled={currentPage === 1}
-          >
-            Prev
-          </button>
-          {buttonArray}
-          <button
-            onClick={handleNextPageClick}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </button>
+          <div className="margin-left">
+            <button
+              onClick={handlePreviousPageClick}
+              disabled={currentPage === 1}
+            >
+              Prev
+            </button>
+            {buttonArray}
+            <button
+              onClick={handleNextPageClick}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
+          <div>{currentPage} page</div>
         </Pagination>
       </Questionscomponent>
     </>
@@ -181,15 +183,21 @@ const Pagination = styled.div`
   width: 100%;
   height: 100px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  > button {
+  button {
     padding: 5px 10px;
     border: 1px solid #ccc;
     background: #fff;
     margin: 3px;
     border-radius: 3px;
     font-weight: 500;
+  }
+  button:disabled {
+    background-color: #f7f7f7;
+  }
+  .margin-left {
+    margin-left: 30px;
   }
   .page-focused {
     border-color: #f48225;
