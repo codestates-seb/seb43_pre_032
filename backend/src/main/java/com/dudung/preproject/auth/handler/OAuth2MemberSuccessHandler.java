@@ -52,7 +52,11 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     private void redirect(HttpServletRequest request, HttpServletResponse response, String username, List<String> authorities) throws IOException {
         String accessToken = delegateAccessToken(username, authorities);
         String refreshToken = delegateRefreshToken(username);
-        String uri = createUri(accessToken, refreshToken).toString();
+
+        response.setHeader("Authorization", "Bearer " + accessToken);
+        response.setHeader("Refresh", refreshToken);
+
+        String uri = createUri().toString();
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
     private String delegateAccessToken(String username, List<String> authorities) {
@@ -77,17 +81,13 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return refreshToken;
     }
 
-    private URI createUri(String accessToken, String refreshToken) {
-        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-        queryParams.add("access_token", accessToken);
-        queryParams.add("access_token", refreshToken);
-
+    private URI createUri() {
+        //http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("localhost")
-                .path("/receive-token.html")
-                .queryParams(queryParams)
+                .host("localhost:3030")
+                .path("/question")
                 .build()
                 .toUri();
 
