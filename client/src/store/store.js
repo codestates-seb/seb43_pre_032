@@ -13,29 +13,25 @@ let showCom = createSlice({
   },
 });
 
-// let createQuestion = createSlice({
-//   name: 'createQuestion',
-// initialState: {
-//   memberId: null,
-//   questionTitle: '',
-//   questionContent: '',
-//   tagName: [],
-// },
-//   reducers: {
-//     create(state, action) {
-//       let target = action.payload.target;
-//       let data = action.payload.data;
-//       return { ...state, [target]: data };
-//     },
-//   },
-// });
+let isLogin = createSlice({
+  name: 'isLogin',
+  initialState: false,
+  reducers: {
+    setLogin() {
+      return true;
+    },
+    setLogout() {
+      return false;
+    },
+  },
+});
 
 export let { selectFooter, selectNav } = showCom.actions;
-// export let { create } = createQuestion.actions;
+export let { setLogin, setLogout } = isLogin.actions;
 
 export default configureStore({
   reducer: {
     showCom: showCom.reducer,
-    // createQuestion: createQuestion.reducer,
+    isLogin: isLogin.reducer,
   },
 });

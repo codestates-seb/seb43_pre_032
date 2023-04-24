@@ -5,9 +5,20 @@ import {
   Bannertitle,
   Bannercomponent,
 } from '../question/Sidebanner.jsx';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import TagBar from '../TagBar.js';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
+const url =
+  'http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions?page=1&size=10&sortBy=questionId';
 const ModifyCom = () => {
+  let data = {
+    title: '수정될 질문의 제목',
+    content: '여기가 본문의 내용이 될거 같은데 ~~~~~~~~~~~~~~~~~~~~~~',
+    tag: ['java', 'spring', '태그 !'],
+  };
+
   let titleHelp = [
     'Correct minor typos or mistakes',
     'Clarify meaning without changing it',
@@ -35,13 +46,59 @@ const ModifyCom = () => {
     `creating new tags is a privilege; if you can't yet create a tag you need, then post this question without it, then ask the community to create it for you`,
   ];
   const titles = ['How to Edit', 'How to Format', 'How to Tag'];
+  const navigate = useNavigate();
+  let [tagData, setTagData] = useState([]); // 전체 태그 데이터
+  let [word, setWord] = useState(''); // 태그 검색어
+  let [selected, setSelected] = useState(['java', 'spring']); // 선택한 태그
+  let [filtered, setFiltered] = useState([]);
+
+  useEffect(() => {
+    // 솔님이 작성하신 코드     modify, create, tag 에서 쓰여서 hooks로 만드는건..?
+    axios
+      .get(
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags?page=1&size=3276&sortBy=tagId`,
+        {
+          headers: {
+            'ngrok-skip-browser-warning': '69420',
+          },
+        }
+      )
+      .then(function (response) {
+        setTagData(response.data.data); // 태그 전체
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
+  useEffect(() => {
+    setFiltered(
+      tagData
+        .filter((tag) => tag.tagName.includes(word.toLowerCase()))
+        .slice(0, 6)
+    );
+  }, [word]);
   let [help, setHelp] = useState(titleHelp);
   let [helpTitle, setHelpTitle] = useState(titles[0]);
-  let [body, setBody] = useState('');
 
-  let Bodyinput = (e) => {
-    setBody(e.target.value);
+  let [questionTitle, setQuestionTitle] = useState(data.title);
+  let [questionBody, setQuestionBody] = useState(data.content);
+
+  let titleInput = (e) => {
+    setQuestionTitle(e.target.value);
   };
+  let bodyInput = (e) => {
+    setQuestionBody(e.target.value);
+  };
+
+  let saveOnClick = () => {
+    let newData = {
+      questionTitle: questionTitle,
+      questionContent: questionBody,
+      tagName: selected,
+    };
+    axios.patch(url, { ...newData });
+  };
+
   let helphandler = (type) => {
     type === 'title'
       ? (setHelp(titleHelp), setHelpTitle(titles[0]))
@@ -49,35 +106,51 @@ const ModifyCom = () => {
       ? (setHelp(bodyHelp), setHelpTitle(titles[1]))
       : (setHelp(tagHelp), setHelpTitle(titles[2]));
   };
+
+  const cancelClicked = () => {
+    navigate('/detailquestion');
+  };
   return (
     <TotalContainer>
       <ModifyContainer>
         <TitleContainer>
           <div className="modify-content-title">Title</div>
           <input
+            value={questionTitle}
             onClick={() => helphandler('title')}
             className="modify-input-content"
+            onChange={titleInput}
           />
         </TitleContainer>
         <BodyContainer>
           <div className="modify-content-title">Body</div>
           <textarea
+            value={questionBody}
             onClick={() => helphandler('body')}
-            onChange={Bodyinput}
+            onChange={bodyInput}
             className="modify-textarea-content link-style-remove"
           />
         </BodyContainer>
-        <div className="preview">{body}</div>
-        <div>
-          <div className="modify-content-title">Tags</div>
-          <input
-            onClick={() => helphandler('tag')}
-            className="modify-input-content"
-          />
-        </div>
+        <div className="preview">{questionBody}</div>
+        <TagBar
+          setWord={setWord}
+          selected={selected}
+          filtered={filtered}
+          setSelected={setSelected}
+        ></TagBar>
         <BtnContainer>
-          <div className="save flex-center btn-blue-style">Save edits</div>
-          <div className="cancel flex-center btn-skyblue-style">Cancel</div>
+          <button
+            onClick={saveOnClick}
+            className="save flex-center btn-blue-style"
+          >
+            Save edits
+          </button>
+          <button
+            onClick={cancelClicked}
+            className="cancel flex-center btn-skyblue-style"
+          >
+            Cancel
+          </button>
         </BtnContainer>
       </ModifyContainer>
       <div className="help-animation flex-center">
@@ -85,15 +158,17 @@ const ModifyCom = () => {
           <Sidebanners className="help">
             <Bannertitle>{helpTitle}</Bannertitle>
             <Bannercontents>
-              <HelpContainer>
-                {help.map((el, idx) => {
-                  return (
-                    <li className="list-style" key={idx}>
-                      {el}
-                    </li>
-                  );
-                })}
-              </HelpContainer>
+              <div className="test">
+                <HelpContainer>
+                  {help.map((el, idx) => {
+                    return (
+                      <li className="list-style" key={idx}>
+                        {el}
+                      </li>
+                    );
+                  })}
+                </HelpContainer>
+              </div>
             </Bannercontents>
           </Sidebanners>
         </Bannercomponent>
@@ -119,7 +194,8 @@ const TotalContainer = styled.main`
   }
 `;
 const HelpContainer = styled.ul`
-  list-style: circle;
+  display: grid;
+  justify-content: flex-end;
 `;
 const ModifyContainer = styled.article`
   max-width: 660px;
@@ -133,6 +209,7 @@ const ModifyContainer = styled.article`
     align-items: center;
     min-height: 30px;
   }
+
   @media screen and (max-width: 800px) {
     width: 90vw;
     padding-left: 30px;
@@ -140,16 +217,7 @@ const ModifyContainer = styled.article`
 `;
 
 const TitleContainer = styled.section``;
-const BodyContainer = styled.section`
-  .modify-textarea-content {
-    padding: 10px;
-    height: 200px;
-    width: 96.5%;
-    box-shadow: none;
-    border-radius: 3px;
-    resize: none;
-  }
-`;
+const BodyContainer = styled.section``;
 
 const BtnContainer = styled.div`
   display: flex;
@@ -160,7 +228,7 @@ const BtnContainer = styled.div`
   margin-top: 5px;
   .save {
     height: 35px;
-    width: 75px;
+    width: 80px;
     font-size: 13px;
     :hover {
       background-color: var(--signup-btn-after);
