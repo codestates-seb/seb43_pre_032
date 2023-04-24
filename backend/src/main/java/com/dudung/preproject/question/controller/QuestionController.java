@@ -74,8 +74,8 @@ public class QuestionController {
     }
 
     @GetMapping
-    public ResponseEntity getQuestions(@Positive @RequestParam int page, @RequestParam String sortBy, @RequestParam(required = false) String keyword) {
-        Page<Question> pageQuestions = questionService.findQuestions(page - 1, sortBy, keyword);
+    public ResponseEntity getQuestions(@Positive @RequestParam int page, @RequestParam String tab, @RequestParam(required = false) String keyword) {
+        Page<Question> pageQuestions = questionService.findQuestions(page - 1, tab, keyword);
         List<Question> questions = pageQuestions.getContent();
 
         return new ResponseEntity<>(new MultiResponseDto<>(questionMapper.questionsToQuestionsResponse(questions), pageQuestions), HttpStatus.OK);

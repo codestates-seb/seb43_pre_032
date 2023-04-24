@@ -76,6 +76,13 @@ public class QuestionService {
         return findedQuestion;
     }
     public Page<Question> findQuestions(int page, String sortBy, String keyword) { // sortBy == 정렬기준 e.g. "questionId"
+        if (sortBy.equals("Newest")) {
+            sortBy = "questionId";
+        } else if (sortBy.equals("Active")) {
+
+        } else if (sortBy.equals("Votes")) {
+            sortBy = "questionVoteSum";
+        }
         if (keyword == null) {
             return questionRepository.findAll(PageRequest.of(page, 10, Sort.by(sortBy).descending()));
         }
@@ -83,8 +90,8 @@ public class QuestionService {
                 Sort.by(sortBy).descending()));
     }
 
-    public Page<Question> findQuestions(Tag tag, int page, int size, String sortBy) { // sortBy == 정렬기준 e.g. "questionId"
-        return questionRepository.findAllByTag(tag, PageRequest.of(page, size, Sort.by(sortBy).descending()));
+    public Page<Question> findQuestions(Tag tag, int page, String sortBy) { // sortBy == 정렬기준 e.g. "questionId"
+        return questionRepository.findAllByTag(tag, PageRequest.of(page, 10, Sort.by(sortBy).descending()));
     }
 
     public void deleteQuestion(long questionId, long authenticationMemberId) {

@@ -68,7 +68,7 @@ public class TagControllerTest implements TagControllerHelper {
         Page<Question> questions = StubData.MockQuestion.getMultiResultQuestion();
 
         given(tagService.findTag(Mockito.anyLong())).willReturn(new Tag());
-        given(questionService.findQuestions(Mockito.any(Tag.class), Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString())).willReturn(questions);
+        given(questionService.findQuestions(Mockito.any(Tag.class), Mockito.anyInt(), Mockito.anyString())).willReturn(questions);
         given(tagMapper.tagTotagResponse(Mockito.any(Tag.class), Mockito.anyList())).willReturn(response);
 
         // when
@@ -137,7 +137,7 @@ public class TagControllerTest implements TagControllerHelper {
         Page<Tag> tagPage = StubData.MockTag.getMultiResultTag();
         List<TagDto.ResponseForList> tagList = StubData.MockTag.getMultiResponseBody();
 
-        given(tagService.findTags(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString(), Mockito.anyString())).willReturn(tagPage);
+        given(tagService.findTags(Mockito.anyInt(), Mockito.anyString(), Mockito.anyString())).willReturn(tagPage);
         given(tagMapper.tagsToTagsResponse(Mockito.anyList())).willReturn(tagList);
 
         // when
