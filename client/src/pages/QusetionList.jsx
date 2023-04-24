@@ -2,11 +2,11 @@ import Sidebanner from '../components/question/Sidebanner.jsx';
 import Questions from '../components/question/Questions.jsx';
 import styled from 'styled-components';
 
-function Viewcomponent() {
+function Viewcomponent({ tagId }) {
   return (
     <Questionscomponent>
       <Viewquestion>
-        <Questions />
+        <Questions tagId={tagId} />
       </Viewquestion>
       <Viewsidebanner>
         <Sidebanner />
