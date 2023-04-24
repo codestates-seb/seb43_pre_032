@@ -56,13 +56,11 @@ public class TagControllerTest implements TagControllerHelper {
     public void getTagTest() throws Exception {
         // given
         String page = "1";
-        String size = "10";
-        String sortBy = "tagId";
+        String tab = "popular";
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("page", page);
-        params.add("size", size);
-        params.add("sortBy", sortBy);
+        params.add("tab", tab);
 
         TagDto.Response response = StubData.MockTag.getResponseBody();
         Page<Question> questions = StubData.MockQuestion.getMultiResultQuestion();
@@ -87,8 +85,7 @@ public class TagControllerTest implements TagControllerHelper {
                         ),
                         requestParameters(
                                 parameterWithName("page").description("페이지"),
-                                parameterWithName("size").description("한 페이지에 표시 될 질문 정보 갯수"),
-                                parameterWithName("sortBy").description("정렬 기준 ex) questionId")
+                                parameterWithName("tab").description("정렬 기준 ex) questionId")
                         ),
                         responseFields(
                                 List.of(
@@ -105,13 +102,14 @@ public class TagControllerTest implements TagControllerHelper {
                                         fieldWithPath("data.questions[].tagName[]").type(JsonFieldType.ARRAY).description("태그 리스트").optional(),
                                         fieldWithPath("data.questions[].tagName[].tagId").type(JsonFieldType.NUMBER).description("태그 식별 번호").optional(),
                                         fieldWithPath("data.questions[].tagName[].tagName").type(JsonFieldType.STRING).description("태그 이름").optional(),
+                                        fieldWithPath("data.questions[].lastStatus").type(JsonFieldType.STRING).description("질문의 마지막 상태"),
+                                        fieldWithPath("data.questions[].lastStatusTime").type(JsonFieldType.STRING).description("질문의 마지막 상태로 전환된 시간"),
                                         fieldWithPath("data.questions[].memberName").type(JsonFieldType.STRING).description("작성 회원 이름").optional(),
                                         fieldWithPath("data.questions[].answerCount").type(JsonFieldType.NUMBER).description("").optional(),
                                         fieldWithPath("data.questions[].questionContent").type(JsonFieldType.STRING).description("질문 내용"),
                                         fieldWithPath("data.questions[].memberReputation").type(JsonFieldType.NUMBER).description("회원 명성도"),
                                         fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
                                         fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("현재 페이지"),
-                                        fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("페이지 내 답변 갯수"),
                                         fieldWithPath("pageInfo.totalElements").type(JsonFieldType.NUMBER).description("전체 답변 수"),
                                         fieldWithPath("pageInfo.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수")
                                 )
@@ -124,14 +122,12 @@ public class TagControllerTest implements TagControllerHelper {
     public void getTagsTest() throws Exception {
         // given
         String page = "1";
-        String size = "10";
-        String sortBy = "tagId";
+        String tab = "tagId";
         String keyword = "keyword";
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("page", page);
-        params.add("size", size);
-        params.add("sortBy", sortBy);
+        params.add("tab", tab);
         params.add("keyword", keyword);
 
         Page<Tag> tagPage = StubData.MockTag.getMultiResultTag();
@@ -154,8 +150,7 @@ public class TagControllerTest implements TagControllerHelper {
                         requestParameters(
                                 List.of(
                                         parameterWithName("page").description("페이지"),
-                                        parameterWithName("size").description("한 페이지에 표시 될 태그 정보 갯수"),
-                                        parameterWithName("sortBy").description("정렬 기준 ex) tagId"),
+                                        parameterWithName("tab").description("정렬 기준 ex) tagId"),
                                         parameterWithName("keyword").description("검색 키워드")
                                 )
                         ),
@@ -167,7 +162,6 @@ public class TagControllerTest implements TagControllerHelper {
                                         fieldWithPath("data[].questions").type(JsonFieldType.NUMBER).description("질문 리스트"),
                                         fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
                                         fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("현재 페이지"),
-                                        fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("페이지 내 태그 갯수"),
                                         fieldWithPath("pageInfo.totalElements").type(JsonFieldType.NUMBER).description("전체 태그 수"),
                                         fieldWithPath("pageInfo.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수")
                                 )

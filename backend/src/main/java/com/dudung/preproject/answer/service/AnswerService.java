@@ -75,9 +75,9 @@ public class AnswerService {
         answerRepository.delete(findAnswer);
     }
 
-    public Page<Answer> findAnswers(int page, String sortBy) {
+    public Page<Answer> findAnswers(int page, String tab) {
         return answerRepository.findAll(PageRequest.of
-                (page, 5, Sort.by(sortBy).descending()));
+                (page, 5, Sort.by(tab).descending()));
     }
 
     private void checkVerifiedId(long authenticationMemeberId) {
