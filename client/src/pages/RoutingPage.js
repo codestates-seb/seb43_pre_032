@@ -85,9 +85,6 @@ const Maincontents = styled.div`
     height: 100%;
     border-right: 1px solid #ccc;
   }
-  .fixed_contents {
-    position: fixed;
-  }
   .main_view {
     position: relative;
     width: 100%;
