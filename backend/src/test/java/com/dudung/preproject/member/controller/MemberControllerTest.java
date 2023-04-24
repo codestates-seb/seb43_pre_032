@@ -1,18 +1,23 @@
 package com.dudung.preproject.member.controller;
 
+import com.dudung.preproject.auth.jwt.JwtTokenizer;
+import com.dudung.preproject.helper.MemberControllerHelper;
 import com.dudung.preproject.helper.StubData;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.member.dto.MemberDto;
 import com.dudung.preproject.member.mapper.MemberMapper;
 import com.dudung.preproject.member.service.MemberService;
 import com.dudung.preproject.question.domain.Question;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
@@ -27,6 +32,7 @@ import org.springframework.util.MultiValueMap;
 import java.lang.annotation.Documented;
 import java.util.List;
 
+import static com.dudung.preproject.helper.MemberControllerHelper.MEMBER_RESOURCE_URI;
 import static com.dudung.preproject.helper.StubData.*;
 import static com.dudung.preproject.utils.ApiDocumentUtils.getRequestPreProcessor;
 import static com.dudung.preproject.utils.ApiDocumentUtils.getResponsePreProcessor;
@@ -35,10 +41,10 @@ import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -46,14 +52,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(MemberController.class)
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureRestDocs
+@AutoConfigureMockMvc(addFilters = false)
 @MockBean(JpaMetamodelMappingContext.class)
-public class MemberControllerTest {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public class MemberControllerTest implements MemberControllerHelper {
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private JwtTokenizer jwtTokenizer;
     @MockBean
     private MemberService memberService;
     @MockBean
     private MemberMapper mapper;
+
+    private  String accessToken;
+
+    @BeforeAll
+    public void init() {
+        accessToken = StubData.MockSecurity.getValidAccessToken(jwtTokenizer.getSecretKey());
+    }
 
     @Test
     @DisplayName("Member Create Test")
@@ -206,11 +223,19 @@ public class MemberControllerTest {
     @Test
     @DisplayName("Member Delete Test")
     public void deleteMemberTest() throws Exception {
-        doNothing().when(memberService).deleteMember(Mockito.anyLong());
+        doNothing().when(memberService).deleteMember(Mockito.anyLong(), Mockito.anyLong());
 
-        mockMvc.perform(
-                        delete("/members/{member-id}", 1)
-                )
-                .andExpect(status().isNoContent());
+        mockMvc.perform(deleteRequestBuilder(MEMBER_RESOURCE_URI, 1L, accessToken))
+                .andExpect(status().isNoContent())
+                .andDo(document("delete-member",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        requestHeaders(
+                                getDefaultRequestHeaderDescriptor()
+                        ),
+                        pathParameters(
+                                        parameterWithName("member-id").description("회원 식별 번호")
+                        )
+                ));
     }
 }
