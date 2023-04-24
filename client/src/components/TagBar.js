@@ -10,6 +10,7 @@ const TagContainer = styled.div`
   padding-right: 10px;
   display: flex;
   align-items: center;
+  z-index: 1;
   .searchtag {
     height: 50%;
     border: gray;
@@ -20,7 +21,6 @@ const TagContainer = styled.div`
 
 const ItemContainer = styled.div`
   gap: 10px;
-
   height: 100%;
 `;
 
@@ -31,14 +31,16 @@ const Select = styled.div`
   font-size: 14px;
 `;
 const TagsContainer = styled.div`
-  width: 900px;
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   background-color: white;
   border: 1px solid lightgray;
   position: absolute;
-  left: 100px;
-  top: 658px;
+  top: 50px;
+  @media screen and (max-width: 1300px) {
+    grid-template-columns: 1fr 1fr;
+  }
 `;
 const TagItem = styled.div`
   padding: 5px;
@@ -61,26 +63,25 @@ const CancelBtn = styled.span`
 `;
 
 const TagBar = ({ setWord, selected, filtered, setSelected }) => {
-  const inputRef = useRef(null);
+  const Ref = useRef(null);
   let [val, setVal] = useState('');
+
   const handleTagContainerClick = () => {
-    inputRef.current.focus();
+    Ref.current.focus();
   };
   const onChangeHandler = (e) => {
     setVal(e.target.value);
     setWord(e.target.value);
   };
-  const clickHandler = (title) => {
+  const clickHandler = (tag) => {
     setVal('');
-    setSelected((pre) => [...pre, title]);
+    setSelected((pre) => [...pre, tag]);
   };
-  const cancelHandler = (title) => {
+  const cancelHandler = (tag) => {
     setVal('');
-    // console.log(title);
     let newArr = selected.filter((el) => {
-      return title !== el;
+      return tag.tagName !== el.tagName;
     });
-    console.log(newArr);
     setSelected(newArr);
   };
 
@@ -91,7 +92,8 @@ const TagBar = ({ setWord, selected, filtered, setSelected }) => {
           {selected.map((el, idx) => {
             return (
               <Select key={idx}>
-                {el} <CancelBtn onClick={() => cancelHandler(el)}>X</CancelBtn>
+                {el.tagName}{' '}
+                <CancelBtn onClick={() => cancelHandler(el)}>X</CancelBtn>
               </Select>
             );
           })}
@@ -101,7 +103,7 @@ const TagBar = ({ setWord, selected, filtered, setSelected }) => {
             value={val}
             onChange={onChangeHandler}
             className="searchtag"
-            ref={inputRef}
+            ref={Ref}
           />
         </ItemContainer>
       </TagContainer>
@@ -111,7 +113,7 @@ const TagBar = ({ setWord, selected, filtered, setSelected }) => {
             return (
               <TagItem
                 onClick={() => {
-                  clickHandler(el.tagName);
+                  clickHandler(el);
                 }}
                 key={idx}
               >

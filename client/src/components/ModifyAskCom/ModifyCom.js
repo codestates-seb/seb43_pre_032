@@ -11,8 +11,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const url =
-  'http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions?page=1&size=10&sortBy=questionId';
+  'http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/1';
 const ModifyCom = () => {
+  // const [token, setToken] = useState('');
   let data = {
     title: '수정될 질문의 제목',
     content: '여기가 본문의 내용이 될거 같은데 ~~~~~~~~~~~~~~~~~~~~~~',
@@ -27,7 +28,7 @@ const ModifyCom = () => {
     'Don’t use edits to reply to the author',
   ];
   let bodyHelp = [
-    'create code fences with backticks ` ',
+    'create code fences with backticks',
     'add language identifier to highlight code',
     'put returns between paragraphs',
     'for linebreak add 2 spaces at end',
@@ -49,7 +50,14 @@ const ModifyCom = () => {
   const navigate = useNavigate();
   let [tagData, setTagData] = useState([]); // 전체 태그 데이터
   let [word, setWord] = useState(''); // 태그 검색어
-  let [selected, setSelected] = useState(['java', 'spring']); // 선택한 태그
+  let [selected, setSelected] = useState([
+    {
+      tagDescription:
+        'For questions about programming in ECMAScript (JavaScript/JS) and its different dialects/implementations (except for ActionScript). Keep in mind that JavaScript is NOT the same as Java! Include all la…',
+      tagId: 1,
+      tagName: 'javascript',
+    },
+  ]); // 선택한 태그
   let [filtered, setFiltered] = useState([]);
 
   useEffect(() => {
@@ -73,17 +81,21 @@ const ModifyCom = () => {
   useEffect(() => {
     setFiltered(
       tagData
-        .filter((tag) => tag.tagName.includes(word.toLowerCase()))
+        .filter((tag) => {
+          return tag.tagName.includes(word.toLowerCase());
+        })
         .slice(0, 6)
     );
   }, [word]);
   let [help, setHelp] = useState(titleHelp);
   let [helpTitle, setHelpTitle] = useState(titles[0]);
 
+  let [questionId, setQuestionId] = useState(1);
   let [questionTitle, setQuestionTitle] = useState(data.title);
   let [questionBody, setQuestionBody] = useState(data.content);
 
   let titleInput = (e) => {
+    setQuestionId(1); //바꿔야함--> props로 넘겨준걸로 set 되게
     setQuestionTitle(e.target.value);
   };
   let bodyInput = (e) => {
@@ -91,12 +103,27 @@ const ModifyCom = () => {
   };
 
   let saveOnClick = () => {
+    let tagID = selected.map((el) => {
+      return { tagId: el.tagId };
+    });
     let newData = {
+      questionId: questionId,
       questionTitle: questionTitle,
       questionContent: questionBody,
-      tagName: selected,
+      tagName: tagID,
+      modifiedAt: new Date().toISOString(),
     };
-    axios.patch(url, { ...newData });
+    console.log(localStorage.getItem('token'));
+    axios
+      .patch(url, newData, {
+        header: {
+          Authorization: localStorage.getItem('token'),
+          'ngrok-skip-browser-warning': '69420',
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
   let helphandler = (type) => {
@@ -110,6 +137,7 @@ const ModifyCom = () => {
   const cancelClicked = () => {
     navigate('/detailquestion');
   };
+
   return (
     <TotalContainer>
       <ModifyContainer>
@@ -132,12 +160,14 @@ const ModifyCom = () => {
           />
         </BodyContainer>
         <div className="preview">{questionBody}</div>
-        <TagBar
-          setWord={setWord}
-          selected={selected}
-          filtered={filtered}
-          setSelected={setSelected}
-        ></TagBar>
+        <div onFocus={() => helphandler('tag')} className="tagCon">
+          <TagBar
+            setWord={setWord}
+            selected={selected}
+            filtered={filtered}
+            setSelected={setSelected}
+          ></TagBar>
+        </div>
         <BtnContainer>
           <button
             onClick={saveOnClick}
@@ -153,9 +183,11 @@ const ModifyCom = () => {
           </button>
         </BtnContainer>
       </ModifyContainer>
-      <div className="help-animation flex-center">
+      <BannerContainer
+        className={word === '' ? 'flex-center' : 'flex-center help'}
+      >
         <Bannercomponent>
-          <Sidebanners className="help">
+          <Sidebanners>
             <Bannertitle>{helpTitle}</Bannertitle>
             <Bannercontents>
               <div className="test">
@@ -172,7 +204,7 @@ const ModifyCom = () => {
             </Bannercontents>
           </Sidebanners>
         </Bannercomponent>
-      </div>
+      </BannerContainer>
     </TotalContainer>
   );
 };
@@ -180,26 +212,26 @@ const TotalContainer = styled.main`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 1300px) {
     flex-direction: column;
     align-items: center;
   }
   margin-right: 10px;
   transition-duration: 1s;
-  .help-animation {
-    animation-name: fadeIn;
-    animation-duration: 1s;
-    animation-delay: 1s;
-    animation-timing-function: linear;
+  .help {
+    @media screen and (max-width: 1300px) {
+      display: none;
+    }
   }
 `;
+const BannerContainer = styled.div``;
 const HelpContainer = styled.ul`
   display: grid;
   justify-content: flex-end;
 `;
 const ModifyContainer = styled.article`
   max-width: 660px;
-  width: 50%;
+  width: 60%;
   display: grid;
   margin-right: 20px;
   grid-template-columns: 1fr;
@@ -209,15 +241,22 @@ const ModifyContainer = styled.article`
     align-items: center;
     min-height: 30px;
   }
+  .tagCon {
+    position: relative;
+  }
 
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 1300px) {
     width: 90vw;
     padding-left: 30px;
   }
 `;
 
-const TitleContainer = styled.section``;
-const BodyContainer = styled.section``;
+const TitleContainer = styled.section`
+  width: 100%;
+`;
+const BodyContainer = styled.section`
+  width: 97.5%;
+`;
 
 const BtnContainer = styled.div`
   display: flex;
@@ -225,7 +264,6 @@ const BtnContainer = styled.div`
   align-items: center;
   justify-content: flex-start;
   width: 200px;
-  margin-top: 5px;
   .save {
     height: 35px;
     width: 80px;

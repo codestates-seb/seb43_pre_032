@@ -9,17 +9,17 @@ import HelpItem from '../components/CreateAsk.js/CreateHelp';
 import { useState, useEffect } from 'react';
 import TagBar from '../components/TagBar';
 import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
 axios.defaults.withCredentials = true;
-const url = 'https://8625-61-254-8-200.ngrok-free.app/';
+const url =
+  'http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/';
 
 const CreateAsk = () => {
   let [tagData, setTagData] = useState([]); // 전체 태그 데이터
   let [word, setWord] = useState(''); // 태그 검색어
   let [selected, setSelected] = useState([]); // 선택한 태그
   let [filtered, setFiltered] = useState([]);
-  tagData.length;
-  console.log(word);
+
   useEffect(() => {
     // 솔님이 작성하신 코드     modify, create, tag 에서 쓰여서 hooks로 만드는건..?
     axios
@@ -48,25 +48,41 @@ const CreateAsk = () => {
 
   let [selectHelp, setSelectHelp] = useState(0);
   let [create, setCreate] = useState({
-    memberId: 1,
     questionTitle: '',
     questionContent: '',
-    tagName: [{ tagId: 3 }],
   });
   let [isReady, setIsReady] = useState(false);
   let handleData = (data) => {
+    console.log(data);
     let newData = { ...create, [data[0]]: data[1] };
     console.log(newData);
     newData.questionContent.length >= 20 ? setIsReady(true) : setIsReady(false);
     setCreate(newData);
   };
+  let navigate = useNavigate();
   const postData = () => {
+    let tagID = selected.map((el) => {
+      return { tagId: el.tagId };
+    });
+    let newData = {
+      memberId: 1,
+      questionTitle: create.questionTitle,
+      questionContent: create.questionContent,
+      tagName: tagID,
+      createdAt: new Date().toISOString(),
+    };
+
     axios
-      .post(`${url}/questions?page=1&size=10&sortBy=questionId`)
-      .then(function (response) {
-        // 성공한 경우 실행
-        console.log(response);
-      });
+      .post(url, newData, {
+        header: {
+          Authorization: localStorage.getItem('token'),
+          'ngrok-skip-browser-warning': '69420',
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+    navigate('/detailquestion');
   };
 
   let dispatch = useDispatch();
@@ -99,11 +115,6 @@ const CreateAsk = () => {
     ],
     [
       'Explain how you encountered the problem you’re trying to solve, and any difficulties that have prevented you from solving it yourself.',
-    ],
-    [
-      'Show what you’ve tried, tell us what happened, and why it didn’t meet your needs.',
-      'Not all questions benefit from including code, but if your problem is better understood with code you’ve written, you should include a minimal, reproducible example.',
-      'Please make sure to post code and errors as text directly to the question (and not as images), and format them appropriately.',
     ],
     [
       'Tags help ensure that your question will get attention from the right people.',
@@ -143,19 +154,21 @@ const CreateAsk = () => {
             help={helpSentances[1]}
           ></TextareaItem>
         </SingleContainer>
-        <SingleContainer onClick={() => setSelectHelp(3)}>
-          {selectHelp === 3 ? (
+        <SingleContainer onClick={() => setSelectHelp(2)}>
+          {selectHelp === 2 ? (
             <HelpItem
-              title={bannerTitle[3]}
-              help={bannerContents[3]}
+              title={bannerTitle[2]}
+              help={bannerContents[2]}
             ></HelpItem>
           ) : null}
-          <TagBar
-            setWord={setWord}
-            selected={selected}
-            filtered={filtered}
-            setSelected={setSelected}
-          ></TagBar>
+          <div className="tagCon">
+            <TagBar
+              setWord={setWord}
+              selected={selected}
+              filtered={filtered}
+              setSelected={setSelected}
+            ></TagBar>
+          </div>
         </SingleContainer>
       </ItemContainer>
       <BtnContainer
@@ -199,6 +212,9 @@ const Head = styled.section`
 const ItemContainer = styled.div`
   display: grid;
   grid-row-gap: 30px;
+  .tagCon {
+    position: relative;
+  }
 `;
 const SingleContainer = styled.section`
   display: grid;
