@@ -44,14 +44,14 @@ const Paging = () => {
               <Route path="/members" element={<Signup />} />
               <Route path="/auth/login" element={<Login />} />
               <Route path="/question" element={<Viewcomponent />} />
-              <Route path="/question/:qId" element={<DetailQuestion />} />
+              <Route path="/question/:qsId" element={<DetailQuestion />} />
               <Route path="/users/3355" element={<MyinfoPage />} />
               <Route path="/users/edit/3355" element={<MyInfoEdit />} />
               <Route path="/question/ask" element={<CreateAsk />} />
               <Route path="/tags" element={<Taglist />} />
               <Route path="/tags/:tagId" element={<TaggedQuestion />} />
               <Route path="/logout" element={<Logout />} />
-              <Route path="/question/modify" element={<ModifyAskPage />} />
+              <Route path="/modify/:qsId" element={<ModifyAskPage />} />
             </Routes>
           </article>
         </Maincontents>

@@ -3,9 +3,10 @@ import Answer from './Answer';
 import YourAnswer from './YourAnswer';
 import Comment from './Comment';
 import VoteGroup from './VoteGroup';
+import { Link } from 'react-router-dom';
 
-function DetailContent({ data, tagData, answerData }) {
-  console.log(data);
+function DetailContent({ data, tagData, answerData, qsId }) {
+  console.log(qsId);
 
   //작성시간계산 : ~~시간전 으로 표기
   function displayedAt(createdAt) {
@@ -40,7 +41,9 @@ function DetailContent({ data, tagData, answerData }) {
           <SideContents>
             <div className="subMenus">
               <p>Share</p>
-              <p>Edit</p>
+              <Link to={`/modify/${qsId.qsId}`}>
+                <p>Edit</p>
+              </Link>
               <p>Follow</p>
             </div>
             <div>

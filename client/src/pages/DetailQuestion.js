@@ -45,6 +45,7 @@ function DetailQuestion() {
           data={detailData}
           tagData={tagData}
           answerData={answerData}
+          qsId={qsId}
         />
         <div className="media-fade">
           <Sidebanner></Sidebanner>
