@@ -21,9 +21,7 @@ const Questionscomponent = styled.div`
   display: flex;
 `;
 
-const Viewquestion = styled.div`
-  width: 100%;
-`;
+const Viewquestion = styled.div``;
 
 const Viewsidebanner = styled.div`
   @media (max-width: 1000px) {

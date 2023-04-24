@@ -136,7 +136,7 @@ function Questions({ tagId }) {
                 </span>
               </IntData>
               <ContentsData>
-                <Link to={'/questions/' + el.questionId}>
+                <Link to={'/question/' + el.questionId}>
                   <h3>{el.questionTitle}</h3>
                 </Link>
                 <span>{el.questionContent}</span>
@@ -332,9 +332,16 @@ const IntData = styled.div`
   height: 100%;
   margin-right: 20px;
   span {
+    display: flex;
+    justify-content: right;
+    width: 100px;
+    flex-direction: row;
     font-size: 13px;
     margin-top: 10px;
     text-align: right;
+  }
+  span > * {
+    display: flex;
   }
   .answer_count {
     border-radius: 5px;
@@ -344,6 +351,7 @@ const IntData = styled.div`
   }
   @media (max-width: 800px) {
     flex-direction: row;
+    margin: 0px 10px;
     span {
       text-align: left;
       width: auto;
