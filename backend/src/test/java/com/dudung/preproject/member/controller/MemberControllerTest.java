@@ -212,7 +212,6 @@ public class MemberControllerTest implements MemberControllerHelper {
                                         fieldWithPath("data[].reputation").type(JsonFieldType.NUMBER).description("명성도"),
                                         fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
                                         fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("현재 페이지"),
-                                        fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("한 페이지에 표시 될 회원 수"),
                                         fieldWithPath("pageInfo.totalElements").type(JsonFieldType.NUMBER).description("전체 회원 수"),
                                         fieldWithPath("pageInfo.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수")
                                 )
