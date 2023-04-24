@@ -43,6 +43,7 @@ public class QuestionService {
         checkVerifiedId(authenticationMemeberId);
         Member member = memberService.findMember(authenticationMemeberId);
         question.setMember(member);
+        question.setQuestionLastStatusTime(question.getCreatedAt());
 
         Question createdQuestion = questionRepository.save(question);
         insertTag(createdQuestion);
@@ -66,6 +67,8 @@ public class QuestionService {
                     insertTag(tagList, findedQuestion);
                 });
         findedQuestion.setModifiedAt(question.getModifiedAt());
+        findedQuestion.setQuestionLastStatusTime(question.getModifiedAt());
+        findedQuestion.setQuestionLastStatus(Question.LastStatus.QUESTION_MODIFY);
 
         return questionRepository.save(findedQuestion);
     }
@@ -79,7 +82,7 @@ public class QuestionService {
         if (sortBy.equals("Newest")) {
             sortBy = "questionId";
         } else if (sortBy.equals("Active")) {
-
+            sortBy = "questionLastStatusTime";
         } else if (sortBy.equals("Score")) {
             sortBy = "questionVoteSum";
         }
