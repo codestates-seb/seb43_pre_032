@@ -11,6 +11,6 @@ public class DataListResponseDto<T> {
     public DataListResponseDto(T data, Page page) {
         this.data = data;
         this.pageInfo = new PageInfo(page.getNumber() + 1,
-                page.getSize(), page.getTotalElements(), page.getTotalPages());
+                 page.getTotalElements(), page.getTotalPages());
     }
 }
