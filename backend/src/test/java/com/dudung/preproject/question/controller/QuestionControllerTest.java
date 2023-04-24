@@ -7,6 +7,8 @@ import com.dudung.preproject.auth.jwt.JwtTokenizer;
 import com.dudung.preproject.helper.QuestionControllerHelper;
 import com.dudung.preproject.helper.StubData;
 import com.dudung.preproject.question.domain.Question;
+import com.dudung.preproject.question.domain.QuestionAnswer;
+import com.dudung.preproject.question.dto.QuestionAnswerDto;
 import com.dudung.preproject.question.dto.QuestionDto;
 import com.dudung.preproject.question.mapper.QuestionAnswerMapper;
 import com.dudung.preproject.question.mapper.QuestionMapper;
@@ -333,4 +335,33 @@ public class QuestionControllerTest implements QuestionControllerHelper {
                 );
     }
 
+    @Test
+    @DisplayName("Question Answer Create Test")
+    public void createQuestionAnswertest() throws Exception {
+        QuestionAnswerDto.Post post = (QuestionAnswerDto.Post) StubData.MockQuestionAnswer.getRequestBody(HttpMethod.POST);
+        String content = toJsonContent(post);
+
+        given(questionAnswerMapper.questionAnswerPostToQuestionAnswer(Mockito.any(QuestionAnswerDto.Post.class))).willReturn(new QuestionAnswer());
+        given(questionAnswerService.createQuestionAnswer(Mockito.any(QuestionAnswer.class), Mockito.anyLong())).willReturn(new QuestionAnswer());
+
+        ResultActions actions =
+                mockMvc.perform(postRequestBuilder(QUESTION_RESOURCE_URI, 1L, content, accessToken));
+        actions
+                .andExpect(status().isCreated())
+                .andDo(print())
+                .andDo(document("post-questionAnswer",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        requestHeaders(
+                                getDefaultRequestHeaderDescriptor()
+                        ),
+                        requestFields(
+                                List.of(
+                                        fieldWithPath("questionId").type(JsonFieldType.NUMBER).description("질문 식별 번호"),
+                                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별 번호"),
+                                        fieldWithPath("questionAnswerContent").type(JsonFieldType.STRING).description("질문 댓글 내용")
+                                )
+                        )
+                ));
+    }
 }
