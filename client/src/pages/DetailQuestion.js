@@ -4,15 +4,19 @@ import DetailTitle from '../components/DetailQuestion/DetailTitle';
 import DetailContent from '../components/DetailQuestion/DetailContent';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 function DetailQuestion() {
   const [detailData, setDetailData] = useState([]);
+  const [answerData, setAnswerData] = useState([]);
   const [tagData, setTagData] = useState([]);
-  console.log(tagData);
+
+  const qsId = useParams();
+  console.log(qsId);
 
   useEffect(() => {
     axios
       .get(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/13?page=1&size=5&sortBy=answerId`,
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}?page=1&size=5&sortBy=answerId`,
         {
           headers: {
             'ngrok-skip-browser-warning': '69420',
@@ -23,7 +27,8 @@ function DetailQuestion() {
       )
       .then(function (res) {
         // 성공한 경우 실행
-        setDetailData(res.data.data);
+        setDetailData(res.data.data.question);
+        setAnswerData(res.data.data.answer);
         setTagData(res.data.data.question.tagName);
       })
       .catch(function (error) {
@@ -34,9 +39,13 @@ function DetailQuestion() {
 
   return (
     <DetailSection>
-      <DetailTitle data={detailData} tagData={tagData} />
+      <DetailTitle data={detailData} />
       <ContentsGroup>
-        <DetailContent data={detailData} />
+        <DetailContent
+          data={detailData}
+          tagData={tagData}
+          answerData={answerData}
+        />
         <div className="media-fade">
           <Sidebanner></Sidebanner>
         </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+
 import styled from 'styled-components';
 import { selectFooter, selectNav } from '../store/store';
 import { useDispatch } from 'react-redux';
@@ -24,9 +25,9 @@ const Login = () => {
     dispatch(selectNav(false));
   }, []);
 
+  const navigate = useNavigate();
+
   const loginAxios = () => {
-    console.log(id);
-    console.log(password);
     axios.defaults.withCredentials = true;
     axios
       .post(
@@ -54,7 +55,8 @@ const Login = () => {
         if (response.status === 200 || response.status === 201) {
           setIsLogin(false);
           saveToken(token);
-          navigator('/question');
+
+          navigate('/question');
         }
       })
       .catch((err) => {

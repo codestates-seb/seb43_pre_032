@@ -84,7 +84,7 @@ const Nav = () => {
 
 const DivContainer = styled.div`
   margin: 30px 0px 0px 0px;
-  padding: 0px;
+  padding-left: 10px;
 
   > div {
     padding: 0px 0px 0px 0px;
@@ -93,7 +93,6 @@ const DivContainer = styled.div`
   //전체 li태그
   li {
     list-style: none;
-    padding-left: 10px;
   }
 `;
 
@@ -139,7 +138,7 @@ const NavOlst = styled.ol`
     outline: none;
     box-shadow: none;
 
-    font-size: 12px;
+    font-size: 11px;
     cursor: pointer;
 
     color: #0063bf;

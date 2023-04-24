@@ -29,9 +29,12 @@ textarea{
 .flex-space-around{
   display: flex;
   align-items: center;
- justify-content: space-around;
+  justify-content: space-around;
 }
 
+.delete{
+  width: 100vw;
+}
 
 .logo{
   height: 25px;
@@ -93,8 +96,8 @@ textarea{
   margin: 5px;
 }
 .test{
+  background-color: orange;
   padding: 10px;
-  padding-top: 0px;
 }
 .height-auto{
   height:auto;
@@ -111,7 +114,6 @@ textarea{
   height: 30px;
   box-shadow: none;
   border-radius: 3px;
-  padding-left: 5px;
 }
 .modify-textarea-content {
   padding: 10px;
@@ -121,9 +123,11 @@ textarea{
   border-radius: 3px;
   resize: none;
 }
+
 .disabled {
 opacity: 0.1;
 
   pointer-events: none; 
   cursor: default; 
 }
+

@@ -1,11 +1,12 @@
 import { useParams } from 'react-router-dom';
-import TagsQuestions from './TagsQuestions';
+import Viewcomponent from '../../pages/QusetionList.jsx';
 
 function TaggedQuestion() {
   const tagId = useParams();
+  console.log(tagId);
   return (
     <>
-      <TagsQuestions tagId={tagId.tagId}></TagsQuestions>
+      <Viewcomponent tagId={tagId.tagId}></Viewcomponent>
     </>
   );
 }

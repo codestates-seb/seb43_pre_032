@@ -4,25 +4,28 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-function Questions() {
+function Questions({ tagId }) {
   const [qsData, setQsData] = useState([]);
   const [index, setIndex] = useState(0); // 탭메뉴 인덱스 상태
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [totalPages, setTotalPages] = useState(3); // 전체 페이지 수
   const [totalcontetns, setTotalcontetns] = useState(0); // 전체 페이지 수
+  console.log(tagId);
+  const url = tagId
+    ? `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags/${tagId}?page=${currentPage}&size=20&sortBy=questionId`
+    : `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions?page=${currentPage}&size=10&sortBy=questionId`;
 
   useEffect(() => {
     axios
-      .get(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions?page=${currentPage}&size=10&sortBy=questionId`,
-        {
-          headers: {
-            'ngrok-skip-browser-warning': '69420',
-          },
-        }
-      )
+      .get(url, {
+        headers: {
+          'ngrok-skip-browser-warning': '69420',
+        },
+      })
       .then(function (response) {
-        setQsData(response.data.data); //현재 페이지의 데이터
+        tagId
+          ? setQsData(response.data.data.questions)
+          : setQsData(response.data.data); //현재 페이지의 데이터
         setTotalPages(Math.ceil(response.data.pageInfo.totalElements / 10)); //전체페이지 계산
         setTotalcontetns(response.data.pageInfo.totalElements);
         window.scrollTo(0, 0);
@@ -133,7 +136,7 @@ function Questions() {
                 </span>
               </IntData>
               <ContentsData>
-                <Link to={'/questions/' + el.questionId}>
+                <Link to={'/question/' + el.questionId}>
                   <h3>{el.questionTitle}</h3>
                 </Link>
                 <span>{el.questionContent}</span>
@@ -329,9 +332,16 @@ const IntData = styled.div`
   height: 100%;
   margin-right: 20px;
   span {
+    display: flex;
+    justify-content: right;
+    width: 100px;
+    flex-direction: row;
     font-size: 13px;
     margin-top: 10px;
     text-align: right;
+  }
+  span > * {
+    display: flex;
   }
   .answer_count {
     border-radius: 5px;
@@ -341,6 +351,7 @@ const IntData = styled.div`
   }
   @media (max-width: 800px) {
     flex-direction: row;
+    margin: 0px 10px;
     span {
       text-align: left;
       width: auto;
