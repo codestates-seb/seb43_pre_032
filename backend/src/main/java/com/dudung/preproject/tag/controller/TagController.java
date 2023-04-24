@@ -25,17 +25,17 @@ public class TagController {
     private final QuestionService questionService;
 
     @GetMapping
-    public ResponseEntity getTags(@Positive @RequestParam int page, @Positive @RequestParam int size, @RequestParam String sortBy, @RequestParam(required = false) String keyword) {
-        Page<Tag> pageTags = tagService.findTags(page - 1, size, sortBy, keyword);
+    public ResponseEntity getTags(@Positive @RequestParam int page, @RequestParam String tab, @RequestParam(required = false) String keyword) {
+        Page<Tag> pageTags = tagService.findTags(page - 1, tab, keyword);
         List<Tag> tags = pageTags.getContent();
 
         return new ResponseEntity<>(new MultiResponseDto<>(tagMapper.tagsToTagsResponse(tags), pageTags), HttpStatus.OK);
     }
 
     @GetMapping("/{tag-id}")
-    public ResponseEntity getTag(@PathVariable("tag-id") long tagId, @Positive @RequestParam int page, @Positive @RequestParam int size, @RequestParam String sortBy) {
+    public ResponseEntity getTag(@PathVariable("tag-id") long tagId, @Positive @RequestParam int page, @RequestParam String tab) {
         Tag tag = tagService.findTag(tagId);
-        Page<Question> pageQuestions = questionService.findQuestions(tag, page - 1, size, sortBy);
+        Page<Question> pageQuestions = questionService.findQuestions(tag, page - 1, tab);
         List<Question> questions = pageQuestions.getContent();
 
         return new ResponseEntity<>(new DataListResponseDto(tagMapper.tagTotagResponse(tag, questions), pageQuestions), HttpStatus.OK);
