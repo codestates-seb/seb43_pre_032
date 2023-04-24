@@ -4,6 +4,7 @@ import com.dudung.preproject.answer.domain.Answer;
 import com.dudung.preproject.answer.repository.AnswerRepository;
 import com.dudung.preproject.exception.BusinessLogicException;
 import com.dudung.preproject.exception.ExceptionCode;
+import com.dudung.preproject.question.domain.Question;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,8 @@ public class AnswerService {
 
 
     public Answer createAnswer(Answer answer) {
+        answer.getQuestion().setQuestionLastStatus(Question.LastStatus.ANSWER_CREATE);
+        answer.getQuestion().setQuestionLastStatusTime(answer.getCreatedAt());
 
         return answerRepository.save(answer);
     }
@@ -33,6 +36,9 @@ public class AnswerService {
                 .ifPresent(question -> findAnswer.setQuestion(question));
         Optional.ofNullable(answer.getModifiedAt())
                 .ifPresent(LocalDateTime -> findAnswer.setModifiedAt(java.time.LocalDateTime.now()));
+
+        findAnswer.getQuestion().setQuestionLastStatus(Question.LastStatus.QUESTION_MODIFY);
+        findAnswer.getQuestion().setQuestionLastStatusTime(findAnswer.getModifiedAt());
 
         return answerRepository.save(findAnswer);
     }

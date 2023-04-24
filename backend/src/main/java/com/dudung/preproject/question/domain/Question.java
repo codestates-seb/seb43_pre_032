@@ -25,6 +25,10 @@ public class Question {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
+    private LastStatus questionLastStatus = LastStatus.QUESTION_CREATE;
+
+    private LocalDateTime questionLastStatusTime;
+
     private int viewCount;
 
     private int answerCount;
@@ -75,6 +79,20 @@ public class Question {
     }
     public void addQuestionAnswer(QuestionAnswer questionAnswer) {
         this.questionAnswers.add(questionAnswer);
+    }
+
+    public enum LastStatus {
+        QUESTION_CREATE("질문 등록"),
+        QUESTION_MODIFY("질문 수정"),
+        ANSWER_CREATE("답변 등록"),
+        ANSWER_MODIFY("답변 수정");
+
+        @Getter
+        private String string;
+
+        LastStatus(String string) {
+            this.string = string;
+        }
     }
 
 }

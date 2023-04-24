@@ -280,7 +280,7 @@ public class QuestionControllerTest implements QuestionControllerHelper {
                         requestParameters(
                                 List.of(
                                         parameterWithName("page").description("페이지"),
-                                        parameterWithName("tab").description("정렬 기준 Newest, Score"),
+                                        parameterWithName("tab").description("정렬 기준 Newest, Active, Score"),
                                         parameterWithName("keyword").description("검색 키워드")
                                 )
                         ),
@@ -293,6 +293,8 @@ public class QuestionControllerTest implements QuestionControllerHelper {
                                         fieldWithPath("data[].tagName[]").type(JsonFieldType.ARRAY).description("질문 태그 리스트"),
                                         fieldWithPath("data[].tagName[].tagId").type(JsonFieldType.NUMBER).description("태그 식별 번호"),
                                         fieldWithPath("data[].tagName[].tagName").type(JsonFieldType.STRING).description("태그 이름"),
+                                        fieldWithPath("data[].lastStatus").type(JsonFieldType.STRING).description("질문의 마지막 상태"),
+                                        fieldWithPath("data[].lastStatusTime").type(JsonFieldType.STRING).description("질문의 마지막 상태로 전환된 시간"),
                                         fieldWithPath("data[].questionVoteSum").type(JsonFieldType.NUMBER).description("질문 투표 합계").optional(),
                                         fieldWithPath("data[].viewCount").type(JsonFieldType.NUMBER).description("질문 조회수").optional(),
                                         fieldWithPath("data[].memberName").type(JsonFieldType.STRING).description("질문 작성자").optional(),
