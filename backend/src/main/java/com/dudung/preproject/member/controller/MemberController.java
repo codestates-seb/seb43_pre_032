@@ -1,5 +1,6 @@
 package com.dudung.preproject.member.controller;
 
+import com.dudung.preproject.auth.interceptor.JwtParseInterceptor;
 import com.dudung.preproject.dto.MultiResponseDto;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.member.dto.MemberDto;
@@ -79,8 +80,9 @@ public class MemberController {
 
     @DeleteMapping("/{member-id}")
     public ResponseEntity deleteMember(@Positive @PathVariable("member-id") long memberId) {
+        long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();
 
-        memberService.deleteMember(memberId);
+        memberService.deleteMember(memberId, authenticationMemberId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

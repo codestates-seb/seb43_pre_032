@@ -1,13 +1,11 @@
 package com.dudung.preproject.member.service;
 
-import ch.qos.logback.core.util.FileUtil;
 import com.dudung.preproject.auth.utils.CustomAuthorityUtils;
 import com.dudung.preproject.exception.BusinessLogicException;
 import com.dudung.preproject.exception.ExceptionCode;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.FileUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -60,8 +58,10 @@ public class MemberService {
         return memberRepository.findAll(PageRequest.of(page, size, Sort.by("memberId").descending()));
     }
 
-    public void deleteMember(long memberId) {
+    public void deleteMember(long memberId, long authenticationMemberId) {
+        checkVerifiedId(authenticationMemberId);
         Member findedMember = findVerifiedMember(memberId);
+        deletePermission(findedMember, authenticationMemberId);
         memberRepository.delete(findedMember);
     }
 
@@ -77,6 +77,16 @@ public class MemberService {
         Member findedMember = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         return findedMember;
+    }
+
+    private void checkVerifiedId(long authenticationMemeberId) {
+        if (authenticationMemeberId == -1) throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
+    }
+
+    private void deletePermission(Member member, long authenticationMemeberId) {
+        if (!member.getMemberId().equals(authenticationMemeberId) && !member.getEmail().equals("admin@gmail.com")) {
+            throw new BusinessLogicException(ExceptionCode.ONLY_AUTHOR);
+        }
     }
 
     public Boolean uploading(MultipartFile file, long memberId) {

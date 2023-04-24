@@ -66,6 +66,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                         .antMatchers(HttpMethod.POST, "/questions").authenticated()
                         .antMatchers(HttpMethod.PATCH, "/questions/**").hasRole("USER")
                         .antMatchers(HttpMethod.GET, "/questions").permitAll()
+                        .antMatchers(HttpMethod.DELETE, "/member/**").hasRole("USER")
                         .anyRequest().permitAll())
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer(), authorityUtils(), memberService))
@@ -136,7 +137,8 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                 .addPathPatterns("/answervote/**")
                 .addPathPatterns("/answeranswers/**")
                 .addPathPatterns("/answers/**")
-                .addPathPatterns("/questionanswers/**");
+                .addPathPatterns("/questionanswers/**")
+                .addPathPatterns("/members/**");
     }
 
     @Override
