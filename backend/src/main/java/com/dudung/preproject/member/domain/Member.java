@@ -1,6 +1,7 @@
 package com.dudung.preproject.member.domain;
 
 import com.dudung.preproject.answer.domain.Answer;
+import com.dudung.preproject.answer.domain.AnswerAnswer;
 import com.dudung.preproject.answerVote.domain.AnswerVote;
 import com.dudung.preproject.question.domain.Question;
 import com.dudung.preproject.question.domain.QuestionAnswer;
@@ -71,6 +72,9 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<QuestionAnswer> questionAnswers = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member")
+    private List<AnswerAnswer> answerAnswers = new ArrayList<>();
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
@@ -78,6 +82,9 @@ public class Member {
         this.questions.add(question);
     }
 
+    public void addAnswerAnswer(AnswerAnswer answerAnswer) {
+        this.answerAnswers.add(answerAnswer);
+    }
     public void addAnswer(Answer answer) {
         this.answers.add(answer);
     }

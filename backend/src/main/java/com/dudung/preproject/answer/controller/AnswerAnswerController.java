@@ -28,13 +28,13 @@ public class AnswerAnswerController {
 
     @PostMapping
     public ResponseEntity postAnswerAnswer(@Valid @RequestBody AnswerAnswerDto.Post requestBody) {
-        long authenticationAnswerId = JwtParseInterceptor.getAuthenticatedMemberId();
+        long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();
         AnswerAnswer answerAnswer = mapper.answerAnswerPostAnswerANswer(requestBody);
 
         answerAnswer.setMember(memberService.findMember(requestBody.getMemberId()));
         answerAnswer.setAnswer(answerService.findAnswer(requestBody.getAnswerId()));
 
-        AnswerAnswer createdAnswerAnswer = answerAnswerService.createAnswerAnswer(answerAnswer);
+       answerAnswerService.createAnswerAnswer(answerAnswer, authenticationMemberId);
 
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -42,18 +42,18 @@ public class AnswerAnswerController {
     @PatchMapping("{answeranswer-id}")
     public ResponseEntity patchAnswerAnswer(@Positive @PathVariable("answeranswer-id") Long answeranswerId,
                                             @Valid @RequestBody AnswerAnswerDto.Patch requestBody) {
-        long authenticationAnswerId = JwtParseInterceptor.getAuthenticatedMemberId();
+        long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();
         requestBody.setAnswerId(answeranswerId);
 
-        AnswerAnswer answerAnswer = answerAnswerService.updateAnswerAnswer(mapper.answerAnswerPatchAnswerAnswer(requestBody));
+       answerAnswerService.updateAnswerAnswer(mapper.answerAnswerPatchAnswerAnswer(requestBody), authenticationMemberId);
 
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping("{answeranswer-id}")
-    public ResponseEntity deleteAnswerAnswer(@PathVariable("answeranswer-id") Long answeranswerId) {
-        long authenticationAnswerId = JwtParseInterceptor.getAuthenticatedMemberId();
-        answerAnswerService.deleteAnswerAnswer(answeranswerId);
+    public ResponseEntity deleteAnswerAnswer(@PathVariable("answeranswer-id") @Positive Long answeranswerId) {
+        long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();
+        answerAnswerService.deleteAnswerAnswer(answeranswerId, authenticationMemberId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
