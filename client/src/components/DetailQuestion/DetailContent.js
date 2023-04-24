@@ -72,6 +72,7 @@ export const DetailContents = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 30px;
+  width: 100%;
   div:nth-child(1) {
     display: flex;
   }
