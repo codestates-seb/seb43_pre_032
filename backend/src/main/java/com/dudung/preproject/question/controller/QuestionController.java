@@ -14,6 +14,7 @@ import com.dudung.preproject.question.service.QuestionAnswerService;
 import com.dudung.preproject.question.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -63,18 +64,18 @@ public class QuestionController {
     }
 
     @GetMapping("/{question-id}")
-    public ResponseEntity getQuestion(@PathVariable("question-id") @Positive long qustionId, @Positive @RequestParam int page, @Positive @RequestParam int size, @RequestParam String sortBy, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity getQuestion(@PathVariable("question-id") @Positive long qustionId, @Positive @RequestParam int page, @RequestParam String sortBy, HttpServletRequest request, HttpServletResponse response) {
         Question question = questionService.findQuestion(qustionId);
         questionService.viewCountValidation(question, request, response);
-        Page<Answer> pageAnswers = answerService.findAnswers(page - 1, size, sortBy);
+        Page<Answer> pageAnswers = answerService.findAnswers(page - 1, sortBy);
         List<Answer> answers = pageAnswers.getContent();
 
         return new ResponseEntity<>(new DataListResponseDto(questionMapper.questionToQuestionResponse(question, answers), pageAnswers), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity getQuestions(@Positive @RequestParam int page, @Positive @RequestParam int size, @RequestParam String sortBy, @RequestParam(required = false) String keyword) {
-        Page<Question> pageQuestions = questionService.findQuestions(page - 1, size, sortBy, keyword);
+    public ResponseEntity getQuestions(@Positive @RequestParam int page, @RequestParam String sortBy, @RequestParam(required = false) String keyword) {
+        Page<Question> pageQuestions = questionService.findQuestions(page - 1, sortBy, keyword);
         List<Question> questions = pageQuestions.getContent();
 
         return new ResponseEntity<>(new MultiResponseDto<>(questionMapper.questionsToQuestionsResponse(questions), pageQuestions), HttpStatus.OK);

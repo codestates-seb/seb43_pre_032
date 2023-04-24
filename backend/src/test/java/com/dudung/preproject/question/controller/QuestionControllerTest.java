@@ -193,18 +193,15 @@ public class QuestionControllerTest implements QuestionControllerHelper {
     public void getQuestionTest() throws Exception {
         // given
         String page = "1";
-        String size = "10";
         String sortBy = "questionId";
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("page", page);
-        params.add("size", size);
         params.add("sortBy", sortBy);
         Page<Answer> answers = StubData.MockQuestion.getMultiResultAnswer();
-        List<AnswerDto.ResponseForList> answerList = StubData.MockQuestion.getAnswerList();
 
         given(questionService.findQuestion(Mockito.anyLong())).willReturn(new Question());
-        given(answerService.findAnswers(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString())).willReturn(answers);
+        given(answerService.findAnswers(Mockito.anyInt(), Mockito.anyString())).willReturn(answers);
         given(questionMapper.questionToQuestionResponse(Mockito.any(Question.class), Mockito.anyList())).willReturn(StubData.MockQuestion.getResponseBody());
 
         // when
@@ -255,7 +252,6 @@ public class QuestionControllerTest implements QuestionControllerHelper {
                                         fieldWithPath("data.answer[].memberReputation").type(JsonFieldType.NUMBER).description("회원 명성도").optional(),
                                         fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
                                         fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("현재 페이지"),
-                                        fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("페이지 내 답변 갯수"),
                                         fieldWithPath("pageInfo.totalElements").type(JsonFieldType.NUMBER).description("전체 답변 수"),
                                         fieldWithPath("pageInfo.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수")
 
@@ -281,7 +277,7 @@ public class QuestionControllerTest implements QuestionControllerHelper {
         Page<Question> questions = StubData.MockQuestion.getMultiResultQuestion();
         List<QuestionDto.ResponseForList> responseList = StubData.MockQuestion.getMultiResponseBody();
 
-        given(questionService.findQuestions(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString(), Mockito.anyString())).willReturn(questions);
+        given(questionService.findQuestions(Mockito.anyInt(), Mockito.anyString(), Mockito.anyString())).willReturn(questions);
         given(questionMapper.questionsToQuestionsResponse(Mockito.anyList())).willReturn(responseList);
 
         // when
@@ -322,7 +318,6 @@ public class QuestionControllerTest implements QuestionControllerHelper {
                                         fieldWithPath("data[].memberReputation").type(JsonFieldType.NUMBER).description("회원 명성도").optional(),
                                         fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
                                         fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("현재 페이지"),
-                                        fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("페이지 내 질문 갯수"),
                                         fieldWithPath("pageInfo.totalElements").type(JsonFieldType.NUMBER).description("전체 질문 수"),
                                         fieldWithPath("pageInfo.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수")
                                 )
