@@ -1,5 +1,7 @@
-import { useState, useRef } from 'react';
-// import { useNavigate, Link } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { selectFooter, selectNav } from '../store/store';
 import axios from 'axios';
 import styled from 'styled-components';
 
@@ -28,30 +30,58 @@ const Signup = () => {
   const [isPassword, setIsPassword] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
 
-  // const navigate = useNavigate();
-
   const NameInputRef = useRef(null);
   const EamilInputRef = useRef(null);
   const PasswordInputRef = useRef(null);
 
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(selectFooter(false));
+    dispatch(selectNav(false));
+  }, []);
+
+  useEffect(() => {
+    if (email !== '') signupAxios();
+  }, [email, password, name]);
+
+  //이게 찐
   const signupAxios = () => {
+    console.log(email);
+    console.log(password);
+    console.log(name);
+    axios.defaults.withCredentials = true;
     axios
-      .post('https://8625-61-254-8-200.ngrok-free.app/members', {
-        email,
-        password,
-        name,
-      })
+      .post(
+        'http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members',
+        {
+          email,
+          password,
+          name,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': 'http://localhost:3000',
+            'Access-Control-Allow-Headers':
+              'Origin, X-Requested-With, Content-Type, Accept',
+          },
+        }
+      )
       .then((res) => {
         if (res.status === 201 || res.status === 200) {
           alert('Register now complete.');
           console.log('완료');
-          // navigate('/login');
+          navigate('/auth/login');
         }
       })
       .catch((err) => {
         //이메일 중복 유효성
         if (err.response.status === 409) {
           alert('Email address is already in use.');
+          setIsEmail(true);
         }
         console.log(err);
       });
@@ -92,10 +122,8 @@ const Signup = () => {
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
     if (!passwordRegex.test(passwordInputText)) {
       setIsPassword(true);
-      console.log('이게 실패?');
     } else {
       setIsPassword(false);
-      console.log('아니면 이게 실패?');
     }
   };
 
@@ -113,12 +141,13 @@ const Signup = () => {
     passwordHandler();
 
     const isVaild = !isName && !isEmail && !isPassword && isCheck;
+    console.log(isVaild);
 
     //유효성 검사 통과하면 axios요청 보내기
     if (isVaild) {
       signupAxios();
     } else {
-      console.log('다시 입력해');
+      return;
     }
   };
 
@@ -359,7 +388,9 @@ const Signup = () => {
             </SignupDiv>
             <div>
               Already have an account?
-              {/* <Link to={'/login'} className="link-login">Log in</Link> */}
+              <Link to={'/auth/login'} className="link-login">
+                Log in
+              </Link>
             </div>
           </RightDiv>
         </DivContent>
@@ -377,7 +408,7 @@ const DivContainer = styled.div`
   padding: 0px;
 
   /* height: 100vh; */
-  width: 100vw;
+  /* width: 100vw; */
   background-color: #f1f2f3;
 
   @media (min-height: 985px) {
@@ -612,12 +643,57 @@ const FormContainer = styled.form`
 
   .isName {
     color: red;
+
+    > input {
+      padding-left: 5px;
+      padding-right: 5px;
+
+      border-color: ${(props) => (props.isName ? '#f87171' : '')};
+      box-shadow: ${(props) => (props.isName ? '0 0 0 2px #fca5a5' : '')};
+
+      :focus {
+        /* #DDEAF7 */
+        /* border-color: #58a4de;
+      outline: none; */
+        outline: none !important;
+        border-color: #58a4de;
+        box-shadow: 0 0 0 2px #ddeaf7;
+      }
+    }
   }
   .isEmail {
     color: red;
+
+    > input {
+      padding-left: 5px;
+      padding-right: 5px;
+
+      border-color: ${(props) => (props.isName ? '#f87171' : '')};
+      box-shadow: ${(props) => (props.isName ? '0 0 0 2px #fca5a5' : '')};
+
+      :focus {
+        outline: none !important;
+        border-color: #58a4de;
+        box-shadow: 0 0 0 2px #ddeaf7;
+      }
+    }
   }
   .isPassword {
     color: red;
+
+    > input {
+      padding-left: 5px;
+      padding-right: 5px;
+
+      border-color: ${(props) => (props.isName ? '#f87171' : '')};
+      box-shadow: ${(props) => (props.isName ? '0 0 0 2px #fca5a5' : '')};
+
+      :focus {
+        outline: none !important;
+        border-color: #58a4de;
+        box-shadow: 0 0 0 2px #ddeaf7;
+      }
+    }
   }
   .checkBox > div {
     color: red;
@@ -636,7 +712,7 @@ const FormContainer = styled.form`
   }
 
   > div:not(:nth-child(4)) input {
-    width: 268px;
+    width: 250px;
     height: 32px;
   }
 `;

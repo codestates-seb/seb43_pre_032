@@ -23,7 +23,9 @@ const Paging = () => {
       <Maingroup>
         <Maincontents
           className={
-            showNav === false && showFooter === false ? 'flex-center' : ''
+            showNav === false && showFooter === false
+              ? 'flex-center delete'
+              : ''
           }
         >
           {showNav ? (
@@ -87,7 +89,6 @@ const Maincontents = styled.div`
   .main_view {
     position: relative;
     width: 100%;
-    min-height: 3000px;
   }
   @media (max-width: 800px) {
     .side_menu {
