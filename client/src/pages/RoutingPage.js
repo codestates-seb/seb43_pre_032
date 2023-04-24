@@ -92,7 +92,7 @@ const Maincontents = styled.div`
     position: relative;
     width: 100%;
   }
-  @media (max-width: 800px) {
+  @media (max-width: 640px) {
     .side_menu {
       display: none;
     }

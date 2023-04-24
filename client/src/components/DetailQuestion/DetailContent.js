@@ -3,10 +3,21 @@ import Answer from './Answer';
 import YourAnswer from './YourAnswer';
 import Comment from './Comment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faClockRotateLeft } from '@fortawesome/free-solid-svg-icons';
-import { faBookmark } from '@fortawesome/free-regular-svg-icons';
+import {
+  faPlay,
+  faClockRotateLeft,
+  faBookmark as faSolidBookmark,
+} from '@fortawesome/free-solid-svg-icons';
+import { faBookmark as faRegularBookmark } from '@fortawesome/free-regular-svg-icons';
+import { useState } from 'react';
 
-function DetailContent() {
+function DetailContent({ data, tagData }) {
+  const [bookmark, setBookmark] = useState(false);
+
+  // const tagname = data.question.tagName;
+  console.log(data.question);
+  console.log(tagData);
+
   return (
     <DetailContents>
       <div>
@@ -18,9 +29,21 @@ function DetailContent() {
           <span className="side-icon-color">
             <FontAwesomeIcon icon={faPlay} rotation={90} />
           </span>
-          <span className="side-icon-size side-icon-color">
-            <FontAwesomeIcon icon={faBookmark} />
-          </span>
+          <button
+            className="side-icon-size side-icon-color"
+            onClick={() => {
+              setBookmark(!bookmark);
+            }}
+          >
+            {bookmark ? (
+              <FontAwesomeIcon
+                icon={faSolidBookmark}
+                className="color-orange"
+              />
+            ) : (
+              <FontAwesomeIcon icon={faRegularBookmark} />
+            )}
+          </button>
           <span className="side-icon-size side-icon-color">
             <FontAwesomeIcon icon={faClockRotateLeft} />
           </span>
@@ -39,9 +62,9 @@ function DetailContent() {
             played at once.
           </span>
           <div className="tagData">
-            <p>나는 왜 이시간까지 잠을안잤는가</p>
-            <p>javascript</p>
-            <p>styled-components</p>
+            {/* {data.question.tagName.map((tag) => (
+              <p key={tag.tagId}>{tag.tagName}</p>
+            ))} */}
           </div>
           <SideContents>
             <div className="subMenus">
@@ -49,12 +72,14 @@ function DetailContent() {
               <p>Edit</p>
               <p>Follow</p>
             </div>
-            <div className="user-info">
-              <img src="https://i.imgur.com/4b1ExzY.png" alt="profileIcon" />
-              <span>
-                <p>scotjam1981</p>
-                <p>asked 3 mins ago</p>
-              </span>
+            <div>
+              <div className="user-info">
+                <img src="https://i.imgur.com/4b1ExzY.png" alt="profileIcon" />
+                <span>
+                  <p>scotjam1981</p>
+                  <p>asked 3 mins ago</p>
+                </span>
+              </div>
             </div>
           </SideContents>
           <Comment />
@@ -72,22 +97,22 @@ function DetailContent() {
 
 export default DetailContent;
 
-const DetailContents = styled.div`
+export const DetailContents = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 30px;
+  margin-top: 30px;
   div:nth-child(1) {
     display: flex;
   }
 `;
 
-const VoteIcon = styled.div`
+export const VoteIcon = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
   font-size: 30px;
   min-width: 50px;
-  > span {
+  > * {
     margin-bottom: 10px;
   }
   .side-icon-size {
@@ -96,9 +121,20 @@ const VoteIcon = styled.div`
   .side-icon-color {
     color: #ccc;
   }
+  .side-icon-color:hover {
+    color: hsl(206, 100%, 60%);
+  }
+  > button {
+    background: none;
+    border-style: none;
+    cursor: pointer;
+  }
+  .color-orange {
+    color: hsl(27, 90%, 55%);
+  }
 `;
 
-const TextContents = styled.div`
+export const TextContents = styled.div`
   width: 100%;
   padding: 0px 20px;
   line-height: 150%;
@@ -126,7 +162,7 @@ const TextContents = styled.div`
   }
 `;
 
-const SideContents = styled.div`
+export const SideContents = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -158,5 +194,13 @@ const SideContents = styled.div`
     width: 30px;
     height: 30px;
     margin-right: 10px;
+  }
+  @media (max-width: 640px) {
+    flex-direction: column;
+    > div:nth-child(2) {
+      display: flex;
+      width: 100%;
+      justify-content: right;
+    }
   }
 `;

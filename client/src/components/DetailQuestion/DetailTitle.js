@@ -29,9 +29,9 @@ export default DetailTitle;
 const Detailtitle = styled.article`
   display: flex;
   justify-content: space-between;
-  width: 96%;
+  width: 100%;
   border-bottom: 1px solid #ddd;
-  padding: 30px;
+  padding-bottom: 30px;
   h2 {
     font-size: 1.8em;
     font-weight: 500;

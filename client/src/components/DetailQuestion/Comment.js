@@ -48,7 +48,7 @@ function Comment() {
 
 export default Comment;
 
-const CommentView = styled.div`
+export const CommentView = styled.div`
   margin-top: 20px;
 
   .comment-list {
@@ -57,9 +57,7 @@ const CommentView = styled.div`
     border-bottom: 1px solid #ddd;
     padding: 10px;
     font-size: 14px;
-  }
-  .comment-list > * {
-    border: 1px solid red;
+    flex-wrap: wrap;
   }
   .comment-list:nth-child(1) {
     border-top: 1px solid #ddd;
@@ -70,12 +68,12 @@ const CommentView = styled.div`
   }
 `;
 
-const CommentOpenBtn = styled.div`
+export const CommentOpenBtn = styled.div`
   margin: 20px 0px;
   color: #666;
 `;
 
-const CommentWrite = styled.div`
+export const CommentWrite = styled.div`
   display: flex;
   margin: 10px 0px;
   background-color: #f7f7f7;

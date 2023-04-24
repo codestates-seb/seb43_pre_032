@@ -1,34 +1,64 @@
 import styled from 'styled-components';
+// import Pagination from './pagenation';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 function Questions() {
   const [qsData, setQsData] = useState([]);
-  const [index, setIndex] = useState(0);
-  // console.log(qsData);
+  const [index, setIndex] = useState(0); // 탭메뉴 인덱스 상태
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const [totalPages, setTotalPages] = useState(3); // 전체 페이지 수
+  const [totalcontetns, setTotalcontetns] = useState(0); // 전체 페이지 수
 
   useEffect(() => {
     axios
       .get(
-        'https://3596-61-254-8-200.ngrok-free.app/questions?page=1&size=20&sortBy=questionId',
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions?page=${currentPage}&size=10&sortBy=questionId`,
         {
           headers: {
             'ngrok-skip-browser-warning': '69420',
           },
-          withCredentials: true,
-          credentials: 'include',
         }
       )
-      .then(function (res) {
-        // 성공한 경우 실행
-        setQsData(res.data.data);
+      .then(function (response) {
+        setQsData(response.data.data); //현재 페이지의 데이터
+        setTotalPages(Math.ceil(response.data.pageInfo.totalElements / 10)); //전체페이지 계산
+        setTotalcontetns(response.data.pageInfo.totalElements);
+        window.scrollTo(0, 0);
       })
       .catch(function (error) {
-        // 에러인 경우 실행
         console.log(error);
       });
-  }, []);
+  }, [currentPage]);
 
+  //이전페이지
+  const handlePreviousPageClick = () => {
+    setCurrentPage((prev) => prev - 1);
+  };
+
+  //다음페이지
+  const handleNextPageClick = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+
+  //전체 페이지 수 만큼 버튼 생성
+  const buttonArray = [];
+  for (let i = 1; i <= totalPages; i++) {
+    buttonArray.push(
+      <button
+        key={i}
+        className={i === currentPage ? 'page-focused' : null}
+        onClick={() => {
+          setCurrentPage(i);
+        }}
+      >
+        {i}
+      </button>
+    );
+  }
+
+  //작성시간계산 : ~~시간전 으로 표기
   function displayedAt(createdAt) {
     const milliSeconds = new Date() - createdAt;
     const seconds = milliSeconds / 1000;
@@ -47,6 +77,7 @@ function Questions() {
     return `${Math.floor(years)}years ago`;
   }
 
+  //필터버튼 리스트
   const buttomArr = [
     { bottomName: 'Newset' },
     { bottomName: 'Active' },
@@ -54,6 +85,7 @@ function Questions() {
     { bottomName: 'Unanswered' },
   ];
 
+  //필터버튼 인덱스 저장
   const selectMenu = (index) => {
     setIndex(index);
   };
@@ -67,7 +99,7 @@ function Questions() {
             <buttom className="askquestion_Btn">Ask Question</buttom>
           </div>
           <div className="headContents flex-column">
-            <span>{qsData.length} questions</span>
+            <span>{totalcontetns} questions</span>
             <aside className="subFilterBtn">
               {buttomArr.map((el, i) => (
                 <button
@@ -92,20 +124,19 @@ function Questions() {
                   <strong>{el.questionVoteSum}</strong> votes
                 </span>
                 <span>
-                  <strong>{el.answerCount}</strong> answers
+                  <p className={el.answerCount > 0 ? 'answer_count' : null}>
+                    <strong>{el.answerCount}</strong> answers
+                  </p>
                 </span>
                 <span>
                   <strong>{el.viewCount}</strong> views
                 </span>
               </IntData>
               <ContentsData>
-                <h3>{el.questionTitle}</h3>
-                <span>
-                  Scenario: I am populating a dropdown menu with data from MySQL
-                  database. Upon clicking submit button, script should take the
-                  user to the results page and show data based on their
-                  selection.
-                </span>
+                <Link to={'/questions/' + el.questionId}>
+                  <h3>{el.questionTitle}</h3>
+                </Link>
+                <span>{el.questionContent}</span>
                 <div className="tagData">
                   {el.tagName.map((tag) => (
                     <p key={tag.tagId}>{tag.tagName}</p>
@@ -115,11 +146,32 @@ function Questions() {
               <UserData>
                 <img src="https://i.imgur.com/nXnTowV.jpg" alt="profile icon" />
                 <span className="username_color">{el.memberName}</span>
-                <span>1 asked {displayedAt(new Date(el.createdAt))}</span>
+                <span>
+                  {el.memberReputation} asked{' '}
+                  {displayedAt(new Date(el.createdAt))}
+                </span>
               </UserData>
             </li>
           </QuestionList>
         ))}
+        <Pagination>
+          <div className="margin-left">
+            <button
+              onClick={handlePreviousPageClick}
+              disabled={currentPage === 1}
+            >
+              Prev
+            </button>
+            {buttonArray}
+            <button
+              onClick={handleNextPageClick}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
+          <div>{currentPage} page</div>
+        </Pagination>
       </Questionscomponent>
     </>
   );
@@ -127,9 +179,48 @@ function Questions() {
 
 export default Questions;
 
+const Pagination = styled.div`
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  button {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background: #fff;
+    margin: 3px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
+  button:disabled {
+    background-color: #f7f7f7;
+  }
+  .margin-left {
+    margin-left: 30px;
+  }
+  .page-focused {
+    border-color: #f48225;
+    background: #f48225;
+    color: #fff;
+  }
+`;
+
 const Questionscomponent = styled.section`
   width: 100%;
   height: auto;
+  .bottom-more {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 80px;
+    color: #999;
+  }
+  .bottom-more > * {
+    margin: 5px;
+  }
 `;
 
 const QuestionFilter = styled.div`
@@ -218,6 +309,7 @@ const QuestionList = styled.ul`
     justify-content: center;
     padding: 20px;
   }
+
   @media (max-width: 800px) {
     li {
       display: flex;
@@ -230,16 +322,22 @@ const QuestionList = styled.ul`
 
 const IntData = styled.div`
   display: flex;
-  align-items: center;
+  justify-content: center;
+  align-items: flex-end;
   flex-direction: column;
-  width: 200px;
+  width: 150px;
   height: 100%;
   margin-right: 20px;
   span {
     font-size: 13px;
     margin-top: 10px;
-    width: 100%;
     text-align: right;
+  }
+  .answer_count {
+    border-radius: 5px;
+    border: 1px solid #2f6f44;
+    color: #2f6f44;
+    padding: 3px 10px;
   }
   @media (max-width: 800px) {
     flex-direction: row;
@@ -251,12 +349,16 @@ const IntData = styled.div`
   }
 `;
 const ContentsData = styled.div`
+  width: 100%;
   > * {
     margin: 10px 0px;
   }
   h3 {
     font-weight: 500;
     color: #0074cc;
+  }
+  a {
+    text-decoration: none;
   }
   span {
     font-size: 14px;

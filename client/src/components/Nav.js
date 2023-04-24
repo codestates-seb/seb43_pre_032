@@ -83,20 +83,17 @@ const Nav = () => {
 };
 
 const DivContainer = styled.div`
-  /* border: 1px solid red; */
-  margin: 0px;
+  margin: 30px 0px 0px 0px;
   padding: 0px;
-  display: flex;
-  width: 200px;
-  margin-top: 30px;
 
   > div {
     padding: 0px 0px 0px 0px;
-    /* background-color: red; */
   }
+
   //전체 li태그
   li {
     list-style: none;
+    padding-left: 10px;
   }
 `;
 
