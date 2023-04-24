@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { selectFooter, selectNav } from '../store/store';
 import { useDispatch } from 'react-redux';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faGithub,
@@ -19,7 +18,7 @@ const Login = () => {
   const [isLogin, setIsLogin] = useState(false);
 
   const dispatch = useDispatch();
-
+  const navigator = useNavigate();
   useEffect(() => {
     dispatch(selectFooter(false));
     dispatch(selectNav(false));
@@ -55,6 +54,7 @@ const Login = () => {
         if (response.status === 200 || response.status === 201) {
           setIsLogin(false);
           saveToken(token);
+          navigator('/question');
         }
       })
       .catch((err) => {

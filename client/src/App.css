@@ -116,7 +116,7 @@ textarea{
 .modify-textarea-content {
   padding: 10px;
   height: 200px;
-  width: 96.5%;
+  width: 100%;
   box-shadow: none;
   border-radius: 3px;
   resize: none;
@@ -126,14 +126,4 @@ opacity: 0.1;
 
   pointer-events: none; 
   cursor: default; 
-}
-
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
 }
