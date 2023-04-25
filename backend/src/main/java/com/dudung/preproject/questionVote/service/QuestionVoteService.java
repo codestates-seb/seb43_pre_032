@@ -52,7 +52,7 @@ public class QuestionVoteService {
         if (questionVote.getQuestionVoteStatus().getScore() == 0) {
             questionVote.setQuestionVoteStatus(QuestionVote.QuestionVoteStatus.PLUS);
         } else if (questionVote.getQuestionVoteStatus().getScore() == 1) {
-            questionVote.setQuestionVoteStatus(QuestionVote.QuestionVoteStatus.ZERO);
+
         } else {
             questionVote.setQuestionVoteStatus(QuestionVote.QuestionVoteStatus.ZERO);
         }
@@ -64,7 +64,7 @@ public class QuestionVoteService {
         } else if (questionVote.getQuestionVoteStatus().getScore() == 1) {
             questionVote.setQuestionVoteStatus(QuestionVote.QuestionVoteStatus.ZERO);
         } else {
-            questionVote.setQuestionVoteStatus(QuestionVote.QuestionVoteStatus.ZERO);
+
         }
     }
 

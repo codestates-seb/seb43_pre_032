@@ -59,7 +59,7 @@ public class AnswerVoteService {
         if (answerVote.getAnswerVoteStatus().getScore() == 0) {
             answerVote.setAnswerVoteStatus(AnswerVote.AnswerVoteStatus.PLUS);
         } else if (answerVote.getAnswerVoteStatus().getScore() == 1){
-            answerVote.setAnswerVoteStatus(AnswerVote.AnswerVoteStatus.ZERO);
+
         } else {
             answerVote.setAnswerVoteStatus(AnswerVote.AnswerVoteStatus.ZERO);
         }
@@ -71,7 +71,7 @@ public class AnswerVoteService {
         } else if (answerVote.getAnswerVoteStatus().getScore() == 1) {
             answerVote.setAnswerVoteStatus(AnswerVote.AnswerVoteStatus.ZERO);
         } else {
-            answerVote.setAnswerVoteStatus(AnswerVote.AnswerVoteStatus.ZERO);
+
         }
     }
 }
