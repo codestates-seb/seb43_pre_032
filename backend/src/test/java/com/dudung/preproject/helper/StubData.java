@@ -344,4 +344,28 @@ public class StubData {
             return stubRequestBody.get(method);
         }
     }
+    public static class MockAnswerAnswer {
+        private static Map<HttpMethod, Object> stubRequestBody;
+
+        static {
+            AnswerAnswerDto.Post post = new AnswerAnswerDto.Post();
+            post.setAnswerId(1L);
+            post.setMemberId(1L);
+            post.setAnswerAnswerContent("답변 댓글 내용");
+
+            AnswerAnswerDto.Patch patch = new AnswerAnswerDto.Patch();
+            patch.setAnswerAnswerId(1L);
+            patch.setAnswerId(1L);
+            patch.setMemberId(1L);
+            patch.setAnswerAnswerContent("답변 댓글 내용");
+
+            stubRequestBody = new HashMap<>();
+            stubRequestBody.put(HttpMethod.POST, post);
+            stubRequestBody.put(HttpMethod.PATCH, patch);
+        }
+
+        public static Object getRequestBody(HttpMethod method) {
+            return stubRequestBody.get(method);
+        }
+    }
 }
