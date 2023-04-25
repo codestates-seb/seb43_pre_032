@@ -9,6 +9,11 @@ import com.dudung.preproject.auth.jwt.JwtTokenizer;
 import com.dudung.preproject.dto.MultiResponseDto;
 import com.dudung.preproject.member.service.MemberService;
 import com.dudung.preproject.question.service.QuestionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -34,6 +39,17 @@ public class AnswerController {
     private final MemberService memberService;
     private final static String ANSWER_DEFAULT_URL = "/answers";
 
+    @Operation(summary = "Test 조회", description = "Test/GET 조회 메서드입니다.")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "조회 성공",
+                    content = @Content(schema = @Schema(implementation = Answer.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Bad Request",
+                    content = @Content(schema = @Schema(implementation = Error.class)))
+    })
     @PostMapping
     public ResponseEntity postAnswer(@Valid @RequestBody AnswerDto.Post requestBody) {
         long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();

@@ -46,6 +46,8 @@ public class AnswerService {
 
         Optional.ofNullable(answer.getQuestion())
                 .ifPresent(question -> findAnswer.setQuestion(question));
+        Optional.ofNullable(answer.getAnswerContent())
+                .ifPresent(answerContent -> findAnswer.setAnswerContent(answerContent));
         Optional.ofNullable(answer.getModifiedAt())
                 .ifPresent(LocalDateTime -> findAnswer.setModifiedAt(java.time.LocalDateTime.now()));
 
