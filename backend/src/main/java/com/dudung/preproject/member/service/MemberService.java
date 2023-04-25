@@ -5,6 +5,7 @@ import com.dudung.preproject.exception.BusinessLogicException;
 import com.dudung.preproject.exception.ExceptionCode;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.member.repository.MemberRepository;
+import com.dudung.preproject.question.domain.Question;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,8 +38,12 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    public Member updateMember(Member member) {
+    public Member updateMember(Member member, long authenticationMemberId) {
+        checkVerifiedId(authenticationMemberId);
+
         Member findedMember = findVerifiedMember(member.getMemberId());
+
+        patchPermission(findedMember, authenticationMemberId);
 
         Optional.ofNullable(member.getEmail())
                 .ifPresent(email -> findedMember.setEmail(email));
@@ -83,8 +88,14 @@ public class MemberService {
         if (authenticationMemeberId == -1) throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
     }
 
-    private void deletePermission(Member member, long authenticationMemeberId) {
-        if (!member.getMemberId().equals(authenticationMemeberId) && !member.getEmail().equals("admin@gmail.com")) {
+    private void patchPermission(Member member, long authenticationMemberId) {
+        if (!member.getMemberId().equals(authenticationMemberId) && !member.getEmail().equals("admin@gmail.com")) {
+            throw new BusinessLogicException(ExceptionCode.ONLY_AUTHOR);
+        }
+    }
+
+    private void deletePermission(Member member, long authenticationMemberId) {
+        if (!member.getMemberId().equals(authenticationMemberId) && !member.getEmail().equals("admin@gmail.com")) {
             throw new BusinessLogicException(ExceptionCode.ONLY_AUTHOR);
         }
     }
