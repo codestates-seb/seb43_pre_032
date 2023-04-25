@@ -4,7 +4,7 @@ import YourAnswer from './YourAnswer';
 import Comment from './Comment';
 import VoteGroup from './VoteGroup';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function DetailContent({ data, tagData, answerData, qsId }) {
   console.log(qsId);
@@ -28,6 +28,7 @@ function DetailContent({ data, tagData, answerData, qsId }) {
     return `${Math.floor(years)}years ago`;
   }
 
+  const navigate = useNavigate();
   const token = localStorage.getItem('token');
   console.log(token);
   const deleteHandler = () => {
@@ -45,6 +46,7 @@ function DetailContent({ data, tagData, answerData, qsId }) {
         // 성공한 경우 실행
         console.log(res);
         console.log('성공했어요');
+        navigate('/question');
       })
       .catch(function (error) {
         // 에러인 경우 실행

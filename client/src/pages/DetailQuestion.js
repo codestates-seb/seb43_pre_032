@@ -16,7 +16,7 @@ function DetailQuestion() {
   useEffect(() => {
     axios
       .get(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}?page=1&tab=answerVoteSum`,
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}?page=1&answertab=score`,
         {
           headers: {
             'ngrok-skip-browser-warning': '69420',
@@ -28,7 +28,10 @@ function DetailQuestion() {
       .then(function (res) {
         // 성공한 경우 실행
         setDetailData(res.data.data.question);
-        setAnswerData(res.data.data.answer);
+        console.log(res.data.data);
+        if (res.data.data.answer !== null) {
+          setAnswerData(res.data.data.answer);
+        }
         setTagData(res.data.data.question.tagName);
       })
       .catch(function (error) {

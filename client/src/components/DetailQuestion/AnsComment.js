@@ -19,13 +19,13 @@ function AnsComment() {
         </div>
       </CommentView>
       <CommentOpenBtn>
-        <buttom
+        <button
           onClick={() => {
             setCommentOn(!commentOn);
           }}
         >
           Add a comment
-        </buttom>
+        </button>
       </CommentOpenBtn>
       {commentOn ? (
         <CommentWrite>
