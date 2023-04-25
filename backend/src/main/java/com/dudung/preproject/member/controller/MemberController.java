@@ -30,7 +30,7 @@ import org.apache.commons.io.IOUtils;
 public class MemberController {
     private final static String MEMBER_DEFAULT_URL = "/members";
 
-    private final static String IMAGE_DEFAULT_URL = "~/seb43_pre_032/backend/src/main/resources/static/image";
+    private final static String IMAGE_DEFAULT_URL = "/home/ubuntu/seb43_pre_032/backend/src/main/resources/static/image";
     private final MemberService memberService;
     private final MemberMapper mapper;
 
