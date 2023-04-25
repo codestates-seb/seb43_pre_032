@@ -295,7 +295,6 @@ class AnswerControllerTest implements AnswerControllerHelper {
                                         fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("페이지 정보"),
                                         fieldWithPath("pageInfo.totalElements").type(JsonFieldType.NUMBER).description("전체 답변 수"),
                                         fieldWithPath("pageInfo.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수")
-
                                 )
                         )
                 ));
