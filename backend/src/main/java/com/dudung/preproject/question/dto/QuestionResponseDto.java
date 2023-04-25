@@ -30,6 +30,7 @@ public class QuestionResponseDto {
     @Getter
     @Builder
     public static class QuestionMemberResponseForList {
+        private Long questionId;
         private String questionsTitle;
     }
 }

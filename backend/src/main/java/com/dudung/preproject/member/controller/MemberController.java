@@ -30,7 +30,7 @@ import org.apache.commons.io.IOUtils;
 public class MemberController {
     private final static String MEMBER_DEFAULT_URL = "/members";
 
-    private final static String IMAGE_DEFAULT_URL = "/Users/jaewoosim/Desktop/project/pre-project/seb43_pre_032/backend/image/";
+    private final static String IMAGE_DEFAULT_URL = "~/seb43_pre_032/backend/image/";
     private final MemberService memberService;
     private final MemberMapper mapper;
 
@@ -101,6 +101,15 @@ public class MemberController {
 
         memberService.uploading(file, memberId);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/mypage/{member-id}")
+    public ResponseEntity patchMyPage(@Positive @PathVariable("member-id") long memberId,
+                                      @Valid @RequestBody MemberDto.MyPagePatch requestBody) {
+        long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();
+
+        memberService.updateMyPage(mapper.responserMypagePatchToMember(requestBody), authenticationMemberId);
+        return new ResponseEntity<>("수정 완료", HttpStatus.OK);
     }
 
     @GetMapping("/image/{member-id}")

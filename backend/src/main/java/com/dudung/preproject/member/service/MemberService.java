@@ -133,4 +133,26 @@ public class MemberService {
             return result;
         }
     }
+
+
+    public Member updateMyPage(Member member, long authenticationMemberId) {
+        checkVerifiedId(authenticationMemberId);
+        Member findedMember = findVerifiedMember(member.getMemberId());
+
+        deletePermission(findedMember, authenticationMemberId);
+
+        Optional.ofNullable(member.getName())
+                .ifPresent(name -> findedMember.setName(member.getName()));
+        Optional.ofNullable(member.getMyPageTitle())
+                .ifPresent(myPageTitle -> findedMember.setMyPageTitle(member.getMyPageTitle()));
+        Optional.ofNullable(member.getMyPageTitle())
+                .ifPresent(myPageTitle -> findedMember.setMyPageTitle(member.getMyPageTitle()));
+        Optional.ofNullable(member.getAboutMe())
+                .ifPresent(aboutMe -> findedMember.setAboutMe(member.getAboutMe()));
+
+        findedMember.setModifiedAt(member.getModifiedAt());
+
+        return memberRepository.save(findedMember);
+    }
+
 }

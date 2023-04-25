@@ -1,5 +1,7 @@
 package com.dudung.preproject.member.mapper;
 
+import com.dudung.preproject.answer.domain.Answer;
+import com.dudung.preproject.answer.dto.AnswerDto;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.member.dto.MemberDto;
 import com.dudung.preproject.question.domain.Question;
@@ -14,6 +16,8 @@ public interface MemberMapper {
     Member memeberPostToMember(MemberDto.Post requestBody);
 
     Member memberPatchToMember(MemberDto.Patch requestBody);
+
+    Member responserMypagePatchToMember(MemberDto.MyPagePatch requestBody);
     default MemberDto.Response memberToMemberResponse(Member member){
         return MemberDto.Response.builder()
                 .memberId(member.getMemberId())
@@ -40,20 +44,39 @@ public interface MemberMapper {
     default MemberDto.ResponseMyPage memberToMyPage(Member member){
         return MemberDto.ResponseMyPage.builder()
                 .memberId(member.getMemberId())
+                .answers(getAnswerToMember(member.getAnswers()))
+                .questions(getQuestionToMember(member.getQuestions()))
                 .name(member.getName())
-                .email(member.getEmail())
                 .createAt(member.getCreatedAt())
                 .reputation(member.getReputation())
                 .questionCount(member.getQuestionCount())
                 .answerCount(member.getAnswerCount())
-                .questionTitle(member.getQuestions().stream()
-                        .map(question -> getQuestionToMemberList(question))
-                        .collect(Collectors.toList()))
                 .build();
     }
 
-    default QuestionResponseDto.QuestionMemberResponseForList getQuestionToMemberList(Question question) {
-        return QuestionResponseDto.QuestionMemberResponseForList.builder()
-                .questionsTitle(question.getQuestionTitle()).build();
+    default List<QuestionResponseDto.QuestionMemberResponseForList> getQuestionToMember(List<Question> question) {
+        return question.stream()
+                .map(questionList -> QuestionResponseDto.QuestionMemberResponseForList.builder()
+                        .questionId(questionList.getQuestionId())
+                        .questionsTitle(questionList.getQuestionTitle())
+                        .build())
+                .collect(Collectors.toList());
+
+    }
+
+    default List<AnswerDto.AnswerMemberResponseForList> getAnswerToMember(List<Answer> answer) {
+        return answer.stream()
+                .map(answerList -> AnswerDto.AnswerMemberResponseForList.builder()
+                        .answerId(answerList.getAnswerId())
+                        .answerContent(answerList.getAnswerContent())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    default AnswerDto.AnswerMemberResponseForList getAnswerToMemberList(Answer answer){
+        return AnswerDto.AnswerMemberResponseForList.builder()
+                .answerContent(answer.getAnswerContent())
+                .answerId(answer.getAnswerId())
+                .build();
     }
 }
