@@ -117,11 +117,11 @@ const ModifyCom = ({ qsId }) => {
         headers: {
           Authorization: localStorage.getItem('token'),
           'ngrok-skip-browser-warning': '69420',
-          'Content-Type': 'application/json',
         },
       })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
+    navigate(`/question/${qsId.qsId}`);
   };
 
   let helphandler = (type) => {
@@ -133,7 +133,7 @@ const ModifyCom = ({ qsId }) => {
   };
 
   const cancelClicked = () => {
-    navigate('/detailquestion');
+    navigate(`/question/${qsId.qsId}`);
   };
   console.log(selected);
   return (

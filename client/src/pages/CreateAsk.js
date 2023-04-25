@@ -71,7 +71,7 @@ const CreateAsk = () => {
       })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
-    navigate('/question/ask');
+    navigate('/question');
   };
 
   let dispatch = useDispatch();

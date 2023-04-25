@@ -37,6 +37,9 @@ const MyPage = () => {
         };
         let mainData = {
           questionTitle: res.data.questionTitle,
+          questionCount: res.data.questionCount,
+          reputation: res.data.reputation,
+          answerCount: res.data.answerCount,
         };
         console.log(res.data);
         setTopData(topData);

@@ -6,23 +6,53 @@ import {
   faTrophy,
 } from '@fortawesome/free-solid-svg-icons';
 import { faStackExchange } from '@fortawesome/free-brands-svg-icons';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 // import { selectNav } from '../../store/store';
 // import { useDispatch } from 'react-redux';
 
 const OtherButtons = () => {
   // const dispatch = useDispatch();
-  const example = [{ data1: '1' }, { data2: '2' }];
+  // const example = [{ data1: '1' }, { data2: '2' }];
 
   // 로그인시 get요청으로 유저이름 가져오기
   // 프로필 클릭시 마이페이지 링크 연결
   // 프로필 색? 랜덤??
 
+  const [name, setName] = useState('');
+  const [reputation, setReputation] = useState('');
+
+  const getToken = localStorage.getItem('token');
+  const getMemberid = localStorage.getItem('memberid');
+
+  const membersIdAxios = () => {
+    axios
+      .get(
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/${getMemberid}`,
+        { headers: { Authorization: getToken } }
+      )
+      .then((res) => {
+        const name = res.data.name;
+        setName(name);
+        const reputation = res.data.name;
+        setReputation(reputation);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    membersIdAxios();
+  }, []);
+
   return (
     <OtherContainer className="flex-center">
       <Menu className="section-size">
-        <Profile>호재</Profile>
-        {example.length}
+        <Link to={`/users/${localStorage.getItem('memberid')}`}>
+          <Profile>{name}</Profile>
+          {reputation}
+        </Link>
       </Menu>
       <Menu>
         <FontAwesomeIcon icon={faInbox} />
@@ -34,13 +64,22 @@ const OtherButtons = () => {
         <FontAwesomeIcon icon={faCircleQuestion} />
       </Menu>
       <Menu>
-        <FontAwesomeIcon icon={faStackExchange} />
+        <Link to={'/logout'}>
+          <FontAwesomeIcon icon={faStackExchange} />
+        </Link>
       </Menu>
     </OtherContainer>
   );
 };
 
 export const LoginBtn = styled.div`
+  height: 30px;
+  :hover {
+    background-color: var(--login-btn-after);
+  }
+`;
+
+export const LogOutBtn = styled.div`
   height: 30px;
   :hover {
     background-color: var(--login-btn-after);
@@ -60,6 +99,12 @@ const OtherContainer = styled.div`
   width: 230px;
   height: 100%;
   margin-left: 20px;
+
+  a {
+    text-decoration: none; /* 밑줄 제거 */
+    color: inherit; /* 상속받은 색상 사용 */
+    font-size: inherit;
+  }
 `;
 const Menu = styled.div`
   display: flex;

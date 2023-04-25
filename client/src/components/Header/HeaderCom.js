@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import '../../assets/logo.png';
-import { LoginBtn, SignInBtn, OtherButtons } from './HeaderButton';
+import { LoginBtn, SignInBtn, LogOutBtn, OtherButtons } from './HeaderButton';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -13,9 +12,15 @@ import {
 import Nav from '../Nav';
 
 function Header() {
-  let isLogin = useSelector((state) => {
-    return state.isLogin;
-  });
+  //토큰 여부로 로그인 여부 확인하여 헤더 표시
+  const tokenValid = localStorage.getItem('token');
+  let isLogin = false;
+  if (tokenValid) {
+    isLogin = true;
+  } else {
+    isLogin = false;
+  }
+
   let [menuOpen, setMenuOpen] = useState(false);
 
   let navigate = useNavigate();
@@ -75,7 +80,19 @@ function Header() {
           <SerachBar placeholder="Search..."></SerachBar>
         </SerachGroup>
         {isLogin ? (
-          <OtherButtons />
+          <>
+            <OtherButtons />
+            <div className="flex-center log-sign margin-10">
+              <Link to={'/logout'}>
+                <LogOutBtn
+                  className="flex-center btn-skyblue-style temp-width"
+                  onClick={clickLogin}
+                >
+                  Log out
+                </LogOutBtn>
+              </Link>
+            </div>
+          </>
         ) : (
           <div className="flex-center log-sign margin-10">
             <LoginBtn
@@ -118,6 +135,13 @@ const ContentsContainer = styled.div`
   & > :hover.hover {
     background-color: var(--menu-hover-background);
   }
+
+  a {
+    text-decoration: none; /* 밑줄 제거 */
+    color: inherit; /* 상속받은 색상 사용 */
+    font-size: inherit;
+  }
+
   .logo {
     width: 150px;
     height: 30px;

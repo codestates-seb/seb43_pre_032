@@ -21,8 +21,6 @@ const ContentsContainer = styled.div`
   }
 `;
 const Article = ({ title, isFilter = true, options, data = [] }) => {
-  data.length !== 0 ? console.log(data) : null;
-
   return (
     <ArticleContainer>
       <CardHeader title={title} isFilter={isFilter} options={options} />

@@ -43,8 +43,10 @@ const Signup = () => {
     dispatch(selectNav(false));
   }, []);
 
+  //이게 문제인데
   useEffect(() => {
-    if (email !== '') signupAxios();
+    const isVaild = !isName && !isEmail && !isPassword && isCheck;
+    if (isVaild) signupAxios();
   }, [email, password, name]);
 
   //이게 찐
@@ -135,7 +137,6 @@ const Signup = () => {
     event.preventDefault();
 
     //유효성 검사하는 함수들
-
     nameHandler();
     emailHandler();
     passwordHandler();
