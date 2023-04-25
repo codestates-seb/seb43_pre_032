@@ -39,6 +39,7 @@ import static com.dudung.preproject.utils.ApiDocumentUtils.getResponsePreProcess
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -108,13 +109,13 @@ public class MemberControllerTest implements MemberControllerHelper {
     public void patchMemberTest() throws Exception {
         given(mapper.memberPatchToMember(Mockito.any(MemberDto.Patch.class))).willReturn(new Member());
 
-        given(memberService.updateMember(Mockito.any(Member.class))).willReturn(new Member());
+        given(memberService.updateMember(Mockito.any(Member.class), Mockito.anyLong())).willReturn(new Member());
 
         given(mapper.memberToMemberResponse(Mockito.any(Member.class))).willReturn(getMemberResponse());
 
         ResultActions actions =
                 mockMvc.perform(
-                        patch("/members/{member-id}", 1)
+                        patch("/members/{member-id}", 1L, accessToken)
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(getPatchMemberContent())
@@ -222,7 +223,7 @@ public class MemberControllerTest implements MemberControllerHelper {
     @Test
     @DisplayName("Member Delete Test")
     public void deleteMemberTest() throws Exception {
-        doNothing().when(memberService).deleteMember(Mockito.anyLong(), Mockito.anyLong());
+        doNothing().when(memberService).deleteMember(anyLong(), anyLong());
 
         mockMvc.perform(deleteRequestBuilder(MEMBER_RESOURCE_URI, 1L, accessToken))
                 .andExpect(status().isNoContent())
