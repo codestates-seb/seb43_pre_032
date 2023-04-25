@@ -15,37 +15,31 @@ const url =
   'http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/';
 
 const CreateAsk = () => {
-  let [tagData, setTagData] = useState([]); // 전체 태그 데이터
   let [word, setWord] = useState(''); // 태그 검색어
   let [selected, setSelected] = useState([]); // 선택한 태그
   let [filtered, setFiltered] = useState([]);
-
+  let [getTag, setGetTag] = useState([]);
   useEffect(() => {
-    // 솔님이 작성하신 코드     modify, create, tag 에서 쓰여서 hooks로 만드는건..?
-    axios
+    searchedData(word);
+    setFiltered(getTag.slice(0, 6));
+  }, [word]);
+  const searchedData = async (word) => {
+    await axios
       .get(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags?page=1&size=3276&sortBy=tagId`,
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags?page=1&keyword=${word}&tab=popular`,
         {
           headers: {
             'ngrok-skip-browser-warning': '69420',
           },
         }
       )
-      .then(function (response) {
-        setTagData(response.data.data); // 태그 전체
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, []);
+      .then((res) => setGetTag(res.data.data))
+      .catch((err) => console.log(err));
+  };
   useEffect(() => {
-    setFiltered(
-      tagData
-        .filter((tag) => tag.tagName.includes(word.toLowerCase()))
-        .slice(0, 6)
-    );
+    searchedData(word);
+    setFiltered(getTag.slice(0, 6));
   }, [word]);
-
   let [selectHelp, setSelectHelp] = useState(0);
   let [create, setCreate] = useState({
     questionTitle: '',
@@ -53,7 +47,6 @@ const CreateAsk = () => {
   });
   let [isReady, setIsReady] = useState(false);
   let handleData = (data) => {
-    console.log(data);
     let newData = { ...create, [data[0]]: data[1] };
     console.log(newData);
     newData.questionContent.length >= 20 ? setIsReady(true) : setIsReady(false);
@@ -65,24 +58,19 @@ const CreateAsk = () => {
       return { tagId: el.tagId };
     });
     let newData = {
-      memberId: 1,
       questionTitle: create.questionTitle,
       questionContent: create.questionContent,
       tagName: tagID,
-      createdAt: new Date().toISOString(),
     };
-
     axios
       .post(url, newData, {
         header: {
           Authorization: localStorage.getItem('token'),
-          'ngrok-skip-browser-warning': '69420',
-          'Content-Type': 'application/json',
         },
       })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
-    navigate('/detailquestion');
+    navigate('/question');
   };
 
   let dispatch = useDispatch();
@@ -121,6 +109,9 @@ const CreateAsk = () => {
       'Tag things in more than one way so people can find them more easily. Add tags for product lines, projects, teams, and the specific technologies or languages used.',
     ],
   ];
+  const cancelHandler = () => {
+    navigate('/question');
+  };
   return (
     <MainContainer>
       <Head>
@@ -171,16 +162,38 @@ const CreateAsk = () => {
           </div>
         </SingleContainer>
       </ItemContainer>
-      <BtnContainer
-        className={isReady ? 'btn-blue-style' : 'btn-blue-style disabled'}
-        onClick={postData}
-      >
-        Register
-      </BtnContainer>
+      <div className="flex-row">
+        <BtnContainer
+          className={isReady ? 'btn-blue-style' : 'btn-blue-style disabled'}
+          onClick={postData}
+        >
+          Register
+        </BtnContainer>
+        <CancelBtn onClick={cancelHandler} className="flex-center">
+          Cancel
+        </CancelBtn>
+      </div>
     </MainContainer>
   );
 };
-
+const CancelBtn = styled.button`
+  margin-top: 5px;
+  margin-left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+  width: 75px;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  background-color: lightblue;
+  :hover {
+    background-color: skyblue;
+  }
+  border: none;
+  border-radius: 3px;
+`;
 const MainContainer = styled.div`
   max-width: 1000px;
   padding-left: 20px;

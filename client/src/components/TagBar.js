@@ -84,7 +84,6 @@ const TagBar = ({ setWord, selected, filtered, setSelected }) => {
     });
     setSelected(newArr);
   };
-  console.log(selected);
   return (
     <>
       <TagContainer onClick={handleTagContainerClick}>
