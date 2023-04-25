@@ -76,4 +76,11 @@ public class AnswerDto {
 
 
     }
+
+    @Getter
+    @Builder
+    public static class AnswerMemberResponseForList {
+        private Long answerId;
+        private String answerContent;
+    }
 }

@@ -26,15 +26,15 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
-
     private String email;
 
     private String password;
 
     private String name;
-
     private LocalDateTime createdAt = LocalDateTime.now();
-
+    private LocalDateTime modifiedAt = LocalDateTime.now();
+    private String myPageTitle;
+    private String aboutMe;
     private int reputation;
 
     public int getReputation() {

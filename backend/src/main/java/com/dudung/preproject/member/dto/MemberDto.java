@@ -1,6 +1,7 @@
 package com.dudung.preproject.member.dto;
 
 import com.dudung.preproject.answer.domain.Answer;
+import com.dudung.preproject.answer.dto.AnswerDto;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.question.domain.Question;
 import com.dudung.preproject.question.dto.QuestionDto;
@@ -60,15 +61,28 @@ public class MemberDto {
 
     @Getter
     @Builder
+    public static class MyPagePatch {
+
+        private Long memberId;
+        private String name;
+        private String myPageTitle;
+        private String aboutMe;
+
+    }
+
+    @Getter
+    @Builder
     public static class ResponseMyPage {
         private Long memberId;
         private String name;
-        private String email;
+        private String myPageTitle;
+        private String aboutMe;
         private LocalDateTime createAt;
+        private LocalDateTime modifiedAt;
         private int reputation;
         private int questionCount;
         private int answerCount;
-        private List<QuestionResponseDto.QuestionMemberResponseForList> questionTitle;
-        private String answerContent;
+        private List<QuestionResponseDto.QuestionMemberResponseForList> questions;
+        private List<AnswerDto.AnswerMemberResponseForList> answers;
     }
 }
