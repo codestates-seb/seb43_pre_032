@@ -10,10 +10,11 @@ function Questions({ tagId }) {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [totalPages, setTotalPages] = useState(3); // 전체 페이지 수
   const [totalcontetns, setTotalcontetns] = useState(0); // 전체 페이지 수
-  console.log(tagId);
+  const [filter, setFilter] = useState('Active');
+
   const url = tagId
     ? `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags/${tagId}?page=${currentPage}&size=20&sortBy=questionId`
-    : `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions?page=${currentPage}&size=10&sortBy=questionId`;
+    : `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions?page=${currentPage}&tab=${filter}`;
 
   useEffect(() => {
     axios
@@ -82,10 +83,9 @@ function Questions({ tagId }) {
 
   //필터버튼 리스트
   const buttomArr = [
-    { bottomName: 'Newset' },
     { bottomName: 'Active' },
-    { bottomName: 'Bountied' },
-    { bottomName: 'Unanswered' },
+    { bottomName: 'Newest' },
+    { bottomName: 'Score' },
   ];
 
   //필터버튼 인덱스 저장
@@ -110,6 +110,7 @@ function Questions({ tagId }) {
                   className={i === index ? 'focused' : null}
                   onClick={() => {
                     selectMenu(i);
+                    setFilter(el.bottomName);
                   }}
                 >
                   {el.bottomName}

@@ -46,7 +46,7 @@ function Answer({ answerData }) {
                 <div className="subMenus">
                   <p>Share</p>
                   <p>Edit</p>
-                  <p>Follow</p>
+                  <p>Delete</p>
                 </div>
                 <div>
                   <div className="user-info">

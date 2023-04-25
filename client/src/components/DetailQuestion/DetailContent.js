@@ -3,6 +3,7 @@ import Answer from './Answer';
 import YourAnswer from './YourAnswer';
 import Comment from './Comment';
 import VoteGroup from './VoteGroup';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 function DetailContent({ data, tagData, answerData, qsId }) {
@@ -27,6 +28,31 @@ function DetailContent({ data, tagData, answerData, qsId }) {
     return `${Math.floor(years)}years ago`;
   }
 
+  const token = localStorage.getItem('token');
+
+  const deleteHandler = () => {
+    axios
+      .delete(
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}`,
+        {
+          headers: {
+            Authorization: token,
+            'ngrok-skip-browser-warning': '69420',
+          },
+          withCredentials: true,
+          credentials: 'include',
+        }
+      )
+      .then(function (res) {
+        // 성공한 경우 실행
+        console.log(res);
+      })
+      .catch(function (error) {
+        // 에러인 경우 실행
+        console.log(error);
+      });
+  };
+
   return (
     <DetailContents>
       <div>
@@ -40,11 +66,12 @@ function DetailContent({ data, tagData, answerData, qsId }) {
           </div>
           <SideContents>
             <div className="subMenus">
-              <p>Share</p>
-              <Link to={`/modify/${qsId.qsId}`}>
-                <p>Edit</p>
-              </Link>
-              <p>Follow</p>
+              <button>Share</button>
+              <button>
+                <Link to={`/modify/${qsId.qsId}`}>Edit </Link>
+              </button>
+
+              <button onClick={deleteHandler}>delete</button>
             </div>
             <div>
               <div className="user-info">
@@ -141,16 +168,23 @@ export const SideContents = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  .subMenus {
-    display: flex;
-    justify-content: left;
-    align-items: center;
-  }
-  .subMenus > * {
-    margin-right: 10px;
+  a {
     color: #999;
+    text-decoration: none;
   }
-  .subMenus > *:hover {
+  a:hover {
+    color: #666;
+  }
+  button {
+    background: none;
+    border-style: none;
+    color: #999;
+    font-size: 14px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  .subMenus button:hover {
     color: #666;
   }
   .user-info {
