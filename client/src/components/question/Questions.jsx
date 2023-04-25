@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { selectFooter, selectNav } from '../../store/store';
+import { useDispatch } from 'react-redux';
 
 function Questions({ tagId }) {
   const [qsData, setQsData] = useState([]);
@@ -10,7 +12,14 @@ function Questions({ tagId }) {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [totalPages, setTotalPages] = useState(3); // 전체 페이지 수
   const [totalcontetns, setTotalcontetns] = useState(0); // 전체 페이지 수
-  const [filter, setFilter] = useState('Active');
+  const [filter, setFilter] = useState('Newest');
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(selectFooter(true));
+    dispatch(selectNav(true));
+  }, []);
 
   const url = tagId
     ? `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags/${tagId}?page=${currentPage}&size=20&sortBy=questionId`
@@ -34,7 +43,7 @@ function Questions({ tagId }) {
       .catch(function (error) {
         console.log(error);
       });
-  }, [currentPage]);
+  }, [currentPage, filter]);
 
   //이전페이지
   const handlePreviousPageClick = () => {
@@ -83,8 +92,8 @@ function Questions({ tagId }) {
 
   //필터버튼 리스트
   const buttomArr = [
-    { bottomName: 'Active' },
     { bottomName: 'Newest' },
+    { bottomName: 'Active' },
     { bottomName: 'Score' },
   ];
 
@@ -99,7 +108,9 @@ function Questions({ tagId }) {
         <QuestionFilter>
           <div className="headContents">
             <h2>All Questions</h2>
-            <buttom className="askquestion_Btn">Ask Question</buttom>
+            <buttom className="askquestion_Btn">
+              <Link to={'/question/ask'}>Ask Question</Link>
+            </buttom>
           </div>
           <div className="headContents flex-column">
             <span>{totalcontetns} questions</span>
@@ -254,6 +265,11 @@ const QuestionFilter = styled.div`
     height: 40px;
     border-radius: 3px;
     border: #1681d2;
+  }
+
+  .askquestion_Btn a {
+    color: #fff;
+    text-decoration: none;
   }
   .askquestion_Btn:hover {
     background: hsl(206, 100%, 40%);
