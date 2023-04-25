@@ -41,36 +41,37 @@ const CreateAsk = () => {
     setFiltered(getTag.slice(0, 6));
   }, [word]);
   let [selectHelp, setSelectHelp] = useState(0);
-  let [create, setCreate] = useState({
-    questionTitle: '',
-    questionContent: '',
-  });
+  let [titleInput, setTitleInput] = useState('');
+  let [body, setBody] = useState('');
   let [isReady, setIsReady] = useState(false);
-  let handleData = (data) => {
-    let newData = { ...create, [data[0]]: data[1] };
-    console.log(newData);
-    newData.questionContent.length >= 20 ? setIsReady(true) : setIsReady(false);
-    setCreate(newData);
-  };
+
+  console.log(titleInput);
+  console.log(body);
+
+  useEffect(() => {
+    body.length > 20 ? setIsReady(true) : setIsReady(false);
+  }, [body]);
   let navigate = useNavigate();
   const postData = () => {
     let tagID = selected.map((el) => {
       return { tagId: el.tagId };
     });
+
     let newData = {
-      questionTitle: create.questionTitle,
-      questionContent: create.questionContent,
+      questionTitle: titleInput,
+      questionContent: body,
       tagName: tagID,
     };
+    console.log(newData, localStorage.getItem('token'));
     axios
       .post(url, newData, {
-        header: {
+        headers: {
           Authorization: localStorage.getItem('token'),
         },
       })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
-    navigate('/question');
+    navigate('/question/ask');
   };
 
   let dispatch = useDispatch();
@@ -126,7 +127,7 @@ const CreateAsk = () => {
             ></HelpItem>
           ) : null}
           <InputItem
-            handleData={handleData}
+            setTitle={setTitleInput}
             title={helpTitle[0]}
             help={helpSentances[0]}
           ></InputItem>
@@ -140,7 +141,7 @@ const CreateAsk = () => {
           ) : null}
           <TextareaItem
             className="modify-textarea-content link-style-remove"
-            handleData={handleData}
+            setBody={setBody}
             title={helpTitle[1]}
             help={helpSentances[1]}
           ></TextareaItem>
