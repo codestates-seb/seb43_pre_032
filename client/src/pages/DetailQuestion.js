@@ -11,7 +11,7 @@ function DetailQuestion() {
   const [tagData, setTagData] = useState([]);
 
   const qsId = useParams();
-  console.log(qsId);
+  // console.log(qsId);
 
   useEffect(() => {
     axios
@@ -28,7 +28,6 @@ function DetailQuestion() {
       .then(function (res) {
         // 성공한 경우 실행
         setDetailData(res.data.data.question);
-        console.log(res.data.data);
         if (res.data.data.answer !== null) {
           setAnswerData(res.data.data.answer);
         }
