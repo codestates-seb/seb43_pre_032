@@ -198,6 +198,12 @@ public class QuestionControllerTest implements QuestionControllerHelper {
                         pathParameters(
                                 getMemberRequestPathParameterDescriptor()
                         ),
+                        requestParameters(
+                                List.of(
+                                        parameterWithName("page").description("페이지"),
+                                        parameterWithName("tab").description("정렬 기준")
+                                )
+                        ),
                         responseFields(
                                 List.of(
                                         fieldWithPath("data.question.questionId").type(JsonFieldType.NUMBER).description("질문 식별 번호").optional(),
