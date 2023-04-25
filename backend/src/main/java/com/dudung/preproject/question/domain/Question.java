@@ -6,6 +6,7 @@ import com.dudung.preproject.questionVote.domain.QuestionVote;
 import com.dudung.preproject.tag.domain.Tag;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.engine.internal.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -39,7 +40,7 @@ public class Question {
 
     private String questionContent;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<QuestionVote> questionVotes = new ArrayList<>();
     @Column
     private int questionVoteSum;
@@ -55,10 +56,10 @@ public class Question {
         return questionVoteSum;
     }
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<QuestionTag> questionTags = new ArrayList<>();
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Answer> answers = new ArrayList<>();
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
