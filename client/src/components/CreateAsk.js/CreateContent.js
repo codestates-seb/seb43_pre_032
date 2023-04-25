@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
 import styled from 'styled-components';
 
 // eslint-disable-next-line react/display-name
-const InputItem = React.memo(({ handleData, title, help }) => {
-  let [text, setText] = useState('');
-
+const InputItem = ({ setTitle, title, help }) => {
   const textHandler = (e) => {
-    setText([title[1], e.target.value]);
-    handleData(text);
+    setTitle(e.target.value);
   };
 
   return (
@@ -17,14 +13,12 @@ const InputItem = React.memo(({ handleData, title, help }) => {
       <input onChange={textHandler} className="modify-input-content"></input>
     </InputContainer>
   );
-});
+};
 
 // eslint-disable-next-line react/display-name
-const TextareaItem = React.memo(({ handleData, title, help }) => {
-  let [text, setText] = useState('');
+const TextareaItem = ({ setBody, title, help }) => {
   const textHandler = (e) => {
-    setText([title[1], e.target.value]);
-    handleData(text);
+    setBody(e.target.value);
   };
 
   return (
@@ -34,7 +28,7 @@ const TextareaItem = React.memo(({ handleData, title, help }) => {
       <input onChange={textHandler} className="modify-textarea-content"></input>
     </TextareaContainer>
   );
-});
+};
 const InputContainer = styled.section`
   display: grid;
   grid-row-gap: 3px;

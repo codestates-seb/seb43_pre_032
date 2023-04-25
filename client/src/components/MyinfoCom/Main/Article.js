@@ -1,23 +1,38 @@
 import styled from 'styled-components';
 import CardHeader from './CardHeader';
 const ArticleContainer = styled.article`
-  height: 100px;
+  min-height: 100px;
   margin-top: 15px;
-  @media (max-width: 980px) {
-    margin-right: 40px;
-  }
 `;
 const ContentsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   width: 100%;
-  height: 65px;
+  min-height: 65px;
   border: 1px solid var(--menu-hover-background);
   border-radius: 5px;
+
+  .data {
+    margin: 10px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1972c5;
+  }
 `;
-const Article = ({ title, isFilter = true, options }) => {
+const Article = ({ title, isFilter = true, options, data = [] }) => {
+  data.length !== 0 ? console.log(data) : null;
+
   return (
     <ArticleContainer>
       <CardHeader title={title} isFilter={isFilter} options={options} />
-      <ContentsContainer></ContentsContainer>
+      <ContentsContainer>
+        {data.map((el, idx) => (
+          <div className="data" key={idx}>
+            {el.questionsTitle}
+          </div>
+        ))}
+      </ContentsContainer>
     </ArticleContainer>
   );
 };

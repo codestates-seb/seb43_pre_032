@@ -10,11 +10,8 @@ import TagBar from '../TagBar.js';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const url =
-  'http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/1';
-
 const ModifyCom = ({ qsId }) => {
-  // const [token, setToken] = useState('');
+  const url = `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}`;
 
   let titleHelp = [
     'Correct minor typos or mistakes',
@@ -45,32 +42,15 @@ const ModifyCom = ({ qsId }) => {
   const titles = ['How to Edit', 'How to Format', 'How to Tag'];
   const navigate = useNavigate();
   let [word, setWord] = useState(''); // 태그 검색어
-  let [original, setOriginal] = useState({});
   let [getTag, setGetTag] = useState([]);
   let [selected, setSelected] = useState([]); // 선택한 태그
   let [filtered, setFiltered] = useState([]);
 
   useEffect(() => {
-    // 솔님이 작성하신 코드     modify, create, tag 에서 쓰여서 hooks로 만드는건..?
-    // axios
-    //   .get(
-    //     `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags?page=1&size=3276&sortBy=tagId`,
-    //     {
-    //       headers: {
-    //         'ngrok-skip-browser-warning': '69420',
-    //       },
-    //     }
-    //   )
-    //   .then(function (response) {
-    //     setTagData(response.data.data); // 태그 전체
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
-
+    console.log(qsId);
     axios
       .get(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}?page=1&tab=answerVoteSum`,
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}?page=1&answertab=score`,
         {
           headers: {
             'ngrok-skip-browser-warning': '69420',
@@ -81,8 +61,6 @@ const ModifyCom = ({ qsId }) => {
       )
       .then(function (res) {
         // 성공한 경우 실행
-        setOriginal(res.data.data.question);
-        console.log(original);
         setSelected(res.data.data.question.tagName);
         setQuestionTitle(res.data.data.question.questionTitle);
         setQuestionBody(res.data.data.question.questionContent);
@@ -113,12 +91,10 @@ const ModifyCom = ({ qsId }) => {
   let [help, setHelp] = useState(titleHelp);
   let [helpTitle, setHelpTitle] = useState(titles[0]);
 
-  let [questionId, setQuestionId] = useState(1);
-  let [questionTitle, setQuestionTitle] = useState();
-  let [questionBody, setQuestionBody] = useState();
+  let [questionTitle, setQuestionTitle] = useState('');
+  let [questionBody, setQuestionBody] = useState('');
 
   let titleInput = (e) => {
-    setQuestionId(1); //바꿔야함--> props로 넘겨준걸로 set 되게
     setQuestionTitle(e.target.value);
   };
   let bodyInput = (e) => {
@@ -130,16 +106,15 @@ const ModifyCom = ({ qsId }) => {
       return { tagId: el.tagId };
     });
     let newData = {
-      questionId: questionId,
+      questionId: +qsId.qsId,
       questionTitle: questionTitle,
       questionContent: questionBody,
       tagName: tagID,
-      modifiedAt: new Date().toISOString(),
     };
-    console.log(localStorage.getItem('token'));
+    console.log(newData);
     axios
       .patch(url, newData, {
-        header: {
+        headers: {
           Authorization: localStorage.getItem('token'),
           'ngrok-skip-browser-warning': '69420',
           'Content-Type': 'application/json',
