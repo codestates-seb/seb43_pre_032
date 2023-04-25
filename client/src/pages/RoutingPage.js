@@ -14,6 +14,7 @@ import Signup from './Signup.js';
 import DetailQuestion from './DetailQuestion.js';
 import Viewcomponent from './QusetionList.jsx';
 import MyInfoEdit from './MyInfoEdit.js';
+import ModifyAnswer from './ModifyAnswer.js';
 
 const Paging = () => {
   let showNav = useSelector((state) => state.showCom.showNav); // showNav 가져옴
@@ -52,6 +53,7 @@ const Paging = () => {
               <Route path="/tags/:tagId" element={<TaggedQuestion />} />
               <Route path="/logout" element={<Logout />} />
               <Route path="/modify/:qsId" element={<ModifyAskPage />} />
+              <Route path="/modifyanswer/:asId" element={<ModifyAnswer />} />
             </Routes>
           </article>
         </Maincontents>

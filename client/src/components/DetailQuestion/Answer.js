@@ -4,6 +4,7 @@ import AnswerVoteGroup from './AnswerVoteGroup';
 import { DetailContents, TextContents, SideContents } from './DetailContent';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function Answer({ qsId }) {
   const [answerTap, setAnswerTap] = useState('score');
@@ -125,7 +126,9 @@ function Answer({ qsId }) {
               <SideContents>
                 <div className="subMenus">
                   <button>Share</button>
-                  <button>Edit</button>
+                  <button>
+                    <Link to={`/modifyanswer/${answer.answerId}`}>Edit</Link>
+                  </button>
                   <button
                     onClick={() => {
                       deleteAnswer(answer.answerId);
