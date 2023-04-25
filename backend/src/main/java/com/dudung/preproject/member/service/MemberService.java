@@ -126,6 +126,7 @@ public class MemberService {
                 }
             }
             File destination = new File(folder.getAbsolutePath() , newFileName);
+            System.out.println(folder.getAbsolutePath());
             file.transferTo(destination);
 
             result = Boolean.FALSE;
