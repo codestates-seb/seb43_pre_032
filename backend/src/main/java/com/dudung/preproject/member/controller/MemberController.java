@@ -30,7 +30,7 @@ import org.apache.commons.io.IOUtils;
 public class MemberController {
     private final static String MEMBER_DEFAULT_URL = "/members";
 
-    private final static String IMAGE_DEFAULT_URL = "~/seb43_pre_032/backend/image/";
+    private final static String IMAGE_DEFAULT_URL = "~/seb43_pre_032/backend/src/main/resources/static/image";
     private final MemberService memberService;
     private final MemberMapper mapper;
 
@@ -118,9 +118,9 @@ public class MemberController {
         String fileExtension = ".png";
         InputStream inputStream = null;
         try {
-            inputStream = new FileInputStream(IMAGE_DEFAULT_URL + dir + "/" + dir + ".jpeg");
+            inputStream = new FileInputStream(IMAGE_DEFAULT_URL + "/" + dir + "/" + dir + ".jpeg");
         } catch (Exception e) {
-            inputStream = new FileInputStream(IMAGE_DEFAULT_URL + dir + "/" + dir + ".png");
+            inputStream = new FileInputStream(IMAGE_DEFAULT_URL + "/" + dir + "/" + dir + ".png");
         } finally {
             byte[] imageByteArray = IOUtils.toByteArray(inputStream);
             inputStream.close();
