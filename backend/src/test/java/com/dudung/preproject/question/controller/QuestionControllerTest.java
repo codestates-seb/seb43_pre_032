@@ -166,11 +166,11 @@ public class QuestionControllerTest implements QuestionControllerHelper {
     public void getQuestionTest() throws Exception {
         // given
         String page = "1";
-        String tab = "Newest";
+        String tab = "score";
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("page", page);
-        params.add("tab", tab);
+        params.add("answertab", tab);
         Page<Answer> answers = StubData.MockQuestion.getMultiResultAnswer();
 
         given(questionService.findQuestion(Mockito.anyLong())).willReturn(new Question());
@@ -201,7 +201,7 @@ public class QuestionControllerTest implements QuestionControllerHelper {
                         requestParameters(
                                 List.of(
                                         parameterWithName("page").description("페이지"),
-                                        parameterWithName("tab").description("정렬 기준")
+                                        parameterWithName("answertab").description("답변 정렬 기준")
                                 )
                         ),
                         responseFields(
