@@ -19,7 +19,6 @@ public class AnswerDto {
     @Setter
     public static class Post {
 
-        private Long memberId;
         private Long questionId;
         @NotBlank(message = "내용을 입력하세요")
         private String answerContent;
@@ -30,7 +29,6 @@ public class AnswerDto {
     @Setter
     public static class Patch {
 
-        private Long memberId;
 
         private Long answerId;
 

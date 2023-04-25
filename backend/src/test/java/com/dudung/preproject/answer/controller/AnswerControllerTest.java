@@ -80,7 +80,6 @@ class AnswerControllerTest implements AnswerControllerHelper {
 
         //given
         AnswerDto.Post post = new AnswerDto.Post();
-        post.setMemberId(1L);
         post.setQuestionId(1L);
         post.setAnswerContent("Answer.Post 테스트");
         String content = gson.toJson(post);
@@ -102,7 +101,6 @@ class AnswerControllerTest implements AnswerControllerHelper {
                         getResponsePreProcessor(),
                         requestFields(
                                 List.of(
-                                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별 번호"),
                                         fieldWithPath("questionId").type(JsonFieldType.NUMBER).description("질문 식별 번호"),
                                         fieldWithPath("answerContent").type(JsonFieldType.STRING).description("질문 내용")
                                 )
@@ -114,7 +112,6 @@ class AnswerControllerTest implements AnswerControllerHelper {
     @DisplayName("Answer Patch Test")
     public void patchAnswerTest() throws Exception {
         AnswerDto.Patch patch = new AnswerDto.Patch();
-        patch.setMemberId(1L);
         patch.setQuestion(new Question());
         patch.setAnswerId(1L);
         patch.setAnswerContent("Answer Patch Test");
@@ -161,7 +158,6 @@ class AnswerControllerTest implements AnswerControllerHelper {
                         ),
                         requestFields(
                                 List.of(
-                                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별 번호"),
                                         fieldWithPath("answerId").type(JsonFieldType.NUMBER).description("질문 식별 번호"),
                                         fieldWithPath("answerContent").type(JsonFieldType.STRING).description("질문 내용"),
                                         fieldWithPath("question.viewCount").type(JsonFieldType.NUMBER).description("질문 조회수"),
@@ -270,7 +266,7 @@ class AnswerControllerTest implements AnswerControllerHelper {
                 mockMvc.perform(getRequestBuilder(ANSWER_DEFAULT_URL, params));
 
         actions.andExpect(status().isOk())
-                .andDo(document("get-answer",
+                .andDo(document("get-answers",
                         getRequestPreProcessor(),
                         getResponsePreProcessor(),
                         requestParameters(

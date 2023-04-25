@@ -39,7 +39,6 @@ public class AnswerController {
         long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();
 
         Answer answer = mapper.answerPostToAnswer(requestBody);
-        answer.setMember(memberService.findMember(requestBody.getMemberId()));
         answer.setQuestion(questionService.findVerifiedQuestion(requestBody.getQuestionId()));
 
         Answer createdAnswer = answerService.createAnswer(answer, authenticationMemberId);
