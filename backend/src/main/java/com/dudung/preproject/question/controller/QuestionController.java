@@ -64,10 +64,10 @@ public class QuestionController {
     }
 
     @GetMapping("/{question-id}")
-    public ResponseEntity getQuestion(@PathVariable("question-id") @Positive long qustionId, @Positive @RequestParam int page, @RequestParam String tab, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity getQuestion(@PathVariable("question-id") @Positive long qustionId, @Positive @RequestParam int page, @RequestParam String answertab, HttpServletRequest request, HttpServletResponse response) {
         Question question = questionService.findQuestion(qustionId);
         questionService.viewCountValidation(question, request, response);
-        Page<Answer> pageAnswers = answerService.findAnswers(page - 1, tab);
+        Page<Answer> pageAnswers = answerService.findAnswers(page - 1, answertab);
         List<Answer> answers = pageAnswers.getContent();
 
         return new ResponseEntity<>(new DataListResponseDto(questionMapper.questionToQuestionResponse(question, answers), pageAnswers), HttpStatus.OK);

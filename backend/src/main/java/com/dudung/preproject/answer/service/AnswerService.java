@@ -76,6 +76,15 @@ public class AnswerService {
     }
 
     public Page<Answer> findAnswers(int page, String tab) {
+        if (tab.equals("score")){
+            tab = "answerVoteSum";
+        } else if (tab.equals("newest")) {
+            tab = "answerId";
+        } else if (tab.equals("oldest")) {
+            tab = "answerId";
+            return answerRepository.findAll(PageRequest.of
+                    (page, 5, Sort.by(tab).ascending()));
+        }
         return answerRepository.findAll(PageRequest.of
                 (page, 5, Sort.by(tab).descending()));
     }
