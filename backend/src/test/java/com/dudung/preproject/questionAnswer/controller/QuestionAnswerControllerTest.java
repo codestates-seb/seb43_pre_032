@@ -83,6 +83,9 @@ public class QuestionAnswerControllerTest implements QuestionAnswerControllerHel
                         requestHeaders(
                                 getDefaultRequestHeaderDescriptor()
                         ),
+                        pathParameters(
+                                getMemberRequestPathParameterDescriptor()
+                        ),
                         requestFields(
                                 List.of(
                                         fieldWithPath("questionAnswerId").type(JsonFieldType.NUMBER).description("질문 댓글 식별 번호"),
