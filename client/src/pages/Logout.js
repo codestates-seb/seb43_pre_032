@@ -34,9 +34,13 @@ function Logout() {
   const removeToken = () => {
     localStorage.removeItem('token');
   };
+  const removeMemberId = () => {
+    localStorage.removeItem('memberid');
+  };
   const handleLogout = () => {
     dispatch(setLogout());
     removeToken();
+    removeMemberId();
     navigate('/auth/login');
   };
   const handleGoBack = () => {
