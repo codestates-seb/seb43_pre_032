@@ -28,7 +28,9 @@ const Nav = () => {
                       className="font-awesome"
                       icon={faEarthAmericas}
                     />
-                    <span className="font-icon">Questions</span>
+                    <Link to={'/question'}>
+                      <span className="font-icon">Questions</span>
+                    </Link>
                   </div>
                 </li>
                 <li>
