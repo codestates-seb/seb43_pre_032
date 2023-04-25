@@ -70,6 +70,8 @@ public class AnswerDto {
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
         private long memberId;
+        private String memberJpegUrl;
+        private String memberPngUrl;
         private String memberName;
         private int memberReputation;
         private List<AnswerAnswerDto.Response> answerAnswers;

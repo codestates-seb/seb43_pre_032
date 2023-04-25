@@ -31,6 +31,8 @@ public class QuestionAnswerDto {
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
         private Long memberId;
+        private String memberJpegUrl;
+        private String memberPngUrl;
         private String memberName;
         private Integer memberReputation;
 

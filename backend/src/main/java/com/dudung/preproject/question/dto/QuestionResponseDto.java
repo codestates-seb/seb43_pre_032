@@ -24,6 +24,8 @@ public class QuestionResponseDto {
     private int questionVoteSum;
     private int viewCount;
     private long memberId;
+    private String memberJpegUrl;
+    private String memberPngUrl;
     private String memberName;
     private int memberReputation;
 
