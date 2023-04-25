@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 import styled from 'styled-components';
-import { selectFooter, selectNav, setLogin } from '../store/store';
+import { selectFooter, selectNav } from '../store/store';
 import { useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -52,12 +52,19 @@ const Login = () => {
           localStorage.setItem('token', token);
         };
 
+        const memberid = response.headers.memberid;
+        const saveMemberId = (memberid) => {
+          localStorage.setItem('memberid', memberid);
+        };
+
         if (response.status === 200 || response.status === 201) {
+          //--------------------------해야할일
+          // 유저 id도 받아와서 로컬스토리지에 저장하기
           setIsLogin(false);
           saveToken(token);
+          saveMemberId(memberid);
           dispatch(selectFooter(true));
           dispatch(selectNav(true));
-          dispatch(setLogin(true));
           navigate('/question');
         }
       })
