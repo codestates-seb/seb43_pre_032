@@ -6,6 +6,7 @@ import {
   faBagShopping,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
 
 const Nav = () => {
   return (
@@ -13,9 +14,11 @@ const Nav = () => {
       <div>
         <nav>
           <NavOlst>
-            <li>
-              <HoverDiv>Home</HoverDiv>
-            </li>
+            <Link to={'/question'}>
+              <li>
+                <HoverDiv>Home</HoverDiv>
+              </li>
+            </Link>
             <LiChild>
               <ol>
                 <li>PUBLIC</li>
@@ -29,7 +32,9 @@ const Nav = () => {
                   </div>
                 </li>
                 <li>
-                  <span>Tags</span>
+                  <Link to={'/tags'}>
+                    <span>Tags</span>
+                  </Link>
                 </li>
                 <li>
                   <span>Users</span>
@@ -93,6 +98,12 @@ const DivContainer = styled.div`
   //전체 li태그
   li {
     list-style: none;
+  }
+
+  a {
+    text-decoration: none; /* 밑줄 제거 */
+    color: inherit; /* 상속받은 색상 사용 */
+    font-size: inherit;
   }
 `;
 
