@@ -20,7 +20,6 @@ function DetailTitle({ data }) {
       </header>
       <div className="question-btn">
         <Link to={'/question/ask'}>
-          {' '}
           <button className="askquestion_Btn">Ask Question</button>
         </Link>
       </div>

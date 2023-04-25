@@ -9,17 +9,16 @@ import {
 import { faBookmark as faRegularBookmark } from '@fortawesome/free-regular-svg-icons';
 import { useState } from 'react';
 
-function VoteGroup({ qsId, voteSum }) {
+function AnswerVoteGroup({ answerQsId, answerVoteSum }) {
   const [bookmark, setBookmark] = useState(false);
 
-  const memberId = localStorage.getItem('memberid'); //로컬스토리지 멤버아이디 가져오기
   const token = localStorage.getItem('token'); //로컬스토리지 토큰 가져오기
 
   const voteHandler = (votee) => {
     axios
       .post(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questionvote`,
-        { questionId: qsId.qsId, memberId: memberId, vote: votee },
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/answervote`,
+        { answerId: answerQsId, vote: votee },
         {
           headers: {
             Authorization: token,
@@ -49,7 +48,7 @@ function VoteGroup({ qsId, voteSum }) {
           }}
         />
       </span>
-      <span>{voteSum}</span>
+      <span>{answerVoteSum}</span>
       <span className="side-icon-color">
         <FontAwesomeIcon
           icon={faPlay}
@@ -78,7 +77,7 @@ function VoteGroup({ qsId, voteSum }) {
   );
 }
 
-export default VoteGroup;
+export default AnswerVoteGroup;
 
 export const VoteIcon = styled.div`
   display: flex;
