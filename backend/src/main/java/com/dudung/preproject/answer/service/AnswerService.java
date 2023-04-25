@@ -32,7 +32,8 @@ public class AnswerService {
         checkVerifiedId(authenticationMemberId);
         Member member = memberService.findMember(authenticationMemberId);
         answer.setMember(member);
-
+        answer.getQuestion().setQuestionLastStatus(Question.LastStatus.ANSWER_CREATE);
+        answer.getQuestion().setQuestionLastStatusTime(answer.getCreatedAt());
         Answer createdAnswer = answerRepository.save(answer);
         member.addAnswer(createdAnswer);
         return createdAnswer;
@@ -52,6 +53,8 @@ public class AnswerService {
                 .ifPresent(LocalDateTime -> findAnswer.setModifiedAt(java.time.LocalDateTime.now()));
 
         findAnswer.setModifiedAt(answer.getModifiedAt());
+        findAnswer.getQuestion().setQuestionLastStatus(Question.LastStatus.QUESTION_MODIFY);
+        findAnswer.getQuestion().setQuestionLastStatusTime(findAnswer.getModifiedAt());
 
         return answerRepository.save(findAnswer);
     }
@@ -75,6 +78,19 @@ public class AnswerService {
         Answer findAnswer = findVerifiedAnswer(answerId);
         deletePermission(findAnswer, memberService.findMember(authenticationMemberId));
         answerRepository.delete(findAnswer);
+    }
+
+    public Page<Answer> findAnswers(int page, String tab, Question question) {
+        if (tab.equals("score")) {
+            tab = "answerVoteSum";
+        } else if (tab.equals("newest")) {
+            tab = "createdAt";
+        } else if (tab.equals("oldest")) {
+            return answerRepository.findAllByQuestion(question, PageRequest.of
+                    (page, 5, Sort.by("createdAt").ascending()));
+        }
+        return answerRepository.findAllByQuestion(question, PageRequest.of
+                (page, 5, Sort.by(tab).descending()));
     }
 
     public Page<Answer> findAnswers(int page, String tab) {

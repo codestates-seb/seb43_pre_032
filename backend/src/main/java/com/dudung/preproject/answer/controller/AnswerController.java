@@ -88,17 +88,17 @@ public class AnswerController {
         return new ResponseEntity<>(mapper.answerToAnswerResponse(answer), HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity getAnswers(@Positive @RequestParam int page,
-                                     @RequestParam String tab) {
-        Page<Answer> pageAnswers = answerService.findAnswers(page -1, tab);
-        List<Answer> answers = pageAnswers.getContent();
-
-        return new ResponseEntity<>(new MultiResponseDto<>(
-                mapper.answerToAnswerResponse(answers), pageAnswers),
-                HttpStatus.OK);
-
-    }
+//    @GetMapping
+//    public ResponseEntity getAnswers(@Positive @RequestParam int page,
+//                                     @RequestParam String tab) {
+//        Page<Answer> pageAnswers = answerService.findAnswers(page -1, tab);
+//        List<Answer> answers = pageAnswers.getContent();
+//
+//        return new ResponseEntity<>(new MultiResponseDto<>(
+//                mapper.answerToAnswerResponse(answers), pageAnswers),
+//                HttpStatus.OK);
+//
+//    }
 
     @DeleteMapping("/{answer-id}")
     public ResponseEntity deleteAnswer(@PathVariable("answer-id") long answerId) {

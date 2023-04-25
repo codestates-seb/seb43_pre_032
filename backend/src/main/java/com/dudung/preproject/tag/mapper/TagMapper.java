@@ -47,6 +47,8 @@ public interface TagMapper {
                 .questionVoteSum(question.getQuestionVoteSum())
                 .createdAt(question.getCreatedAt())
                 .tagName(tagsToTagNames(question.getQuestionTags()))
+                .lastStatus(question.getQuestionLastStatus())
+                .lastStatusTime(question.getQuestionLastStatusTime())
                 .memberId(question.getMember().getMemberId())
                 .memberName(question.getMember().getName())
                 .memberReputation(question.getMember().getReputation())
