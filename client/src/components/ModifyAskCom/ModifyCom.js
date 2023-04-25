@@ -42,7 +42,6 @@ const ModifyCom = ({ qsId }) => {
   const titles = ['How to Edit', 'How to Format', 'How to Tag'];
   const navigate = useNavigate();
   let [word, setWord] = useState(''); // 태그 검색어
-  let [original, setOriginal] = useState({});
   let [getTag, setGetTag] = useState([]);
   let [selected, setSelected] = useState([]); // 선택한 태그
   let [filtered, setFiltered] = useState([]);
@@ -62,8 +61,6 @@ const ModifyCom = ({ qsId }) => {
       )
       .then(function (res) {
         // 성공한 경우 실행
-        setOriginal(res.data.data.question);
-        console.log(original);
         setSelected(res.data.data.question.tagName);
         setQuestionTitle(res.data.data.question.questionTitle);
         setQuestionBody(res.data.data.question.questionContent);
@@ -94,8 +91,8 @@ const ModifyCom = ({ qsId }) => {
   let [help, setHelp] = useState(titleHelp);
   let [helpTitle, setHelpTitle] = useState(titles[0]);
 
-  let [questionTitle, setQuestionTitle] = useState();
-  let [questionBody, setQuestionBody] = useState();
+  let [questionTitle, setQuestionTitle] = useState('');
+  let [questionBody, setQuestionBody] = useState('');
 
   let titleInput = (e) => {
     setQuestionTitle(e.target.value);
