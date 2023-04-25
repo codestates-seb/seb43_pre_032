@@ -39,19 +39,23 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String name = String.valueOf(oAuth2User.getAttributes().get("name"));
         String password = String.valueOf(oAuth2User.getAttributes().get("sub"));
         List<String> authorities = authorityUtils.createRoles(email);
-
-        saveMember(email, name, password);
-        redirect(request, response, email, authorities);
+        Member member;
+        try {
+            member = saveMember(email, name, password);
+            redirect(request, response, member, authorities);
+        } catch (Exception e) {
+            redirect(request, response, memberService.findMember(email), authorities);
+        }
     }
 
-    private void saveMember(String email, String name, String password) {
+    private Member saveMember(String email, String name, String password) {
         Member member = new Member(email, name, password);
-        memberService.createMember(member);
+        return memberService.createMember(member);
     }
 
-    private void redirect(HttpServletRequest request, HttpServletResponse response, String username, List<String> authorities) throws IOException {
-        String accessToken = delegateAccessToken(username, authorities);
-        String refreshToken = delegateRefreshToken(username);
+    private void redirect(HttpServletRequest request, HttpServletResponse response, Member member, List<String> authorities) throws IOException {
+        String accessToken = delegateAccessToken(member, authorities);
+        String refreshToken = delegateRefreshToken(member.getEmail());
 
         response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("Refresh", refreshToken);
@@ -59,12 +63,13 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String uri = createUri().toString();
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
-    private String delegateAccessToken(String username, List<String> authorities) {
+    private String delegateAccessToken(Member member, List<String> authorities) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("username", username);
+        claims.put("memberId", member.getMemberId());
+        claims.put("id", member.getEmail());
         claims.put("roles", authorities);
 
-        String subject = username;
+        String subject = member.getEmail();
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
         String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
