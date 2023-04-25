@@ -3,16 +3,33 @@ import AnsComment from './AnsComment';
 import VoteGroup from './VoteGroup';
 import { DetailContents, TextContents, SideContents } from './DetailContent';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-function Answer({ answerData, qsId }) {
+function Answer({ qsId }) {
   const [answerTap, setAnswerTap] = useState('score');
+  const [answerlist, setAnswerlist] = useState([]);
 
   const token = localStorage.getItem('token'); //로컬스토리지 토큰
-  // console.log(token);
-  console.log(answerTap);
-  // console.log(qsId);
-  console.log(answerData);
+
+  //답변 리스트 불러오기
+  useEffect(() => {
+    axios
+      .get(
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}?page=1&answertab=${answerTap}`,
+        {
+          headers: {
+            'ngrok-skip-browser-warning': '69420',
+          },
+        }
+      )
+      .then(function (res) {
+        console.log(res.data.data.answer);
+        setAnswerlist(res.data.data.answer);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, [answerTap]);
 
   //작성시간계산 : ~~시간전 으로 표기
   function displayedAt(createdAt) {
@@ -58,6 +75,7 @@ function Answer({ answerData, qsId }) {
       });
   };
 
+  //답변 filter tap
   const answerFilter = [
     {
       id: 1,
@@ -77,41 +95,23 @@ function Answer({ answerData, qsId }) {
   ];
 
   //answer filter 핸들러
-  const answerFilterhandler = () => {
-    axios
-      .get(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}?page=1&answertab=${answerTap}`,
-        {
-          headers: {
-            'ngrok-skip-browser-warning': '69420',
-          },
-        }
-      )
-      .then(function (res) {
-        console.log(res.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  const answerFilterhandler = (e) => {
+    setAnswerTap(e.target.value);
   };
 
   return (
     <>
       <AnswerTitle>
-        <h2>{answerData.length} Answer</h2>
-        <select
-          onChange={(e) => {
-            setAnswerTap(e.target.value);
-          }}
-        >
+        <h2>{answerlist.length} Answer</h2>
+        <select onChange={answerFilterhandler}>
           {answerFilter.map((el) => (
-            <option key={el.id} value={el.value} onClick={answerFilterhandler}>
+            <option key={el.id} value={el.value}>
               {el.Name}
             </option>
           ))}
         </select>
       </AnswerTitle>
-      {answerData.map((answer) => (
+      {answerlist.map((answer) => (
         <DetailContents key={answer.answerId}>
           <div>
             <VoteGroup />
@@ -142,7 +142,10 @@ function Answer({ answerData, qsId }) {
                   </div>
                 </div>
               </SideContents>
-              <AnsComment />
+              <AnsComment
+                answerComment={answer.answerAnswers}
+                answerId={answer.answerId}
+              />
             </TextContents>
           </div>
         </DetailContents>
