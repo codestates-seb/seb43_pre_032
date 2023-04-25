@@ -171,6 +171,7 @@ class AnswerControllerTest implements AnswerControllerHelper {
                                         fieldWithPath("question.questionTags[]").type(JsonFieldType.ARRAY).description("질문 태크 목록"),
                                         fieldWithPath("question.answers[]").type(JsonFieldType.ARRAY).description("답변 목록"),
                                         fieldWithPath("question.questionAnswers[]").type(JsonFieldType.ARRAY).description("질문 댓글 목록"),
+                                        fieldWithPath("question.questionLastStatus").type(JsonFieldType.STRING).description("질문 최신 정보"),
                                         fieldWithPath("modifiedAt").type(JsonFieldType.STRING).description("답변 수정 시간")
 
                                 )
