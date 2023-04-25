@@ -52,11 +52,13 @@ public class MemberController {
     @PatchMapping("/{member-id}")
     public ResponseEntity patchMember(@Positive @PathVariable("member-id") long memberId,
                                       @Valid @RequestBody MemberDto.Patch requestBody) {
+        long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();
+
         requestBody.setMemberId(memberId);
 
-        Member member = memberService.updateMember(mapper.memberPatchToMember(requestBody));
+        memberService.updateMember(mapper.memberPatchToMember(requestBody), authenticationMemberId);
 
-        return new ResponseEntity<>(mapper.memberToMemberResponse(member), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{member-id}")
