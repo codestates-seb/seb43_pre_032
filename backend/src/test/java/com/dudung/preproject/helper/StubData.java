@@ -161,6 +161,9 @@ public class StubData {
                     .questionAnswers(getQuestionAnswers())
                     .questionVoteSum(0)
                     .viewCount(1)
+                    .memberId(1)
+                    .memberJpegUrl("1.jpeg")
+                    .memberPngUrl("1.png")
                     .memberName("질문 작성자")
                     .build();
 
@@ -179,6 +182,8 @@ public class StubData {
                             .createdAt(time)
                             .modifiedAt(time)
                             .memberId(1L)
+                            .memberJpegUrl("1.jpeg")
+                            .memberPngUrl("1.png")
                             .memberName("질문 댓글 작성자")
                             .memberReputation(1).build()
             );
@@ -193,6 +198,9 @@ public class StubData {
                     .answerVoteSum(32)
                     .createdAt(time)
                     .modifiedAt(time)
+                    .memberId(1)
+                    .memberJpegUrl("1.jpeg")
+                    .memberPngUrl("1.png")
                     .memberName("답변 작성자")
                     .answerAnswers(getAnswerAnswers())
                     .build());
@@ -205,6 +213,8 @@ public class StubData {
                     .createdAt(time)
                     .modifiedAt(time)
                     .memberId(1L)
+                    .memberJpegUrl("1.jpeg")
+                    .memberPngUrl("1.png")
                     .memberName("답변 댓글 작성자")
                     .memberReputation(1)
                     .build());
@@ -241,6 +251,9 @@ public class StubData {
                             .tagName(getTagNameForMultiResponse())
                             .lastStatus(Question.LastStatus.QUESTION_CREATE)
                             .lastStatusTime(time)
+                            .memberId(1)
+                            .memberJpegUrl("1.jpeg")
+                            .memberPngUrl("1.png")
                             .memberName("질문 작성자")
                             .answerCount(0)
                             .build(),
@@ -253,6 +266,9 @@ public class StubData {
                             .tagName(getTagNameForMultiResponse())
                             .lastStatus(Question.LastStatus.QUESTION_CREATE)
                             .lastStatusTime(time)
+                            .memberId(1)
+                            .memberJpegUrl("1.jpeg")
+                            .memberPngUrl("1.png")
                             .memberName("질문 작성자")
                             .answerCount(0)
                             .build()
@@ -287,6 +303,8 @@ public class StubData {
                             .lastStatus(Question.LastStatus.QUESTION_CREATE)
                             .lastStatusTime(time)
                             .memberName("작성자 이름")
+                            .memberJpegUrl("1.jpeg")
+                            .memberPngUrl("1.png")
                             .questionContent("질문 내용")
                             .answerCount(1)
                             .build()

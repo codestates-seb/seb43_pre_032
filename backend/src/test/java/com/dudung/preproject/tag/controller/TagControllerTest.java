@@ -105,6 +105,8 @@ public class TagControllerTest implements TagControllerHelper {
                                         fieldWithPath("data.questions[].lastStatus").type(JsonFieldType.STRING).description("질문의 마지막 상태"),
                                         fieldWithPath("data.questions[].lastStatusTime").type(JsonFieldType.STRING).description("질문의 마지막 상태로 전환된 시간"),
                                         fieldWithPath("data.questions[].memberName").type(JsonFieldType.STRING).description("작성 회원 이름").optional(),
+                                        fieldWithPath("data.questions[].memberJpegUrl").type(JsonFieldType.STRING).description("회원 사진 URL"),
+                                        fieldWithPath("data.questions[].memberPngUrl").type(JsonFieldType.STRING).description("회원 사진 URL"),
                                         fieldWithPath("data.questions[].answerCount").type(JsonFieldType.NUMBER).description("").optional(),
                                         fieldWithPath("data.questions[].questionContent").type(JsonFieldType.STRING).description("질문 내용"),
                                         fieldWithPath("data.questions[].memberReputation").type(JsonFieldType.NUMBER).description("회원 명성도"),
