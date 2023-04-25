@@ -14,6 +14,7 @@ import com.dudung.preproject.question.dto.QuestionResponseDto;
 import com.dudung.preproject.question.dto.QuestionTagDto;
 import com.dudung.preproject.tag.domain.Tag;
 import org.mapstruct.Mapper;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -83,6 +84,20 @@ public interface QuestionMapper {
                 .questionVoteSum(question.getQuestionVoteSum())
                 .viewCount(question.getViewCount())
                 .memberId(question.getMember().getMemberId())
+                .memberJpegUrl(UriComponentsBuilder
+                        .newInstance()
+                        .scheme("http")
+                        .host("ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com")
+                        .port(8080)
+                        .path("/image/" + question.getMember().getMemberId() + "/" + question.getMember().getMemberId() + ".jpeg")
+                        .build().toUri().toString())
+                .memberPngUrl(UriComponentsBuilder
+                        .newInstance()
+                        .scheme("http")
+                        .host("ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com")
+                        .port(8080)
+                        .path("/image/" + question.getMember().getMemberId() + "/" + question.getMember().getMemberId() + ".png")
+                        .build().toUri().toString())
                 .memberName(question.getMember().getName())
                 .memberReputation(question.getMember().getReputation()).build();
 
@@ -101,6 +116,20 @@ public interface QuestionMapper {
                 .createdAt(questionAnswer.getCreatedAt())
                 .modifiedAt(questionAnswer.getModifiedAt())
                 .memberId(questionAnswer.getMember().getMemberId())
+                .memberJpegUrl(UriComponentsBuilder
+                        .newInstance()
+                        .scheme("http")
+                        .host("ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com")
+                        .port(8080)
+                        .path("/image/" + questionAnswer.getMember().getMemberId() + "/" + questionAnswer.getMember().getMemberId() + ".jpeg")
+                        .build().toUri().toString())
+                .memberPngUrl(UriComponentsBuilder
+                        .newInstance()
+                        .scheme("http")
+                        .host("ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com")
+                        .port(8080)
+                        .path("/image/" + questionAnswer.getMember().getMemberId() + "/" + questionAnswer.getMember().getMemberId() + ".png")
+                        .build().toUri().toString())
                 .memberName(questionAnswer.getMember().getName())
                 .memberReputation(questionAnswer.getMember().getReputation()).build();
     }
@@ -125,6 +154,20 @@ public interface QuestionMapper {
                 .createdAt(answer.getCreatedAt())
                 .modifiedAt(answer.getModifiedAt())
                 .memberId(answer.getMember().getMemberId())
+                .memberJpegUrl(UriComponentsBuilder
+                        .newInstance()
+                        .scheme("http")
+                        .host("ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com")
+                        .port(8080)
+                        .path("/image/" + answer.getMember().getMemberId() + "/" + answer.getMember().getMemberId() + ".jpeg")
+                        .build().toUri().toString())
+                .memberPngUrl(UriComponentsBuilder
+                        .newInstance()
+                        .scheme("http")
+                        .host("ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com")
+                        .port(8080)
+                        .path("/image/" + answer.getMember().getMemberId() + "/" + answer.getMember().getMemberId() + ".png")
+                        .build().toUri().toString())
                 .memberName(answer.getMember().getName())
                 .memberReputation(answer.getMember().getReputation())
                 .answerAnswers(answerAnswerForList(answer.getAnswerAnswers()))
@@ -142,6 +185,20 @@ public interface QuestionMapper {
                 .createdAt(answerAnswer.getAnswerAnswerModifiedAt())
                 .modifiedAt(answerAnswer.getAnswerAnswerModifiedAt())
                 .memberId(answerAnswer.getMember().getMemberId())
+                .memberJpegUrl(UriComponentsBuilder
+                        .newInstance()
+                        .scheme("http")
+                        .host("ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com")
+                        .port(8080)
+                        .path("/image/" + answerAnswer.getMember().getMemberId() + "/" + answerAnswer.getMember().getMemberId() + ".jpeg")
+                        .build().toUri().toString())
+                .memberPngUrl(UriComponentsBuilder
+                        .newInstance()
+                        .scheme("http")
+                        .host("ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com")
+                        .port(8080)
+                        .path("/image/" + answerAnswer.getMember().getMemberId() + "/" + answerAnswer.getMember().getMemberId() + ".png")
+                        .build().toUri().toString())
                 .memberName(answerAnswer.getMember().getName())
                 .memberReputation(answerAnswer.getMember().getReputation()).build();
     }
@@ -158,6 +215,20 @@ public interface QuestionMapper {
                 .lastStatus(question.getQuestionLastStatus())
                 .lastStatusTime(question.getQuestionLastStatusTime())
                 .memberId(question.getMember().getMemberId())
+                .memberJpegUrl(UriComponentsBuilder
+                        .newInstance()
+                        .scheme("http")
+                        .host("ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com")
+                        .port(8080)
+                        .path("/image/" + question.getMember().getMemberId() + "/" + question.getMember().getMemberId() + ".jpeg")
+                        .build().toUri().toString())
+                .memberPngUrl(UriComponentsBuilder
+                        .newInstance()
+                        .scheme("http")
+                        .host("ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com")
+                        .port(8080)
+                        .path("/image/" + question.getMember().getMemberId() + "/" + question.getMember().getMemberId() + ".png")
+                        .build().toUri().toString())
                 .memberName(question.getMember().getName())
                 .memberReputation(question.getMember().getReputation())
                 .answerCount(question.getAnswerCount()).build();

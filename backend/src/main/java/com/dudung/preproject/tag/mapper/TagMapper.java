@@ -7,6 +7,7 @@ import com.dudung.preproject.question.dto.QuestionTagDto;
 import com.dudung.preproject.tag.domain.Tag;
 import com.dudung.preproject.tag.dto.TagDto;
 import org.mapstruct.Mapper;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,6 +51,20 @@ public interface TagMapper {
                 .lastStatus(question.getQuestionLastStatus())
                 .lastStatusTime(question.getQuestionLastStatusTime())
                 .memberId(question.getMember().getMemberId())
+                .memberJpegUrl(UriComponentsBuilder
+                        .newInstance()
+                        .scheme("http")
+                        .host("ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com")
+                        .port(8080)
+                        .path("/image/" + question.getMember().getMemberId() + "/" + question.getMember().getMemberId() + ".jpeg")
+                        .build().toUri().toString())
+                .memberPngUrl(UriComponentsBuilder
+                        .newInstance()
+                        .scheme("http")
+                        .host("ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com")
+                        .port(8080)
+                        .path("/image/" + question.getMember().getMemberId() + "/" + question.getMember().getMemberId() + ".png")
+                        .build().toUri().toString())
                 .memberName(question.getMember().getName())
                 .memberReputation(question.getMember().getReputation())
                 .answerCount(question.getAnswerCount()).build();

@@ -35,9 +35,6 @@ public class AnswerAnswerController {
         long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();
         AnswerAnswer answerAnswer = mapper.answerAnswerPostToAnswerAnswer(requestBody);
 
-        answerAnswer.setMember(memberService.findMember(requestBody.getMemberId()));
-        answerAnswer.setAnswer(answerService.findAnswer(requestBody.getAnswerId()));
-
         AnswerAnswer createdAnswer = answerAnswerService.createAnswerAnswer(answerAnswer, authenticationMemberId);
         URI location = UriComponentsBuilder
                 .newInstance()
