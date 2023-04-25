@@ -2,9 +2,10 @@ import styled from 'styled-components';
 import AnsComment from './AnsComment';
 import VoteGroup from './VoteGroup';
 import { DetailContents, TextContents, SideContents } from './DetailContent';
+import axios from 'axios';
 
 function Answer({ answerData }) {
-  // console.log(answerData);
+  console.log(answerData);
 
   //작성시간계산 : ~~시간전 으로 표기
   function displayedAt(createdAt) {
@@ -25,6 +26,34 @@ function Answer({ answerData }) {
     return `${Math.floor(years)}years ago`;
   }
 
+  const token = localStorage.getItem('token'); //로컬스토리지 토큰
+  // console.log(token);
+
+  //답변 삭제 핸들러
+  const deleteAnswer = (answerId) => {
+    console.log(`답변 아이디 번호 ${answerId}`);
+
+    axios
+      .delete(
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/answers/${answerId}`,
+        {
+          headers: {
+            Authorization: token,
+            'ngrok-skip-browser-warning': '69420',
+          },
+        }
+      )
+      .then(function (res) {
+        // 성공한 경우 실행
+        console.log(res);
+        window.location.reload();
+      })
+      .catch(function (error) {
+        // 에러인 경우 실행
+        console.log(error);
+      });
+  };
+
   return (
     <>
       <AnswerTitle>
@@ -44,9 +73,15 @@ function Answer({ answerData }) {
               <span>{answer.answerContent}</span>
               <SideContents>
                 <div className="subMenus">
-                  <p>Share</p>
-                  <p>Edit</p>
-                  <p>Delete</p>
+                  <button>Share</button>
+                  <button>Edit</button>
+                  <button
+                    onClick={() => {
+                      deleteAnswer(answer.answerId);
+                    }}
+                  >
+                    delete
+                  </button>
                 </div>
                 <div>
                   <div className="user-info">
