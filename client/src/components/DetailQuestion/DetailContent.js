@@ -87,7 +87,7 @@ function DetailContent({ data, tagData, answerData, qsId }) {
         </TextContents>
       </div>
       <div>
-        <Answer answerData={answerData} />
+        <Answer answerData={answerData} qsId={qsId} />
       </div>
       <div>
         <YourAnswer qsId={qsId} />

@@ -3,8 +3,15 @@ import AnsComment from './AnsComment';
 import VoteGroup from './VoteGroup';
 import { DetailContents, TextContents, SideContents } from './DetailContent';
 import axios from 'axios';
+import { useState } from 'react';
 
-function Answer({ answerData }) {
+function Answer({ answerData, qsId }) {
+  const [answerTap, setAnswerTap] = useState('score');
+
+  const token = localStorage.getItem('token'); //로컬스토리지 토큰
+  // console.log(token);
+  console.log(answerTap);
+  // console.log(qsId);
   console.log(answerData);
 
   //작성시간계산 : ~~시간전 으로 표기
@@ -25,9 +32,6 @@ function Answer({ answerData }) {
     const years = days / 365;
     return `${Math.floor(years)}years ago`;
   }
-
-  const token = localStorage.getItem('token'); //로컬스토리지 토큰
-  // console.log(token);
 
   //답변 삭제 핸들러
   const deleteAnswer = (answerId) => {
@@ -54,15 +58,57 @@ function Answer({ answerData }) {
       });
   };
 
+  const answerFilter = [
+    {
+      id: 1,
+      Name: 'Highest score (default)',
+      value: 'score',
+    },
+    {
+      id: 2,
+      Name: 'Date modified (newest first)',
+      value: 'newest',
+    },
+    {
+      id: 3,
+      Name: 'Date created (oldest first)',
+      value: 'oldest',
+    },
+  ];
+
+  //answer filter 핸들러
+  const answerFilterhandler = () => {
+    axios
+      .get(
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}?page=1&answertab=${answerTap}`,
+        {
+          headers: {
+            'ngrok-skip-browser-warning': '69420',
+          },
+        }
+      )
+      .then(function (res) {
+        console.log(res.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
     <>
       <AnswerTitle>
         <h2>{answerData.length} Answer</h2>
-        <select>
-          <option>Highest score (default)</option>
-          <option>Trending (recent votes count more)</option>
-          <option>Date modified (newest first)</option>
-          <option>Date created (oldest first)</option>
+        <select
+          onChange={(e) => {
+            setAnswerTap(e.target.value);
+          }}
+        >
+          {answerFilter.map((el) => (
+            <option key={el.id} value={el.value} onClick={answerFilterhandler}>
+              {el.Name}
+            </option>
+          ))}
         </select>
       </AnswerTitle>
       {answerData.map((answer) => (

@@ -5,6 +5,8 @@ import DetailContent from '../components/DetailQuestion/DetailContent';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { selectFooter, selectNav } from '../store/store';
+import { useDispatch } from 'react-redux';
 function DetailQuestion() {
   const [detailData, setDetailData] = useState([]);
   const [answerData, setAnswerData] = useState([]);
@@ -12,6 +14,13 @@ function DetailQuestion() {
 
   const qsId = useParams();
   // console.log(qsId);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(selectFooter(true));
+    dispatch(selectNav(true));
+  }, []);
 
   useEffect(() => {
     axios
