@@ -12,12 +12,9 @@ import { useNavigate } from 'react-router-dom';
 
 const url =
   'http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/1';
-const ModifyCom = () => {
+
+const ModifyCom = ({ qsId }) => {
   // const [token, setToken] = useState('');
-  let data = {
-    title: '수정될 질문의 제목',
-    content: '여기가 본문의 내용이 될거 같은데 ~~~~~~~~~~~~~~~~~~~~~~',
-  };
 
   let titleHelp = [
     'Correct minor typos or mistakes',
@@ -47,40 +44,33 @@ const ModifyCom = () => {
   ];
   const titles = ['How to Edit', 'How to Format', 'How to Tag'];
   const navigate = useNavigate();
-  let [tagData, setTagData] = useState([]); // 전체 태그 데이터
   let [word, setWord] = useState(''); // 태그 검색어
   let [original, setOriginal] = useState({});
-  let [selected, setSelected] = useState([
-    {
-      tagDescription:
-        'For questions about programming in ECMAScript (JavaScript/JS) and its different dialects/implementations (except for ActionScript). Keep in mind that JavaScript is NOT the same as Java! Include all la…',
-      tagId: 1,
-      tagName: 'javascript',
-    },
-  ]); // 선택한 태그
+  let [getTag, setGetTag] = useState([]);
+  let [selected, setSelected] = useState([]); // 선택한 태그
   let [filtered, setFiltered] = useState([]);
-  let qsId = 1;
+
   useEffect(() => {
     // 솔님이 작성하신 코드     modify, create, tag 에서 쓰여서 hooks로 만드는건..?
+    // axios
+    //   .get(
+    //     `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags?page=1&size=3276&sortBy=tagId`,
+    //     {
+    //       headers: {
+    //         'ngrok-skip-browser-warning': '69420',
+    //       },
+    //     }
+    //   )
+    //   .then(function (response) {
+    //     setTagData(response.data.data); // 태그 전체
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
+
     axios
       .get(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags?page=1&size=3276&sortBy=tagId`,
-        {
-          headers: {
-            'ngrok-skip-browser-warning': '69420',
-          },
-        }
-      )
-      .then(function (response) {
-        setTagData(response.data.data); // 태그 전체
-        console.log(original);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    axios
-      .get(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}?page=1&size=5&sortBy=answerId`,
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}?page=1&tab=answerVoteSum`,
         {
           headers: {
             'ngrok-skip-browser-warning': '69420',
@@ -92,27 +82,40 @@ const ModifyCom = () => {
       .then(function (res) {
         // 성공한 경우 실행
         setOriginal(res.data.data.question);
+        console.log(original);
+        setSelected(res.data.data.question.tagName);
+        setQuestionTitle(res.data.data.question.questionTitle);
+        setQuestionBody(res.data.data.question.questionContent);
       })
       .catch(function (error) {
         // 에러인 경우 실행
         console.log(error);
       });
   }, []);
+
+  const searchedData = async (word) => {
+    await axios
+      .get(
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags?page=1&keyword=${word}&tab=popular`,
+        {
+          headers: {
+            'ngrok-skip-browser-warning': '69420',
+          },
+        }
+      )
+      .then((res) => setGetTag(res.data.data))
+      .catch((err) => console.log(err));
+  };
   useEffect(() => {
-    setFiltered(
-      tagData
-        .filter((tag) => {
-          return tag.tagName.includes(word.toLowerCase());
-        })
-        .slice(0, 6)
-    );
+    searchedData(word);
+    setFiltered(getTag.slice(0, 6));
   }, [word]);
   let [help, setHelp] = useState(titleHelp);
   let [helpTitle, setHelpTitle] = useState(titles[0]);
 
   let [questionId, setQuestionId] = useState(1);
-  let [questionTitle, setQuestionTitle] = useState(data.title);
-  let [questionBody, setQuestionBody] = useState(data.content);
+  let [questionTitle, setQuestionTitle] = useState();
+  let [questionBody, setQuestionBody] = useState();
 
   let titleInput = (e) => {
     setQuestionId(1); //바꿔야함--> props로 넘겨준걸로 set 되게
@@ -157,7 +160,7 @@ const ModifyCom = () => {
   const cancelClicked = () => {
     navigate('/detailquestion');
   };
-
+  console.log(selected);
   return (
     <TotalContainer>
       <ModifyContainer>
