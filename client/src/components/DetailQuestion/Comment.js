@@ -1,45 +1,128 @@
-import { useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 function Comment() {
   const [commentOn, setCommentOn] = useState(false);
+  const [comments, setComments] = useState([]);
+  const qsId = useParams();
+  const questionId = qsId.qsId;
+  const url = `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080`;
+  const token = localStorage.getItem('token');
+  const [newComment, setNewComment] = useState('');
+
+  const useEffectget = () => {
+    axios
+      .get(
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}?page=1&answertab=score`,
+        {
+          headers: {
+            'ngrok-skip-browser-warning': '69420',
+          },
+          withCredentials: true,
+          credentials: 'include',
+        }
+      )
+      .then(function (res) {
+        console.log(res.data.data);
+        // 성공한 경우 실행
+        setComments(res.data.data.question.questionAnswers);
+      })
+      .catch(function (error) {
+        // 에러인 경우 실행
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    useEffectget();
+  }, []);
+  const handlekeydown = (event) => {
+    if (event.key === 'Enter') {
+      hadleCreateComment();
+    }
+  };
+  const handleCommentContent = (e) => {
+    setNewComment(e.target.value);
+  };
+  const hadleCreateComment = () => {
+    axios
+      .post(
+        `${url}/questions/${questionId}?page=1&answertab=score`,
+        {
+          questionId: Number(questionId),
+          questionAnswerContent: newComment,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        useEffectget();
+      })
+      .catch((error) => console.error(error));
+    setNewComment('');
+  };
+
+  const handleDeleteComment = (commentId) => {
+    axios
+      .delete(`${url}/questionanswers/${commentId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        useEffectget();
+      })
+      .catch((error) => console.error(error));
+  };
+
   return (
     <>
       <CommentView>
-        <div className="comment-list">
-          <span>이렇게 코멘트가 써질 예정이에요!</span>
-          <span className="comment-user">-JUBEE</span>
-          <span>1 hour ago</span>
-        </div>
-        <div className="comment-list">
-          <span>이렇게 코멘트가 써질 예정이에요!</span>
-          <span className="comment-user">-JUBEE</span>
-          <span>1 hour ago</span>
-        </div>
-        <div className="comment-list">
-          <span>이렇게 코멘트가 써질 예정이에요!</span>
-          <span className="comment-user">-JUBEE</span>
-          <span>1 hour ago</span>
-        </div>
-        <div className="comment-list">
-          <span>이렇게 코멘트가 써질 예정이에요!</span>
-          <span className="comment-user">-JUBEE</span>
-          <span>1 hour ago</span>
-        </div>
+        {comments.map((comment, idx) => {
+          return (
+            <div className="comment-list" key={idx}>
+              <span>{comment.questionAnswerContent}</span>
+              <span className="comment-user">-{comment.memberName}</span>
+              <span>{displayedAt(new Date(comment.createdAt))}</span>
+              <button>수정</button>
+              <button
+                onClick={() => handleDeleteComment(comment.questionAnswerId)}
+              >
+                삭제
+              </button>
+            </div>
+          );
+        })}
       </CommentView>
       <CommentOpenBtn>
-        <buttom
+        <button
+          className="addAComment"
           onClick={() => {
             setCommentOn(!commentOn);
           }}
         >
           Add a comment
-        </buttom>
+        </button>
       </CommentOpenBtn>
       {commentOn ? (
         <CommentWrite>
-          <input type="text" placeholder="덧글 내용을 입력해주세요"></input>
-          <button>submit</button>
+          <input
+            type="text"
+            placeholder="덧글 내용을 입력해주세요"
+            value={newComment}
+            onChange={handleCommentContent}
+            onKeyDown={handlekeydown}
+          ></input>
+          <button onClick={hadleCreateComment}>submit</button>
         </CommentWrite>
       ) : null}
     </>
@@ -66,11 +149,39 @@ export const CommentView = styled.div`
     color: hsl(205, 47%, 42%);
     margin: 0px 10px;
   }
+  button {
+    border: none;
+    background-color: white;
+    margin-left: 20px;
+    color: rgba(0, 0, 0, 0.2);
+  }
 `;
+
+function displayedAt(createdAt) {
+  const milliSeconds = new Date() - createdAt;
+  const seconds = milliSeconds / 1000;
+  if (seconds < 60) return `${Math.floor(seconds)} secs ago`;
+  const minutes = seconds / 60;
+  if (minutes < 60) return `${Math.floor(minutes)} min ago`;
+  const hours = minutes / 60;
+  if (hours < 24) return `${Math.floor(hours)} hour ago`;
+  const days = hours / 24;
+  if (days < 7) return `${Math.floor(days)} days ago`;
+  const weeks = days / 7;
+  if (weeks < 5) return `${Math.floor(weeks)} weeks ago`;
+  const months = days / 30;
+  if (months < 12) return `${Math.floor(months)} months ago`;
+  const years = days / 365;
+  return `${Math.floor(years)}years ago`;
+}
 
 export const CommentOpenBtn = styled.div`
   margin: 20px 0px;
   color: #666;
+  .addAComment {
+    border: none;
+    background-color: white;
+  }
 `;
 
 export const CommentWrite = styled.div`
