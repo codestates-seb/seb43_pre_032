@@ -1,5 +1,7 @@
 package com.dudung.preproject.questionVote.service;
 
+import com.dudung.preproject.exception.BusinessLogicException;
+import com.dudung.preproject.exception.ExceptionCode;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.question.domain.Question;
 import com.dudung.preproject.question.repository.QuestionRepository;
@@ -64,6 +66,10 @@ public class QuestionVoteService {
         } else {
             questionVote.setQuestionVoteStatus(QuestionVote.QuestionVoteStatus.ZERO);
         }
+    }
+
+    public void checkVerifiedId(long authenticationMemeberId) { // 임의로 넣은 값 '-1'
+        if (authenticationMemeberId == -1) throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
     }
 
 }

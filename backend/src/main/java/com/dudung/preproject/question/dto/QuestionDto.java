@@ -55,6 +55,7 @@ public class QuestionDto {
         private Question.LastStatus lastStatus;
         private LocalDateTime lastStatusTime;
         private long memberId;
+        private String memberImageUri; // ~/member-id/member-id.png
         private String memberName;
         private int memberReputation;
         private int answerCount;

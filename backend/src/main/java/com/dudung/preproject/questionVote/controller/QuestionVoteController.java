@@ -1,5 +1,6 @@
 package com.dudung.preproject.questionVote.controller;
 
+import com.dudung.preproject.auth.interceptor.JwtParseInterceptor;
 import com.dudung.preproject.member.service.MemberService;
 import com.dudung.preproject.question.service.QuestionService;
 import com.dudung.preproject.questionVote.dto.QuestionVoteDto;
@@ -22,7 +23,9 @@ public class QuestionVoteController {
 
     @PostMapping
     public ResponseEntity postQuestionVoteToVoteDown(@RequestBody QuestionVoteDto.QuestionVotePost requestBody) {
-
+        long authenticationMemeberId = JwtParseInterceptor.getAuthenticatedMemberId();
+        questionVoteService.checkVerifiedId(authenticationMemeberId);
+        requestBody.setMemberId(authenticationMemeberId);
         if (requestBody.isVote()) {
             questionVoteService.questionVoteUp(memberService.findMember(requestBody.getMemberId()), questionService.findVerifiedQuestion(requestBody.getQuestionId()));
         } else {
