@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { selectFooter, selectNav } from '../../store/store';
+import { useDispatch } from 'react-redux';
 
 function Questions({ tagId }) {
   const [qsData, setQsData] = useState([]);
@@ -11,6 +13,13 @@ function Questions({ tagId }) {
   const [totalPages, setTotalPages] = useState(3); // 전체 페이지 수
   const [totalcontetns, setTotalcontetns] = useState(0); // 전체 페이지 수
   const [filter, setFilter] = useState('Newest');
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(selectFooter(true));
+    dispatch(selectNav(true));
+  }, []);
 
   const url = tagId
     ? `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags/${tagId}?page=${currentPage}&size=20&sortBy=questionId`
@@ -99,7 +108,9 @@ function Questions({ tagId }) {
         <QuestionFilter>
           <div className="headContents">
             <h2>All Questions</h2>
-            <buttom className="askquestion_Btn">Ask Question</buttom>
+            <buttom className="askquestion_Btn">
+              <link to={'/ask'}>Ask Question</link>
+            </buttom>
           </div>
           <div className="headContents flex-column">
             <span>{totalcontetns} questions</span>
