@@ -74,6 +74,8 @@ public class MemberDto {
     @Builder
     public static class ResponseMyPage {
         private Long memberId;
+        private String memberJpegUrl;
+        private String memberPngUrl;
         private String name;
         private String myPageTitle;
         private String aboutMe;

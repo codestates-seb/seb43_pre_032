@@ -7,7 +7,9 @@ import com.dudung.preproject.member.dto.MemberDto;
 import com.dudung.preproject.question.domain.Question;
 import com.dudung.preproject.question.dto.QuestionResponseDto;
 import org.mapstruct.Mapper;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,6 +46,20 @@ public interface MemberMapper {
     default MemberDto.ResponseMyPage memberToMyPage(Member member){
         return MemberDto.ResponseMyPage.builder()
                 .memberId(member.getMemberId())
+                .memberJpegUrl(UriComponentsBuilder
+                        .newInstance()
+                        .scheme("http")
+                        .host("ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com")
+                        .port(8080)
+                        .path("/image/"+member.getMemberId() + File.separator + member.getMemberId() + ".jpeg")
+                        .build().toUri().toString())
+                .memberPngUrl(UriComponentsBuilder
+                        .newInstance()
+                        .scheme("http")
+                        .host("ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com")
+                        .port(8080)
+                        .path("/image/"+member.getMemberId() + File.separator + member.getMemberId() + ".png")
+                        .build().toUri().toString())
                 .answers(getAnswerToMember(member.getAnswers()))
                 .questions(getQuestionToMember(member.getQuestions()))
                 .name(member.getName())
@@ -79,4 +95,6 @@ public interface MemberMapper {
                 .answerId(answer.getAnswerId())
                 .build();
     }
+
+
 }
