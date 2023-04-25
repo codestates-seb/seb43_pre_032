@@ -58,7 +58,8 @@ public class QuestionService {
         Question findedQuestion = findVerifiedQuestion(question.getQuestionId());
 
         patchPermission(findedQuestion, memberService.findMember(authenticationMemberId));
-
+        Optional.ofNullable(question.getQuestionTitle())
+                .ifPresent(title -> findedQuestion.setQuestionTitle(title));
         Optional.ofNullable(question.getQuestionContent())
                 .ifPresent(content -> findedQuestion.setQuestionContent(content));
         Optional.ofNullable(question.getQuestionTags())
