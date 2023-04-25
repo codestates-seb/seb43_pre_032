@@ -174,7 +174,7 @@ public class QuestionControllerTest implements QuestionControllerHelper {
         Page<Answer> answers = StubData.MockQuestion.getMultiResultAnswer();
 
         given(questionService.findQuestion(Mockito.anyLong())).willReturn(new Question());
-        given(answerService.findAnswers(Mockito.anyInt(), Mockito.anyString())).willReturn(answers);
+        given(answerService.findAnswers(Mockito.anyInt(), Mockito.anyString(), Mockito.any(Question.class))).willReturn(answers);
         given(questionMapper.questionToQuestionResponse(Mockito.any(Question.class), Mockito.anyList())).willReturn(StubData.MockQuestion.getResponseBody());
 
         // when
