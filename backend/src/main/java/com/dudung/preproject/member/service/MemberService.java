@@ -108,8 +108,10 @@ public class MemberService {
         Boolean result = Boolean.TRUE;
 
         String dir = Long.toString(memberId);
-        String extiension = file.getOriginalFilename()
-                .substring(file.getOriginalFilename().lastIndexOf(".")).toLowerCase();
+        String extiension = Optional.ofNullable(file)
+                .map(MultipartFile::getOriginalFilename)
+                .map(name -> name.substring(name.lastIndexOf(".")).toLowerCase())
+                .orElse("default_extension");
 
         String newFileName = dir + extiension;
 
