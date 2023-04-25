@@ -45,7 +45,7 @@ const Paging = () => {
               <Route path="/auth/login" element={<Login />} />
               <Route path="/question" element={<Viewcomponent />} />
               <Route path="/question/:qsId" element={<DetailQuestion />} />
-              <Route path="/users/3355" element={<MyinfoPage />} />
+              <Route path="/users/:qsId" element={<MyinfoPage />} />
               <Route path="/users/edit/3355" element={<MyInfoEdit />} />
               <Route path="/question/ask" element={<CreateAsk />} />
               <Route path="/tags" element={<Taglist />} />
@@ -79,7 +79,6 @@ const Maincontents = styled.div`
   display: flex;
   margin-top: 50px;
   flex-direction: row;
-  width: 1250px;
   .side_menu {
     min-width: 165px;
     height: 100%;

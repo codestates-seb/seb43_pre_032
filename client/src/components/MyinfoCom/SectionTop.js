@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import { faStackExchange } from '@fortawesome/free-brands-svg-icons';
-
+import { useNavigate } from 'react-router-dom';
 const ProfileContainer = styled.section`
   padding: 10px;
   .top-items {
@@ -40,6 +40,7 @@ const ProfileBtnContainer = styled.div`
   }
 
   .edit {
+    color: gray;
     height: 100%;
     padding-left: 5px;
     padding-right: 5px;
@@ -76,32 +77,61 @@ const ItemContainer = styled.div`
     }
   }
 `;
-const MyPageTop = () => {
-  const history = {
-    signupDate: '8',
-    lastseenDate: '7',
-    visitedDate: '6',
-  };
+function DateFormat(now) {
+  const isoDateString = now;
+  const date = new Date(isoDateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const Formated = `${year}-${month}-${day}`;
+  return Formated;
+}
+function Diff(now, at) {
+  const startDate = new Date(now);
+  const endDate = new Date(at);
+  const timeDiff = Math.abs(endDate.getTime() - startDate.getTime());
+  const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+  return diffDays + 1;
+}
+const MyPageTop = ({ topData }) => {
+  let navigate = useNavigate();
 
+  let now = DateFormat(new Date(), new Date());
+  let at = DateFormat(new Date(), topData.createAt);
+
+  const since = Diff(now, at);
+  // console.log(since);
+  // DateFormat(new Date(), topData.createAt);
+  // DateFormat(new Date(), new Date());
+  const history = {
+    signupDate: since,
+    // lastseenDate: '7',
+    // visitedDate: '6',
+  };
+  const clickEdit = () => {
+    navigate(`/users/edit/${topData.memberId}`);
+  };
   return (
     <ProfileContainer>
       <div className="top-items">
-        <Profile className="flex-center">호재</Profile>
+        <Profile className="flex-center">
+          {topData.name ? topData.name.slice(1) : ''}
+        </Profile>
         <ItemContainer>
-          <div className="display-name">정호재</div>
+          <div className="display-name">{topData.name}</div>
           <div className="time-history-container">
             <div className="info">{`🎂 Member for ${history.signupDate} days`}</div>
-            <div className="info">{`🕔 Last seen this ${history.lastseenDate} days`}</div>
-            <div className="info">{`🗓️ Visited ${history.visitedDate} days`}</div>
+            {/* <div className="info">{`🕔 Last seen this ${history.lastseenDate} days`}</div>
+            <div className="info">{`🗓️ Visited ${history.visitedDate} days`}</div> */}
           </div>
         </ItemContainer>
         <ProfileBtnContainer className="flex-space-between">
-          <div className="hover edit flex-center">
+          <button onClick={clickEdit} className="hover edit flex-center">
             <div className="margin-right-3px">
               <FontAwesomeIcon className=" margin-right-3px" icon={faPencil} />
             </div>
             Edit profile
-          </div>
+          </button>
           <div className="hover network flex-center">
             <div className="margin-right-3px">
               <FontAwesomeIcon

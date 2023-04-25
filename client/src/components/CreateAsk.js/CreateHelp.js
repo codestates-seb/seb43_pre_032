@@ -10,7 +10,7 @@ import {
 
 const HelpContainer = styled.section`
   position: absolute;
-  right: -10%;
+  right: -50%;
   width: 300px;
   .title {
     background-color: var(--menu-hover-background);
