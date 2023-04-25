@@ -10,7 +10,7 @@ function Questions({ tagId }) {
   const [qsData, setQsData] = useState([]);
   const [index, setIndex] = useState(0); // 탭메뉴 인덱스 상태
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
-  const [totalPages, setTotalPages] = useState(3); // 전체 페이지 수
+  const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
   const [totalcontetns, setTotalcontetns] = useState(0); // 전체 페이지 수
   const [filter, setFilter] = useState('Newest');
 
@@ -22,7 +22,7 @@ function Questions({ tagId }) {
   }, []);
 
   const url = tagId
-    ? `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags/${tagId}?page=${currentPage}&size=20&sortBy=questionId`
+    ? `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags/${tagId}?page=${currentPage}&tab=Active`
     : `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions?page=${currentPage}&tab=${filter}`;
 
   useEffect(() => {
@@ -91,7 +91,7 @@ function Questions({ tagId }) {
   }
 
   //필터버튼 리스트
-  const buttomArr = [
+  const buttonArr = [
     { bottomName: 'Newest' },
     { bottomName: 'Active' },
     { bottomName: 'Score' },
@@ -108,14 +108,14 @@ function Questions({ tagId }) {
         <QuestionFilter>
           <div className="headContents">
             <h2>All Questions</h2>
-            <buttom className="askquestion_Btn">
+            <button className="askquestion_Btn">
               <Link to={'/question/ask'}>Ask Question</Link>
-            </buttom>
+            </button>
           </div>
           <div className="headContents flex-column">
             <span>{totalcontetns} questions</span>
             <aside className="subFilterBtn">
-              {buttomArr.map((el, i) => (
+              {buttonArr.map((el, i) => (
                 <button
                   key={i}
                   className={i === index ? 'focused' : null}

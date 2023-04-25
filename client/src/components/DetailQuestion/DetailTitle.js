@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 function DetailTitle({ data }) {
   return (
@@ -18,7 +19,10 @@ function DetailTitle({ data }) {
         </Address>
       </header>
       <div className="question-btn">
-        <buttom className="askquestion_Btn">Ask Question</buttom>
+        <Link to={'/question/ask'}>
+          {' '}
+          <button className="askquestion_Btn">Ask Question</button>
+        </Link>
       </div>
     </Detailtitle>
   );
@@ -49,6 +53,10 @@ const Detailtitle = styled.article`
     border-radius: 3px;
     border: #1681d2;
     font-weight: 500;
+  }
+  a {
+    color: #fff;
+    text-decoration: none;
   }
   .askquestion_Btn:hover {
     background: hsl(206, 100%, 40%);

@@ -5,18 +5,27 @@ import DetailContent from '../components/DetailQuestion/DetailContent';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { selectFooter, selectNav } from '../store/store';
+import { useDispatch } from 'react-redux';
 function DetailQuestion() {
   const [detailData, setDetailData] = useState([]);
   const [answerData, setAnswerData] = useState([]);
   const [tagData, setTagData] = useState([]);
 
   const qsId = useParams();
-  console.log(qsId);
+  // console.log(qsId);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(selectFooter(true));
+    dispatch(selectNav(true));
+  }, []);
 
   useEffect(() => {
     axios
       .get(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}?page=1&tab=answerVoteSum`,
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}?page=1&answertab=score`,
         {
           headers: {
             'ngrok-skip-browser-warning': '69420',
@@ -28,7 +37,9 @@ function DetailQuestion() {
       .then(function (res) {
         // 성공한 경우 실행
         setDetailData(res.data.data.question);
-        setAnswerData(res.data.data.answer);
+        if (res.data.data.answer !== null) {
+          setAnswerData(res.data.data.answer);
+        }
         setTagData(res.data.data.question.tagName);
       })
       .catch(function (error) {

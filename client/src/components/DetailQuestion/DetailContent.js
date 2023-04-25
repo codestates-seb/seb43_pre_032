@@ -4,10 +4,10 @@ import YourAnswer from './YourAnswer';
 import Comment from './Comment';
 import VoteGroup from './VoteGroup';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function DetailContent({ data, tagData, answerData, qsId }) {
-  console.log(qsId);
+  // console.log(qsId);
 
   //작성시간계산 : ~~시간전 으로 표기
   function displayedAt(createdAt) {
@@ -28,8 +28,9 @@ function DetailContent({ data, tagData, answerData, qsId }) {
     return `${Math.floor(years)}years ago`;
   }
 
-  const token = localStorage.getItem('token');
-  console.log(token);
+  const navigate = useNavigate(); //네비게이트
+  const token = localStorage.getItem('token'); //로컬스토리지 토큰 가져오기
+
   const deleteHandler = () => {
     axios
       .delete(
@@ -44,7 +45,7 @@ function DetailContent({ data, tagData, answerData, qsId }) {
       .then(function (res) {
         // 성공한 경우 실행
         console.log(res);
-        console.log('성공했어요');
+        navigate('/question');
       })
       .catch(function (error) {
         // 에러인 경우 실행
@@ -86,10 +87,10 @@ function DetailContent({ data, tagData, answerData, qsId }) {
         </TextContents>
       </div>
       <div>
-        <Answer answerData={answerData} />
+        <Answer answerData={answerData} qsId={qsId} />
       </div>
       <div>
-        <YourAnswer />
+        <YourAnswer qsId={qsId} />
       </div>
     </DetailContents>
   );

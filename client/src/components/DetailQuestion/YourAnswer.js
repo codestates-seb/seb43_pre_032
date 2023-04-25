@@ -2,9 +2,41 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
 
-function YourAnswer() {
+function YourAnswer({ qsId }) {
   const [openTip, setOpenTip] = useState(false);
+  const [answerText, setAnswerText] = useState('');
+
+  const token = localStorage.getItem('token');
+
+  const answerPosting = () => {
+    axios
+      .post(
+        'http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/answers',
+        {
+          memberId: 1,
+          questionId: qsId.qsId,
+          answerContent: answerText,
+        },
+        {
+          headers: {
+            Authorization: token,
+            'ngrok-skip-browser-warning': '69420',
+          },
+        }
+      )
+      .then(function (res) {
+        // 성공한 경우 실행
+        console.log(res);
+        window.location.reload();
+      })
+      .catch(function (error) {
+        // 에러인 경우 실행
+        console.log(error);
+      });
+  };
+
   return (
     <>
       <YourAnswerTitle>
@@ -16,6 +48,10 @@ function YourAnswer() {
           onClick={() => {
             setOpenTip(true);
           }}
+          onChange={(e) => {
+            setAnswerText(e.target.value);
+          }}
+          value={answerText}
         ></textarea>
       </YourAnswerInput>
       {openTip ? (
@@ -51,7 +87,9 @@ function YourAnswer() {
         </YourAnswerTips>
       ) : null}
       <YourAnswerBtn>
-        <button className="askquestion_Btn">Post Your Answer</button>
+        <button className="askquestion_Btn" onClick={answerPosting}>
+          Post Your Answer
+        </button>
       </YourAnswerBtn>
     </>
   );
