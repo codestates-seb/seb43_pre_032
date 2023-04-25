@@ -94,6 +94,14 @@ public class QuestionService {
     }
 
     public Page<Question> findQuestions(Tag tag, int page, String sortBy) { // sortBy == 정렬기준 e.g. "questionId"
+        if (sortBy.equals("Newest")) {
+            sortBy = "questionId";
+        } else if (sortBy.equals("Active")) {
+            sortBy = "questionLastStatusTime";
+        } else if (sortBy.equals("Score")) {
+            sortBy = "questionVoteSum";
+        }
+
         return questionRepository.findAllByTag(tag, PageRequest.of(page, 10, Sort.by(sortBy).descending()));
     }
 
