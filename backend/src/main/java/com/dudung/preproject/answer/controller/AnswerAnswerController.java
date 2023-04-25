@@ -11,9 +11,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.net.URI;
 
 @RequestMapping("/answeranswers")
 @RequiredArgsConstructor
@@ -26,20 +28,27 @@ public class AnswerAnswerController {
     private final MemberService memberService;
     private final AnswerService answerService;
 
+    private final static String ANSWER_ANSWER_DEFAULT_URL = "/answeranswers";
+
     @PostMapping
     public ResponseEntity postAnswerAnswer(@Valid @RequestBody AnswerAnswerDto.Post requestBody) {
         long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();
-        AnswerAnswer answerAnswer = mapper.answerAnswerPostAnswerANswer(requestBody);
+        AnswerAnswer answerAnswer = mapper.answerAnswerPostToAnswerAnswer(requestBody);
 
         answerAnswer.setMember(memberService.findMember(requestBody.getMemberId()));
         answerAnswer.setAnswer(answerService.findAnswer(requestBody.getAnswerId()));
 
-       answerAnswerService.createAnswerAnswer(answerAnswer, authenticationMemberId);
+       AnswerAnswer createdAnswer = answerAnswerService.createAnswerAnswer(answerAnswer, authenticationMemberId);
+        URI location = UriComponentsBuilder
+                .newInstance()
+                .path(ANSWER_ANSWER_DEFAULT_URL + "{answeranswer-id}")
+                .buildAndExpand(createdAnswer.getAnswerAnswerId())
+                .toUri();
 
-        return new ResponseEntity(HttpStatus.OK);
+        return ResponseEntity.created(location).build();
     }
 
-    @PatchMapping("{answeranswer-id}")
+    @PatchMapping("/{answeranswer-id}")
     public ResponseEntity patchAnswerAnswer(@Positive @PathVariable("answeranswer-id") Long answeranswerId,
                                             @Valid @RequestBody AnswerAnswerDto.Patch requestBody) {
         long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();
@@ -50,7 +59,7 @@ public class AnswerAnswerController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @DeleteMapping("{answeranswer-id}")
+    @DeleteMapping("/{answeranswer-id}")
     public ResponseEntity deleteAnswerAnswer(@PathVariable("answeranswer-id") @Positive Long answeranswerId) {
         long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();
         answerAnswerService.deleteAnswerAnswer(answeranswerId, authenticationMemberId);

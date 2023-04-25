@@ -3,8 +3,6 @@ package com.dudung.preproject.answer.domain;
 import com.dudung.preproject.member.domain.Member;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.bind.annotation.GetMapping;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
