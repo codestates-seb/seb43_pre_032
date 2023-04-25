@@ -10,7 +10,19 @@ import java.time.LocalDateTime;
 
 @Mapper(componentModel = "spring")
 public interface AnswerAnswerMapper {
-    AnswerAnswer answerAnswerPostAnswerANswer(AnswerAnswerDto.Post requestBody);
+    default AnswerAnswer answerAnswerPostAnswerANswer(AnswerAnswerDto.Post requestBody) {
+        AnswerAnswer answerAnswer = new AnswerAnswer();
+        Answer answer = new Answer();
+        Member member = new Member();
+        answer.setAnswerId(requestBody.getAnswerId());
+        member.setMemberId(requestBody.getMemberId());
+        answerAnswer.setAnswer(answer);
+        answerAnswer.setMember(member);
+        answerAnswer.setAnswerAnswerContent(requestBody.getAnswerAnswerContent());
+        answerAnswer.setAnswerAnswerCreateAt(LocalDateTime.now());
+
+        return answerAnswer;
+    }
 
     AnswerAnswer answerAnswerPatchAnswerAnswer(AnswerAnswerDto.Patch requestBody);
 
