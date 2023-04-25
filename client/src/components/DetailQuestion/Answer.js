@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import AnsComment from './AnsComment';
-import VoteGroup from './VoteGroup';
+import AnswerVoteGroup from './AnswerVoteGroup';
 import { DetailContents, TextContents, SideContents } from './DetailContent';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -23,8 +23,10 @@ function Answer({ qsId }) {
         }
       )
       .then(function (res) {
-        console.log(res.data.data.answer);
-        setAnswerlist(res.data.data.answer);
+        // console.log(res.data.data.answer);
+        if (res.data.data.answer) {
+          setAnswerlist(res.data.data.answer);
+        }
       })
       .catch(function (error) {
         console.log(error);
@@ -114,7 +116,10 @@ function Answer({ qsId }) {
       {answerlist.map((answer) => (
         <DetailContents key={answer.answerId}>
           <div>
-            <VoteGroup />
+            <AnswerVoteGroup
+              answerQsId={answer.answerId}
+              answerVoteSum={answer.answerVoteSum}
+            />
             <TextContents>
               <span>{answer.answerContent}</span>
               <SideContents>
