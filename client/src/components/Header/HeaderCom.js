@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import '../../assets/logo.png';
 import { LoginBtn, SignInBtn, OtherButtons } from './HeaderButton';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMagnifyingGlass,
@@ -11,11 +13,20 @@ import {
 import Nav from '../Nav';
 
 function Header() {
-  let [isLogin, setIsLogin] = useState(false);
+  let isLogin = useSelector((state) => {
+    return state.isLogin;
+  });
   let [menuOpen, setMenuOpen] = useState(false);
+
+  let navigate = useNavigate();
+
   const clickLogin = () => {
-    setIsLogin((pre) => !pre);
+    navigate('/auth/login');
   };
+  const clickSignup = () => {
+    navigate('/members');
+  };
+
   return (
     <HeaderContainer>
       <ContentsContainer className="flex-space-between">
@@ -38,7 +49,9 @@ function Header() {
           </button>
         </SidemenuGroup>
         <Logogroup>
-          <div className="logo"></div>
+          <Link to={'/question'}>
+            <div className="logo"></div>
+          </Link>
           <MenuGroup>
             <Menu
               className={`flex-center display-none ${
@@ -71,7 +84,10 @@ function Header() {
             >
               Log in
             </LoginBtn>
-            <SignInBtn className="flex-center btn-blue-style">
+            <SignInBtn
+              className="flex-center btn-blue-style"
+              onClick={clickSignup}
+            >
               Sign up
             </SignInBtn>
           </div>

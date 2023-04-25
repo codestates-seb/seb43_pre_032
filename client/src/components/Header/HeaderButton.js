@@ -14,6 +14,10 @@ const OtherButtons = () => {
   // const dispatch = useDispatch();
   const example = [{ data1: '1' }, { data2: '2' }];
 
+  // 로그인시 get요청으로 유저이름 가져오기
+  // 프로필 클릭시 마이페이지 링크 연결
+  // 프로필 색? 랜덤??
+
   return (
     <OtherContainer className="flex-center">
       <Menu className="section-size">

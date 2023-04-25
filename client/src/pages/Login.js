@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 import styled from 'styled-components';
-import { selectFooter, selectNav } from '../store/store';
+import { selectFooter, selectNav, setLogin } from '../store/store';
 import { useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -57,6 +57,7 @@ const Login = () => {
           saveToken(token);
           dispatch(selectFooter(true));
           dispatch(selectNav(true));
+          dispatch(setLogin(true));
           navigate('/question');
         }
       })
