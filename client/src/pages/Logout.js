@@ -6,13 +6,21 @@ import stackappslogo from '../assets/stackapps.png';
 import stackexchangelogo from '../assets/stackexchangelogo.png';
 import superuserlogo from '../assets/superuserlogo.png';
 import severfaultlogo from '../assets/serverfaultlogo.png';
-import { useDispatch } from 'react-redux';
-import { selectFooter, selectNav } from '../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectFooter, selectNav, setLogout } from '../store/store';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 function Logout() {
   const dispatch = useDispatch();
-  dispatch(selectNav(false));
-  dispatch(selectFooter(false));
+  const navigate = useNavigate();
+  const isLogin = useSelector((state) => state.isLogin);
+  console.log(isLogin);
+
+  useEffect(() => {
+    dispatch(selectFooter(false));
+    dispatch(selectNav(false));
+  }, []);
 
   const flowingDomainsData = [
     { logo: askubuntulogo, domain: 'askubuntu.com' },
@@ -23,6 +31,17 @@ function Logout() {
     { logo: stackoverflowlogo, domain: 'stackoverflow.com' },
     { logo: superuserlogo, domain: 'superuser.com' },
   ];
+  const removeToken = () => {
+    localStorage.removeItem('token');
+  };
+  const handleLogout = () => {
+    dispatch(setLogout());
+    removeToken();
+    navigate('/auth/login');
+  };
+  const handleGoBack = () => {
+    navigate(-1);
+  };
   return (
     <>
       <LogoutView>
@@ -56,8 +75,12 @@ function Logout() {
               </label>
             </div>
             <div className="logout-btns">
-              <button className="logout-btn">Log out</button>
-              <button className="cancel-btn">Cancel</button>
+              <button className="logout-btn" onClick={handleLogout}>
+                Log out
+              </button>
+              <button onClick={handleGoBack} className="cancel-btn">
+                Cancel
+              </button>
             </div>
             <div className="logout-description">
               <p>
@@ -73,7 +96,6 @@ function Logout() {
 }
 
 const LogoutView = styled.div`
-  width: 100%;
   height: 100vh;
   background-color: #f1f2f3;
   display: flex;

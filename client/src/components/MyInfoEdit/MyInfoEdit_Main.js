@@ -3,17 +3,19 @@ import MyInfoEdit_imgSelect from './MyInfoEdit_imgSelect';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
+import MyInfoEdit_Menu from './MyInfoEdit_Menu';
 function MyInfoEdit_Main() {
   return (
     <>
       <MainContainer>
+        <MyInfoEdit_Menu></MyInfoEdit_Menu>
         <div className="maintitle">
           <h1>Edit your profile</h1>
         </div>
         <div className="subtitle">
           <h2>Public information</h2>
         </div>
-        <InformationContainer>
+        <InformationContainer className="informationContainer">
           <div>
             <MyInfoEdit_imgSelect></MyInfoEdit_imgSelect>
           </div>
@@ -37,7 +39,7 @@ function MyInfoEdit_Main() {
         <div className="subtitle">
           <h2>Links</h2>
         </div>
-        <LinksContainer>
+        <LinksContainer className="linksContainer">
           <div className="links">
             <label htmlFor="websitelink">Website link</label>
             <div className="linkInput">
@@ -130,6 +132,16 @@ const MainContainer = styled.div`
       background-color: #f0f8ff;
     }
   }
+  @media (max-width: 1050px) {
+    .linksContainer {
+      flex-direction: column;
+    }
+    .links {
+      width: 444px;
+    }
+  }
+  @media (max-width: 640px) {
+  }
 `;
 
 const InformationContainer = styled.div`
@@ -153,7 +165,6 @@ const InformationContainer = styled.div`
   }
   .aboutedit {
     height: 250px;
-    width: 97%;
     border-radius: 5px;
     padding: 10px;
     margin: 6px 0px;
@@ -179,6 +190,7 @@ const LinksContainer = styled(InformationContainer)`
   .linkInput {
     display: flex;
     position: relative;
+    flex-shrink: 1;
   }
   .icon {
     position: absolute;
