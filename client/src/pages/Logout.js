@@ -39,6 +39,9 @@ function Logout() {
     removeToken();
     navigate('/auth/login');
   };
+  const handleGoBack = () => {
+    navigate(-1);
+  };
   return (
     <>
       <LogoutView>
@@ -75,7 +78,9 @@ function Logout() {
               <button className="logout-btn" onClick={handleLogout}>
                 Log out
               </button>
-              <button className="cancel-btn">Cancel</button>
+              <button onClick={handleGoBack} className="cancel-btn">
+                Cancel
+              </button>
             </div>
             <div className="logout-description">
               <p>
