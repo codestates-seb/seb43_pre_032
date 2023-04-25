@@ -109,7 +109,7 @@ function Questions({ tagId }) {
           <div className="headContents">
             <h2>All Questions</h2>
             <buttom className="askquestion_Btn">
-              <link to={'/ask'}>Ask Question</link>
+              <Link to={'/question/ask'}>Ask Question</Link>
             </buttom>
           </div>
           <div className="headContents flex-column">
@@ -265,6 +265,11 @@ const QuestionFilter = styled.div`
     height: 40px;
     border-radius: 3px;
     border: #1681d2;
+  }
+
+  .askquestion_Btn a {
+    color: #fff;
+    text-decoration: none;
   }
   .askquestion_Btn:hover {
     background: hsl(206, 100%, 40%);
