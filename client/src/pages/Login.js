@@ -55,7 +55,8 @@ const Login = () => {
         if (response.status === 200 || response.status === 201) {
           setIsLogin(false);
           saveToken(token);
-
+          dispatch(selectFooter(true));
+          dispatch(selectNav(true));
           navigate('/question');
         }
       })
