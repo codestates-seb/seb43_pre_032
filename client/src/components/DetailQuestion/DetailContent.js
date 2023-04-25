@@ -29,7 +29,7 @@ function DetailContent({ data, tagData, answerData, qsId }) {
   }
 
   const token = localStorage.getItem('token');
-
+  console.log(token);
   const deleteHandler = () => {
     axios
       .delete(
@@ -39,13 +39,12 @@ function DetailContent({ data, tagData, answerData, qsId }) {
             Authorization: token,
             'ngrok-skip-browser-warning': '69420',
           },
-          withCredentials: true,
-          credentials: 'include',
         }
       )
       .then(function (res) {
         // 성공한 경우 실행
         console.log(res);
+        console.log('성공했어요');
       })
       .catch(function (error) {
         // 에러인 경우 실행

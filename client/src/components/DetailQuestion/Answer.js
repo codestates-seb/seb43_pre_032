@@ -4,7 +4,7 @@ import VoteGroup from './VoteGroup';
 import { DetailContents, TextContents, SideContents } from './DetailContent';
 
 function Answer({ answerData }) {
-  console.log(answerData);
+  // console.log(answerData);
 
   //작성시간계산 : ~~시간전 으로 표기
   function displayedAt(createdAt) {
