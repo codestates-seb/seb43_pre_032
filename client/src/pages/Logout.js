@@ -10,11 +10,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectFooter, selectNav, setLogout } from '../store/store';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import axios from 'axios';
 
 function Logout() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isLogin = useSelector((state) => state.isLogin);
+  const token = localStorage.getItem('toekn');
   console.log(isLogin);
 
   useEffect(() => {
@@ -35,9 +37,23 @@ function Logout() {
     localStorage.removeItem('token');
   };
   const handleLogout = () => {
-    dispatch(setLogout());
-    removeToken();
-    navigate('/auth/login');
+    axios
+      .post('/api/logout', null, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'ngrok-skip-browser-warning': '69420',
+        },
+      })
+      .then((res) => {
+        dispatch(setLogout());
+        removeToken();
+        navigate('/auth/login');
+        // 서버에서 세션 삭제 및 클라이언트에서 인증 정보 삭제 등 로그아웃 처리
+        console.log(res.data); // 로그아웃 처리 결과 메시지 출력
+      })
+      .catch((err) => {
+        console.error(err); // 에러 발생 시 에러 로그 출력
+      });
   };
   const handleGoBack = () => {
     navigate(-1);
