@@ -72,11 +72,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
 //                .oauth2Login(oauth2 -> oauth2
 //                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer(), authorityUtils(), memberService))
                 .oauth2Login()
-                .defaultSuccessUrl("/", true)
-                .failureUrl("/login/oauth2/code/google")
                 .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer(), authorityUtils(), memberService));
-
-
 
         return http.build();
     }

@@ -59,6 +59,10 @@ public class MemberService {
         return findVerifiedMember(memberId);
     }
 
+    public Member findMember(String email) {
+        return memberRepository.findByEmail(email).get();
+    }
+
     public Page<Member> findMembers(int page, int size) {
         return memberRepository.findAll(PageRequest.of(page, size, Sort.by("memberId").descending()));
     }
