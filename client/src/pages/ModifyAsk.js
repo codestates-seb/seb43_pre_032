@@ -10,14 +10,13 @@ const ModifyContainer = styled.div`
 `;
 const ModifyAskPage = () => {
   let dispatch = useDispatch();
-  const a = useParams();
-  console.log(a);
+  const qsId = useParams();
   useEffect(() => {
     dispatch(selectNav(false));
   }, []);
   return (
     <ModifyContainer>
-      <ModifyCom></ModifyCom>
+      <ModifyCom qsId={qsId}></ModifyCom>
     </ModifyContainer>
   );
 };
