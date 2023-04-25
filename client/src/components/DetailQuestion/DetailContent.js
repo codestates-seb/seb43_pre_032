@@ -30,7 +30,7 @@ function DetailContent({ data, tagData, answerData, qsId }) {
 
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
-  console.log(token);
+  // console.log(token);
   const deleteHandler = () => {
     axios
       .delete(
@@ -91,7 +91,7 @@ function DetailContent({ data, tagData, answerData, qsId }) {
         <Answer answerData={answerData} />
       </div>
       <div>
-        <YourAnswer />
+        <YourAnswer qsId={qsId} />
       </div>
     </DetailContents>
   );
