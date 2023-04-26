@@ -92,7 +92,7 @@ public class MemberController {
 
         requestBody.setMemberId(memberId);
         memberService.updateMyPage(mapper.responserMypagePatchToMember(requestBody), authenticationMemberId);
-        return new ResponseEntity<>("수정 완료", HttpStatus.OK);
+        return new ResponseEntity<>(mapper.memberToMyPage(memberService.findMember(memberId)), HttpStatus.OK);
     }
 
     @GetMapping("/image/{member-id}")
