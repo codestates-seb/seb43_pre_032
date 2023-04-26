@@ -160,10 +160,10 @@ public class MemberService {
                 .ifPresent(name -> findedMember.setName(member.getName()));
         Optional.ofNullable(member.getMyPageTitle())
                 .ifPresent(myPageTitle -> findedMember.setMyPageTitle(member.getMyPageTitle()));
-        Optional.ofNullable(member.getMyPageTitle())
-                .ifPresent(myPageTitle -> findedMember.setMyPageTitle(member.getMyPageTitle()));
         Optional.ofNullable(member.getAboutMe())
                 .ifPresent(aboutMe -> findedMember.setAboutMe(member.getAboutMe()));
+        Optional.ofNullable(member.getEmail())
+                .ifPresent(email -> findedMember.setEmail(member.getEmail()));
 
         findedMember.setModifiedAt(member.getModifiedAt());
 

@@ -64,6 +64,7 @@ public class MemberDto {
     public static class MyPagePatch {
 
         private Long memberId;
+        private String email;
         private String name;
         private String myPageTitle;
         private String aboutMe;
