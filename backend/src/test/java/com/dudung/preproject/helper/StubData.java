@@ -66,6 +66,7 @@ public class StubData {
                 .build();
     }
 
+
     public static class MockMember {
         private static Map<HttpMethod, Object> stubRequestBody;
         static {
@@ -79,7 +80,7 @@ public class StubData {
             patch.setMemberId(1L);
             patch.setEmail("12@12.kr");
             patch.setPassword("123");
-            post.setName("가나다");
+            patch.setName("가나다");
 
             stubRequestBody = new HashMap<>();
             stubRequestBody.put(HttpMethod.POST, post);
@@ -114,6 +115,65 @@ public class StubData {
 
         }
     }
+    public static class MockMyPage {
+        private static Map<HttpMethod, Object> stubRequestBody;
+        static {
+
+            MemberDto.MyPagePatch patch = new MemberDto.MyPagePatch();
+            patch.setMemberId(1L);
+            patch.setEmail("12@12.kr");
+            patch.setName("수정된 Name");
+            patch.setMyPageTitle("수정된 MyPageTitle");
+            patch.setAboutMe("수정된 AboutMe");
+
+            stubRequestBody = new HashMap<>();
+            stubRequestBody.put(HttpMethod.PATCH, patch);
+        }
+
+        public static Object getRequestBody(HttpMethod method) {
+            return stubRequestBody.get(method);
+        }
+
+        public static MemberDto.ResponseMyPage getMyPageResponse() {
+            LocalDateTime time = LocalDateTime.now();
+
+            return MemberDto.ResponseMyPage.builder()
+                    .memberId(1L)
+                    .memberJpegUrl("1.jpeg")
+                    .memberPngUrl("1.png")
+                    .name("name")
+                    .myPageTitle("myPageTitle")
+                    .aboutMe("aboutMe")
+                    .createAt(time)
+                    .modifiedAt(time)
+                    .reputation(1)
+                    .questionCount(1)
+                    .answerCount(1)
+                    .questions(getQuestionsForMultiResponse())
+                    .answers(getAnswersForMultiResponse())
+                    .build();
+        }
+
+        public static List<QuestionResponseDto.QuestionMemberResponseForList> getQuestionsForMultiResponse() {
+            return List.of(
+                    QuestionResponseDto.QuestionMemberResponseForList.builder()
+                            .questionId(1L)
+                            .questionsTitle("questionsTitle")
+                            .build()
+            );
+        }
+
+        public static List<AnswerDto.AnswerMemberResponseForList> getAnswersForMultiResponse() {
+            return List.of(
+                    AnswerDto.AnswerMemberResponseForList.builder()
+                            .questionId(1L)
+                            .answerId(1L)
+                            .answerContent("answerContent")
+                            .build()
+            );
+        }
+    }
+
 
     public static class MockQuestion {
         private static Map<HttpMethod, Object> stubRequestBody;
