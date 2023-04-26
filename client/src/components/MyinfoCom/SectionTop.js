@@ -55,6 +55,12 @@ const ProfileBtnContainer = styled.div`
     border-radius: 4px;
   }
 `;
+const UserTitle = styled.div`
+  min-height: 40px;
+  font-size: 35px;
+  font-weight: bolder;
+  border: 1px solid pink;
+`;
 const ItemContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -119,6 +125,7 @@ const MyPageTop = ({ topData }) => {
         </Profile>
         <ItemContainer>
           <div className="display-name">{topData.name}</div>
+          <UserTitle>{topData.myPageTitle}</UserTitle>
           <div className="time-history-container">
             <div className="info">{`🎂 Member for ${history.signupDate} days`}</div>
             {/* <div className="info">{`🕔 Last seen this ${history.lastseenDate} days`}</div>

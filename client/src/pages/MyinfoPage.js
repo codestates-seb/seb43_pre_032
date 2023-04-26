@@ -30,15 +30,21 @@ const MyPage = () => {
         `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/mypage/${memberId.qsId}`
       )
       .then((res) => {
+        console.log(res.data);
         let topData = {
           name: res.data.name,
           createAt: res.data.createAt,
           memberId: res.data.memberId,
+          myPageTitle: res.data.myPageTitle,
         };
         let mainData = {
-          questionTitle: res.data.questionTitle,
+          questions: res.data.questions,
+          questionCount: res.data.questionCount,
+          reputation: res.data.reputation,
+          answerCount: res.data.answerCount,
+          answers: res.data.answers,
         };
-        console.log(res.data);
+        console.log(res.data.question);
         setTopData(topData);
         setMainData(mainData);
       });

@@ -49,7 +49,7 @@ const OtherButtons = () => {
   return (
     <OtherContainer className="flex-center">
       <Menu className="section-size">
-        <Link to={`/users/3355`}>
+        <Link to={`/users/${localStorage.getItem('memberid')}`}>
           <Profile>{name}</Profile>
           {reputation}
         </Link>

@@ -117,11 +117,11 @@ const ModifyCom = ({ qsId }) => {
         headers: {
           Authorization: localStorage.getItem('token'),
           'ngrok-skip-browser-warning': '69420',
-          'Content-Type': 'application/json',
         },
       })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
+    navigate(`/question/${qsId.qsId}`);
   };
 
   let helphandler = (type) => {
@@ -133,7 +133,7 @@ const ModifyCom = ({ qsId }) => {
   };
 
   const cancelClicked = () => {
-    navigate('/detailquestion');
+    navigate(`/question/${qsId.qsId}`);
   };
   console.log(selected);
   return (
@@ -188,15 +188,17 @@ const ModifyCom = ({ qsId }) => {
           <Sidebanners>
             <Bannertitle>{helpTitle}</Bannertitle>
             <Bannercontents>
-              <HelpContainer>
-                {help.map((el, idx) => {
-                  return (
-                    <li className="list-style" key={idx}>
-                      {el}
-                    </li>
-                  );
-                })}
-              </HelpContainer>
+              <div className="pos-list">
+                <HelpContainer>
+                  {help.map((el, idx) => {
+                    return (
+                      <li className="list-style" key={idx}>
+                        {el}
+                      </li>
+                    );
+                  })}
+                </HelpContainer>
+              </div>
             </Bannercontents>
           </Sidebanners>
         </Bannercomponent>
@@ -251,6 +253,7 @@ const TitleContainer = styled.section`
   width: 100%;
 `;
 const BodyContainer = styled.section`
+  min-width: 500px;
   width: 97.5%;
 `;
 
