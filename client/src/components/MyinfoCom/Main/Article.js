@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import CardHeader from './CardHeader';
+import { Link } from 'react-router-dom';
 const ArticleContainer = styled.article`
   min-height: 100px;
   margin-top: 15px;
@@ -20,16 +21,24 @@ const ContentsContainer = styled.div`
     color: #1972c5;
   }
 `;
-const Article = ({ title, isFilter = true, options, data = [] }) => {
-  // console.log('!!!!!!!', data);
+const Article = ({
+  title,
+  isFilter = true,
+  options,
+  data = [],
+  select = '',
+}) => {
+  let id = data.map((el) => `/question/${el.questionId}`);
+  console.log(id);
+
   return (
     <ArticleContainer>
       <CardHeader title={title} isFilter={isFilter} options={options} />
       <ContentsContainer>
         {data.map((el, idx) => (
-          <div className="data" key={idx}>
-            {el.questionsTitle}
-          </div>
+          <Link to={id[idx]} key={idx}>
+            <div className="data">{el[select]}</div>
+          </Link>
         ))}
       </ContentsContainer>
     </ArticleContainer>

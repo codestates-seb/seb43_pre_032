@@ -19,6 +19,8 @@ const Box = styled.div`
   border-radius: 5px;
 `;
 const Box1 = styled(Box)`
+  padding: 10px;
+  font-size: 20px;
   height: 300px;
   @media (max-width: 980px) {
     min-width: 610px;
@@ -39,7 +41,6 @@ const ShortContainer = styled.div`
   display: grid;
   grid-column-gap: 30px;
   grid-template-columns: 1fr;
-
   width: 100%;
 `;
 // const LongContainer = styled.div`
@@ -99,14 +100,28 @@ const Myinfo_Main = ({ mainData }) => {
         </StatusContainer>
         <CardHeader title="About me" />
         <SummaryContentsContainer>
-          <Box1 className="mypage-col-style"></Box1>
+          <Box1 className="mypage-col-style">
+            {mainData.aboutMe
+              ? mainData.aboutMe
+              : 'Edit profile을 통해 자신을 소개해 주세요!'}
+          </Box1>
         </SummaryContentsContainer>
       </div>
       <ShortContainer>
-        <Article title="Answers" options={option1} data={answers} />
-        <Article title="Questions" data={questions} options={option2} />
-        <Article title="Tags" isFilter={false} />
-        <Article title="Requtation" isFilter={false} />
+        <Article
+          title="Answers"
+          options={option1}
+          data={answers}
+          select="answerContent"
+        />
+        <Article
+          title="Questions"
+          data={questions}
+          options={option2}
+          select="questionsTitle"
+        />
+        {/* <Article title="Tags" isFilter={false} />
+        <Article title="Requtation" isFilter={false} /> */}
       </ShortContainer>
       {/* <LongContainer>
         <Article title="Budges" options={option3} />
