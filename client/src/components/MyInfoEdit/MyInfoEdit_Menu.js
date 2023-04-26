@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { menudata } from './MyInfoEdit_SideBar';
-import { Fragment } from 'react';
 
 function MyInfoEdit_Menu() {
   return (
@@ -11,24 +10,19 @@ function MyInfoEdit_Menu() {
         <select>
           {menudata.map((menu, index) => {
             return (
-              <Fragment key={index}>
-                <option disabled key={`${index}-disabled`}>
-                  {menu.title}
-                </option>
+              <optgroup key={`${index}-menu`} label={menu.title}>
                 {menu.subtitle.map((subtitle, idx) => {
                   return (
-                    <>
-                      <Fragment key={`${index}-${idx}`}>
-                        {subtitle === 'Edit profile' ? (
-                          <option selected>{subtitle}</option>
-                        ) : (
-                          <option>{subtitle}</option>
-                        )}
-                      </Fragment>
-                    </>
+                    <option
+                      key={`${index}-${idx}`}
+                      value={subtitle}
+                      defaultValue={subtitle === 'Edit profile'}
+                    >
+                      {subtitle}
+                    </option>
                   );
                 })}
-              </Fragment>
+              </optgroup>
             );
           })}
         </select>

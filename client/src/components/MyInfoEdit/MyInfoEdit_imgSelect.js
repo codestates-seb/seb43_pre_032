@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 
-function MyInfoEdit_imgSelect() {
+function MyInfoEdit_imgSelect({ membername }) {
   const [, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
 
   const fileSelectedHandler = (event) => {
+    const formData = new FormData();
     const file = event.target.files[0];
     setSelectedFile(file);
     const reader = new FileReader();
@@ -13,6 +14,7 @@ function MyInfoEdit_imgSelect() {
       setPreviewUrl(reader.result);
     };
     reader.readAsDataURL(file);
+    formData.append('file', file);
   };
   return (
     <>
@@ -23,12 +25,15 @@ function MyInfoEdit_imgSelect() {
           className="img-select-input"
           id="imgSelect"
           type="file"
+          accept="image/*"
         />
 
         {previewUrl ? (
           <img className="selectedImg" src={previewUrl} alt="Selected file" />
         ) : (
-          <div className="defalutProfile">호재</div>
+          <div className="defalutProfile">
+            {membername ? membername.slice(1) : ''}
+          </div>
         )}
         <label
           className="img-select-label img-select-label-btn"

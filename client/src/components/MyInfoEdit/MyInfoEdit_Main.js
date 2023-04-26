@@ -4,7 +4,52 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 import MyInfoEdit_Menu from './MyInfoEdit_Menu';
-function MyInfoEdit_Main() {
+import { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+function MyInfoEdit_Main({ membername, memberId }) {
+  const token = localStorage.getItem('token');
+  const navigate = useNavigate();
+  const [name, setName] = useState('');
+  const [title, setTitle] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const handleChangeName = (e) => {
+    setName(e.target.value);
+  };
+  const handleChangeTitle = (e) => {
+    setTitle(e.target.value);
+  };
+  const hanldeChangeEmail = (e) => {
+    setEmail(e.target.value);
+  };
+  const hanldeChangePassword = (e) => {
+    setPassword(e.target.value);
+  };
+  console.log(title, name);
+  const handleSubmit = () => {
+    axios
+      .patch(
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/${memberId}`,
+        {
+          name: name,
+          email: email,
+          password: password,
+          myPageTitle: 'title도 수정이 되나?',
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        navigate(`/users/${memberId}`);
+      })
+      .catch((error) => console.error(error));
+  };
   return (
     <>
       <MainContainer>
@@ -17,19 +62,45 @@ function MyInfoEdit_Main() {
         </div>
         <InformationContainer className="informationContainer">
           <div>
-            <MyInfoEdit_imgSelect></MyInfoEdit_imgSelect>
+            <MyInfoEdit_imgSelect
+              membername={membername}
+            ></MyInfoEdit_imgSelect>
           </div>
           <div className="simpleModifyContainer">
             <label htmlFor="display-name">Dispplay name</label>
-            <input id="display-name" className="simpleModify"></input>
+            <input
+              id="display-name"
+              className="simpleModify"
+              value={name}
+              onChange={handleChangeName}
+            ></input>
           </div>
           <div className="simpleModifyContainer">
-            <label htmlFor="location">Location</label>
-            <input id="location" className="simpleModify"></input>
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              onChange={hanldeChangeEmail}
+              value={email}
+              className="simpleModify"
+            ></input>
+          </div>
+          <div className="simpleModifyContainer">
+            <label htmlFor="password">password</label>
+            <input
+              id="password"
+              className="simpleModify"
+              onChange={hanldeChangePassword}
+              value={password}
+            ></input>
           </div>
           <div className="simpleModifyContainer">
             <label htmlFor="title">Title</label>
-            <input id="title" className="simpleModify"></input>
+            <input
+              value={title}
+              onChange={handleChangeTitle}
+              id="title"
+              className="simpleModify"
+            ></input>
           </div>
           <div className="abouteditContainer">
             <label htmlFor="aboutme">About me</label>
@@ -77,7 +148,9 @@ function MyInfoEdit_Main() {
         </PrivateinfoContainer>
 
         <div className="profileEdit-btns">
-          <button className="profileEdit-btn">Save profile</button>
+          <button className="profileEdit-btn" onClick={handleSubmit}>
+            Save profile
+          </button>
           <button className="cancel-btn">Cancel</button>
         </div>
       </MainContainer>
