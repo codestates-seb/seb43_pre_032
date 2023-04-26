@@ -67,16 +67,16 @@ const OtherButtons = () => {
           {reputation}
         </Link>
       </Menu>
-      <Menu>
+      <Menu className="menu">
         <FontAwesomeIcon icon={faInbox} />
       </Menu>
-      <Menu>
+      <Menu className="menu">
         <FontAwesomeIcon icon={faTrophy} />
       </Menu>
-      <Menu>
+      <Menu className="menu">
         <FontAwesomeIcon icon={faCircleQuestion} />
       </Menu>
-      <Menu>
+      <Menu className="menu">
         <Link to={'/logout'}>
           <FontAwesomeIcon icon={faStackExchange} />
         </Link>
@@ -117,6 +117,13 @@ const OtherContainer = styled.div`
     text-decoration: none; /* 밑줄 제거 */
     color: inherit; /* 상속받은 색상 사용 */
     font-size: inherit;
+  }
+
+  @media (max-width: 640px) {
+    width: 15%;
+    .menu {
+      display: none;
+    }
   }
 `;
 const Menu = styled.div`
