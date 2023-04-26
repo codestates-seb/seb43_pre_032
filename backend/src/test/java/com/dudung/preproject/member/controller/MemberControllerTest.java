@@ -208,7 +208,7 @@ public class MemberControllerTest implements MemberControllerHelper {
                         requestFields(
                                 List.of(
                                         fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
-                                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별 번호"),                                        fieldWithPath("myPageTitle").type(JsonFieldType.STRING).description("이메일"),
+                                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별 번호"),                                        
                                         fieldWithPath("name").type(JsonFieldType.STRING).description("회원 이름"),
                                         fieldWithPath("myPageTitle").type(JsonFieldType.STRING).description("마이페이지 Title"),
                                         fieldWithPath("aboutMe").type(JsonFieldType.STRING).description("마이페이지 AboutMe")
