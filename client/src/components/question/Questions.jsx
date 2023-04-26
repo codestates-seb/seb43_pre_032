@@ -222,7 +222,7 @@ const Pagination = styled.div`
 `;
 
 const Questionscomponent = styled.section`
-  width: 100%;
+  max-width: 750px;
   height: auto;
   .bottom-more {
     display: flex;
@@ -342,12 +342,11 @@ const QuestionList = styled.ul`
 
 const IntData = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: flex-end;
   flex-direction: column;
-  width: 150px;
   height: 100%;
-  margin-right: 20px;
+  padding: 0px 30px 20px 0px;
   span {
     display: flex;
     justify-content: right;
@@ -368,7 +367,7 @@ const IntData = styled.div`
   }
   @media (max-width: 800px) {
     flex-direction: row;
-    margin: 0px 10px;
+    padding-bottom: 10px;
     span {
       text-align: left;
       width: auto;

@@ -13,8 +13,8 @@ function AnsComment({ answerComment, answerId }) {
   const url = `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080`;
   const token = localStorage.getItem('token');
   const memberId = localStorage.getItem('memberid');
-  console.log(memberId);
-  console.log(answerComment, answerId);
+  // console.log(memberId);
+  // console.log(answerComment, answerId);
 
   const handleCommentContent = (e) => {
     setNewComment(e.target.value);

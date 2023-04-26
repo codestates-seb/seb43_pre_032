@@ -11,6 +11,7 @@ function Answer({ qsId }) {
   const [answerlist, setAnswerlist] = useState([]);
 
   const token = localStorage.getItem('token'); //로컬스토리지 토큰
+  const memberid = localStorage.getItem('memberid');
 
   //답변 리스트 불러오기
   useEffect(() => {
@@ -124,19 +125,26 @@ function Answer({ qsId }) {
             <TextContents>
               <span>{answer.answerContent}</span>
               <SideContents>
-                <div className="subMenus">
-                  <button>Share</button>
-                  <button>
-                    <Link to={`/modifyanswer/${answer.answerId}`}>Edit</Link>
-                  </button>
-                  <button
-                    onClick={() => {
-                      deleteAnswer(answer.answerId);
-                    }}
-                  >
-                    delete
-                  </button>
-                </div>
+                {Number(answer.memberId) === Number(memberid) ? (
+                  <div className="subMenus">
+                    <button>Share</button>
+                    <button>
+                      <Link to={`/modifyanswer/${answer.answerId}`}>Edit</Link>
+                    </button>
+                    <button
+                      onClick={() => {
+                        deleteAnswer(answer.answerId);
+                      }}
+                    >
+                      delete
+                    </button>
+                  </div>
+                ) : (
+                  <div className="subMenus">
+                    <button>Share</button>
+                    <button>Follow</button>
+                  </div>
+                )}
                 <div>
                   <div className="user-info">
                     <img
