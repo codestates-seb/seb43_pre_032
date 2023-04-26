@@ -38,22 +38,6 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    public Member updateMember(Member member, long authenticationMemberId) {
-        checkVerifiedId(authenticationMemberId);
-
-        Member findedMember = findVerifiedMember(member.getMemberId());
-
-        patchPermission(findedMember, authenticationMemberId);
-
-        Optional.ofNullable(member.getEmail())
-                .ifPresent(email -> findedMember.setEmail(email));
-        Optional.ofNullable(member.getPassword())
-                .ifPresent(password -> findedMember.setPassword(password));
-        Optional.ofNullable(member.getName())
-                .ifPresent(name -> findedMember.setName(name));
-
-        return memberRepository.save(findedMember);
-    }
 
     public Member findMember(long memberId) {
         return findVerifiedMember(memberId);
@@ -86,6 +70,13 @@ public class MemberService {
         Member findedMember = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         return findedMember;
+    }
+
+    public void findVerifiedMemberEmail (String email) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+        if (optionalMember.isPresent()) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_EMAIL_EXISTS);
+        }
     }
 
     private void checkVerifiedId(long authenticationMemeberId) {
@@ -153,8 +144,9 @@ public class MemberService {
     public Member updateMyPage(Member member, long authenticationMemberId) {
         checkVerifiedId(authenticationMemberId);
         Member findedMember = findVerifiedMember(member.getMemberId());
+        findVerifiedMemberEmail(member.getEmail());
 
-        deletePermission(findedMember, authenticationMemberId);
+        patchPermission(findedMember, authenticationMemberId);
 
         Optional.ofNullable(member.getName())
                 .ifPresent(name -> findedMember.setName(member.getName()));
