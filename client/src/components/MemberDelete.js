@@ -25,6 +25,7 @@ const MemberDelete = () => {
 
   const checkDeleteHandler = () => {
     setDeleteBtn(!deleteBtn);
+    setIsChecked(false);
   };
 
   const deleteHandler = () => {
