@@ -90,6 +90,7 @@ public class MemberController {
                                       @Valid @RequestBody MemberDto.MyPagePatch requestBody) {
         long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();
 
+        requestBody.setMemberId(memberId);
         memberService.updateMyPage(mapper.responserMypagePatchToMember(requestBody), authenticationMemberId);
         return new ResponseEntity<>("수정 완료", HttpStatus.OK);
     }

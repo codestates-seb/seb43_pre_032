@@ -83,6 +83,7 @@ public interface MemberMapper {
     default List<AnswerDto.AnswerMemberResponseForList> getAnswerToMember(List<Answer> answer) {
         return answer.stream()
                 .map(answerList -> AnswerDto.AnswerMemberResponseForList.builder()
+                        .questionId(answerList.getQuestion().getQuestionId())
                         .answerId(answerList.getAnswerId())
                         .answerContent(answerList.getAnswerContent())
                         .build())
