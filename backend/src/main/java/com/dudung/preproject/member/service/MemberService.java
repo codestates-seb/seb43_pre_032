@@ -104,7 +104,18 @@ public class MemberService {
         }
     }
 
-    public Boolean uploading(MultipartFile file, long memberId) {
+    private void uploadingPermission(Member member, long authenticationMemberId) {
+        if (!member.getMemberId().equals(authenticationMemberId) && !member.getEmail().equals("admin@gmail.com")) {
+            throw new BusinessLogicException(ExceptionCode.ONLY_AUTHOR);
+        }
+    }
+
+    public Boolean uploading(MultipartFile file, long memberId, long authenticationMemberId) {
+
+        checkVerifiedId(authenticationMemberId);
+        Member findedmember = findVerifiedMember(memberId);
+        uploadingPermission(findedmember, authenticationMemberId);
+
         Boolean result = Boolean.TRUE;
 
         String dir = Long.toString(memberId);
@@ -126,6 +137,7 @@ public class MemberService {
                 }
             }
             File destination = new File(folder.getAbsolutePath() , newFileName);
+
             System.out.println(folder.getAbsolutePath());
             file.transferTo(destination);
 

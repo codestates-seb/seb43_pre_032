@@ -98,8 +98,9 @@ public class MemberController {
     @PostMapping(path = "/upload/{member-id}")
     public ResponseEntity postImageUpload(@PathVariable("member-id") long memberId,
                                           @RequestPart(required = false) MultipartFile file){
+        long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();
 
-        memberService.uploading(file, memberId);
+        memberService.uploading(file, memberId, authenticationMemberId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
