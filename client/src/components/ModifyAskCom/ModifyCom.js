@@ -240,7 +240,6 @@ const ModifyContainer = styled.article`
   .tagCon {
     position: relative;
   }
-
   @media screen and (max-width: 1300px) {
     width: 90vw;
     padding-left: 30px;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import ModifyCom from '../components/ModifyAskCom/ModifyCom';
+import ModifyAnswerCom from '../components/ModifyAskCom/ModifyAnswerCom';
 import { useDispatch } from 'react-redux';
 import { selectNav } from '../store/store';
 import { useEffect } from 'react';
@@ -11,12 +11,13 @@ const ModifyContainer = styled.div`
 const ModifyAnswer = () => {
   let dispatch = useDispatch();
   const asId = useParams();
+  console.log(`asId 가 출력됩니다 : ${asId.asId}`);
   useEffect(() => {
     dispatch(selectNav(false));
   }, []);
   return (
     <ModifyContainer>
-      <ModifyCom asId={asId}></ModifyCom>
+      <ModifyAnswerCom asId={asId}></ModifyAnswerCom>
     </ModifyContainer>
   );
 };

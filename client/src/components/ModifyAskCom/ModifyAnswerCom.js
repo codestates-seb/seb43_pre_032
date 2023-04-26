@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const ModifyCom = ({ asId }) => {
+const ModifyAnswerCom = ({ asId }) => {
   let titleHelp = [
     'Correct minor typos or mistakes',
     'Clarify meaning without changing it',
@@ -46,7 +46,7 @@ const ModifyCom = ({ asId }) => {
     console.log(asId);
     axios
       .get(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/answer/${asId.asId}`,
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/answers/${asId.asId}`,
         {
           headers: {
             'ngrok-skip-browser-warning': '69420',
@@ -57,7 +57,8 @@ const ModifyCom = ({ asId }) => {
       )
       .then(function (res) {
         // 성공한 경우 실행
-        setanswerOrigin(res.data.data);
+        setanswerOrigin(res.data);
+        setAnswerBody(res.data.answerContent);
       })
       .catch(function (error) {
         // 에러인 경우 실행
@@ -65,17 +66,12 @@ const ModifyCom = ({ asId }) => {
       });
   }, []);
 
-  let [help, setHelp] = useState(titleHelp);
-  let [helpTitle, setHelpTitle] = useState(titles[0]);
+  let [help, setHelp] = useState(titleHelp); //헬프 메세지
+  let [helpTitle, setHelpTitle] = useState(titles[0]); // 헬프타이틀
+  let [answerBody, setAnswerBody] = useState(''); // answer 컨텐츠
 
-  let [questionTitle, setQuestionTitle] = useState('');
-  let [questionBody, setQuestionBody] = useState('');
-
-  let titleInput = (e) => {
-    setQuestionTitle(e.target.value);
-  };
   let bodyInput = (e) => {
-    setQuestionBody(e.target.value);
+    setAnswerBody(e.target.value);
   };
 
   let helphandler = (type) => {
@@ -93,25 +89,16 @@ const ModifyCom = ({ asId }) => {
   return (
     <TotalContainer>
       <ModifyContainer>
-        <TitleContainer>
-          <div className="modify-content-title">Title</div>
-          <input
-            value={questionTitle}
-            onClick={() => helphandler('title')}
-            className="modify-input-content"
-            onChange={titleInput}
-          />
-        </TitleContainer>
         <BodyContainer>
           <div className="modify-content-title">Body</div>
           <textarea
-            value={questionBody}
+            value={answerBody}
             onClick={() => helphandler('body')}
             onChange={bodyInput}
             className="modify-textarea-content link-style-remove"
           />
         </BodyContainer>
-        <div className="preview">{questionBody}</div>
+        <div className="preview">{answerBody}</div>
 
         <BtnContainer>
           <button className="save flex-center btn-blue-style">
@@ -189,9 +176,6 @@ const ModifyContainer = styled.article`
   }
 `;
 
-const TitleContainer = styled.section`
-  width: 100%;
-`;
 const BodyContainer = styled.section`
   width: 97.5%;
 `;
@@ -228,4 +212,4 @@ const BtnContainer = styled.div`
   }
 `;
 
-export default ModifyCom;
+export default ModifyAnswerCom;
