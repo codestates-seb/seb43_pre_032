@@ -46,6 +46,9 @@ public class SecurityConfiguration implements WebMvcConfigurer {
         http
                 .headers().frameOptions().sameOrigin()
                 .and()
+                .oauth2Login()
+                .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer(), authorityUtils(), memberService))
+                .and()
                 .csrf().disable()
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
@@ -71,8 +74,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                         .anyRequest().permitAll())
 //                .oauth2Login(oauth2 -> oauth2
 //                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer(), authorityUtils(), memberService))
-                .oauth2Login()
-                .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer(), authorityUtils(), memberService));
+                ;
 
         return http.build();
     }
@@ -82,7 +84,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:3001"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:3001", "http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.addExposedHeader("MemberId");
@@ -152,6 +154,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                 .allowedOrigins("http:localhost:3000")
                 .allowedOrigins("http:localhost:3001")
                 .allowedOrigins("https://2e9b-61-254-8-200.ngrok-free.app")
+                .allowedOrigins("http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:3000")
                 // GET, POST, PUT, PATCH, DELETE, OPTIONS 메서드를 허용합니다.
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
