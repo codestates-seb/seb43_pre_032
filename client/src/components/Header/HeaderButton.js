@@ -37,8 +37,17 @@ const OtherButtons = () => {
       )
       .then((res) => {
         const name = res.data.name;
+
         if (name) {
-          setName(name.slice(1, 3));
+          if (name.length === 3) {
+            setName(name.slice(1, 3));
+          } else if (name.length === 2) {
+            setName(name);
+          } else if (name.length === 4) {
+            setName(name.slice(2, 4));
+          } else {
+            setName(name.slice(3, 5));
+          }
         }
         const reputation = res.data.requtation;
         setReputation(reputation);
