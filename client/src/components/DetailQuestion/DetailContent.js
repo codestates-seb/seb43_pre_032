@@ -56,7 +56,7 @@ function DetailContent({ data, tagData, answerData, qsId }) {
   return (
     <DetailContents>
       <div>
-        <VoteGroup />
+        <VoteGroup qsId={qsId} voteSum={data.questionVoteSum} />
         <TextContents>
           <span>{data.questionContent}</span>
           <div className="tagData">
@@ -105,34 +105,6 @@ export const DetailContents = styled.div`
   width: 100%;
   div:nth-child(1) {
     display: flex;
-  }
-`;
-
-export const VoteIcon = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  font-size: 30px;
-  min-width: 50px;
-  > * {
-    margin-bottom: 10px;
-  }
-  .side-icon-size {
-    font-size: 16px;
-  }
-  .side-icon-color {
-    color: #ccc;
-  }
-  .side-icon-color:hover {
-    color: hsl(206, 100%, 60%);
-  }
-  > button {
-    background: none;
-    border-style: none;
-    cursor: pointer;
-  }
-  .color-orange {
-    color: hsl(27, 90%, 55%);
   }
 `;
 
