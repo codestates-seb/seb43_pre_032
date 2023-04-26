@@ -71,6 +71,7 @@ export default DetailQuestion;
 const DetailSection = styled.section`
   display: flex;
   flex-direction: column;
+  max-width: 1000px;
   padding: 30px;
 `;
 
