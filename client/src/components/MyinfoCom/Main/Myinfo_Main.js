@@ -77,7 +77,8 @@ const Myinfo_Main = ({ mainData }) => {
   // let [reputation, setReputation] = useState(0);
   // let [questionCnt, setQuestionCnt] = useState(0);
   // let [answerCnt, setAnswerCnt] = useState(0);
-  const questionTitle = mainData.questionTitle;
+  const questions = mainData.questions;
+  const answers = mainData.answers;
   console.log(mainData);
   return (
     <MainContainer>
@@ -102,8 +103,8 @@ const Myinfo_Main = ({ mainData }) => {
         </SummaryContentsContainer>
       </div>
       <ShortContainer>
-        <Article title="Answers" options={option1} />
-        <Article title="Questions" data={questionTitle} options={option2} />
+        <Article title="Answers" options={option1} data={answers} />
+        <Article title="Questions" data={questions} options={option2} />
         <Article title="Tags" isFilter={false} />
         <Article title="Requtation" isFilter={false} />
       </ShortContainer>

@@ -188,15 +188,17 @@ const ModifyCom = ({ qsId }) => {
           <Sidebanners>
             <Bannertitle>{helpTitle}</Bannertitle>
             <Bannercontents>
-              <HelpContainer>
-                {help.map((el, idx) => {
-                  return (
-                    <li className="list-style" key={idx}>
-                      {el}
-                    </li>
-                  );
-                })}
-              </HelpContainer>
+              <div className="pos-list">
+                <HelpContainer>
+                  {help.map((el, idx) => {
+                    return (
+                      <li className="list-style" key={idx}>
+                        {el}
+                      </li>
+                    );
+                  })}
+                </HelpContainer>
+              </div>
             </Bannercontents>
           </Sidebanners>
         </Bannercomponent>
@@ -251,6 +253,7 @@ const TitleContainer = styled.section`
   width: 100%;
 `;
 const BodyContainer = styled.section`
+  min-width: 500px;
   width: 97.5%;
 `;
 

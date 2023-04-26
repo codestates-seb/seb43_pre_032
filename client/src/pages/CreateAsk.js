@@ -72,6 +72,7 @@ const CreateAsk = () => {
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
     navigate('/question');
+    window.location.reload();
   };
 
   let dispatch = useDispatch();

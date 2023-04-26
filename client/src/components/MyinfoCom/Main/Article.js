@@ -21,6 +21,7 @@ const ContentsContainer = styled.div`
   }
 `;
 const Article = ({ title, isFilter = true, options, data = [] }) => {
+  // console.log('!!!!!!!', data);
   return (
     <ArticleContainer>
       <CardHeader title={title} isFilter={isFilter} options={options} />
