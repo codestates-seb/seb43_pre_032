@@ -46,6 +46,9 @@ public class SecurityConfiguration implements WebMvcConfigurer {
         http
                 .headers().frameOptions().sameOrigin()
                 .and()
+                .oauth2Login()
+                .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer(), authorityUtils(), memberService))
+                .and()
                 .csrf().disable()
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
@@ -71,8 +74,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                         .anyRequest().permitAll())
 //                .oauth2Login(oauth2 -> oauth2
 //                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer(), authorityUtils(), memberService))
-                .oauth2Login()
-                .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer(), authorityUtils(), memberService));
+                ;
 
         return http.build();
     }
