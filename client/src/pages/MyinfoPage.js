@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import NavigateBar from '../components/MyinfoCom/NavigateBar';
 import Myinfo_SideBar from '../components/MyinfoCom/Main/Myinfo_SideBar';
 import Myinfo_Main from '../components/MyinfoCom/Main/Myinfo_Main';
+import MemberDelete from '../components/MemberDelete';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -62,6 +63,7 @@ const MyPage = () => {
         <Myinfo_SideBar></Myinfo_SideBar>
         <Myinfo_Main mainData={mainData}></Myinfo_Main>
       </MyPageMainSection>
+      <MemberDelete />
     </MyPageContainer>
   );
 };
