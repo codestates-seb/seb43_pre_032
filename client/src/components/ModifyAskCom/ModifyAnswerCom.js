@@ -85,8 +85,8 @@ const ModifyAnswerCom = ({ asId }) => {
       )
       .then(function (res) {
         // 성공한 경우 실행
-        console.log(res.data);
-        navigate(`/question/${asId.asId}`);
+        console.log(res);
+        navigate(`/question/${answerOrigin.questionId}`);
       })
       .catch(function (error) {
         // 에러인 경우 실행

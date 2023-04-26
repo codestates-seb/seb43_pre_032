@@ -30,6 +30,7 @@ function DetailContent({ data, tagData, answerData, qsId }) {
 
   const navigate = useNavigate(); //네비게이트
   const token = localStorage.getItem('token'); //로컬스토리지 토큰 가져오기
+  const memberid = localStorage.getItem('memberid');
 
   const deleteHandler = () => {
     axios
@@ -65,14 +66,20 @@ function DetailContent({ data, tagData, answerData, qsId }) {
             ))}
           </div>
           <SideContents>
-            <div className="subMenus">
-              <button>Share</button>
-              <button>
-                <Link to={`/modify/${qsId.qsId}`}>Edit </Link>
-              </button>
-
-              <button onClick={deleteHandler}>delete</button>
-            </div>
+            {Number(data.memberId) === Number(memberid) ? (
+              <div className="subMenus">
+                <button>Share</button>
+                <button>
+                  <Link to={`/modify/${qsId.qsId}`}>Edit</Link>
+                </button>
+                <button onClick={deleteHandler}>delete</button>
+              </div>
+            ) : (
+              <div className="subMenus">
+                <button>Share</button>
+                <button>Follow</button>
+              </div>
+            )}
             <div>
               <div className="user-info">
                 <img src="https://i.imgur.com/4b1ExzY.png" alt="profileIcon" />
@@ -118,7 +125,7 @@ export const TextContents = styled.div`
     align-items: center;
     width: 100%;
     flex-wrap: wrap;
-    margin: 20px 0px;
+    margin-top: 20px;
   }
   .tagData > p {
     background-color: hsl(205, 46%, 92%);
@@ -140,6 +147,7 @@ export const SideContents = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  padding: 20px 0px;
   a {
     color: #999;
     text-decoration: none;
