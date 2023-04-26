@@ -1,5 +1,7 @@
 package com.dudung.preproject.questionVote.service;
 
+import com.dudung.preproject.exception.BusinessLogicException;
+import com.dudung.preproject.exception.ExceptionCode;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.question.domain.Question;
 import com.dudung.preproject.question.repository.QuestionRepository;
@@ -14,8 +16,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class QuestionVoteService {
-    private QuestionRepository questionRepository;
-    private QuestionVoteRepository questionVoteRepository;
+    private final QuestionRepository questionRepository;
+    private final QuestionVoteRepository questionVoteRepository;
 
     public void questionVoteUp(Member member, Question question) {
         QuestionVote questionVote = findQuestionVote(member.getQuestionVotes(), question);
@@ -50,7 +52,7 @@ public class QuestionVoteService {
         if (questionVote.getQuestionVoteStatus().getScore() == 0) {
             questionVote.setQuestionVoteStatus(QuestionVote.QuestionVoteStatus.PLUS);
         } else if (questionVote.getQuestionVoteStatus().getScore() == 1) {
-            questionVote.setQuestionVoteStatus(QuestionVote.QuestionVoteStatus.ZERO);
+
         } else {
             questionVote.setQuestionVoteStatus(QuestionVote.QuestionVoteStatus.ZERO);
         }
@@ -62,8 +64,12 @@ public class QuestionVoteService {
         } else if (questionVote.getQuestionVoteStatus().getScore() == 1) {
             questionVote.setQuestionVoteStatus(QuestionVote.QuestionVoteStatus.ZERO);
         } else {
-            questionVote.setQuestionVoteStatus(QuestionVote.QuestionVoteStatus.ZERO);
+
         }
+    }
+
+    public void checkVerifiedId(long authenticationMemeberId) { // 임의로 넣은 값 '-1'
+        if (authenticationMemeberId == -1) throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
     }
 
 }

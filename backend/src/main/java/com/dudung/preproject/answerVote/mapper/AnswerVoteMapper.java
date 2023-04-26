@@ -1,5 +1,6 @@
 package com.dudung.preproject.answerVote.mapper;
 
+import com.dudung.preproject.answer.domain.Answer;
 import com.dudung.preproject.answer.dto.AnswerDto;
 import com.dudung.preproject.answerVote.domain.AnswerVote;
 import com.dudung.preproject.answerVote.dto.AnswerVoteDto;
@@ -12,7 +13,10 @@ public interface AnswerVoteMapper {
 
     AnswerVote answerVotePatchAnswerVote(AnswerVoteDto.Patch requestBody);
 
-    AnswerVoteDto.Response answerVoteToAnswerVoteResponse(AnswerVote answerVote);
+    default AnswerVoteDto.Response answerVoteToAnswerVoteResponse(Answer answer) {
+     return AnswerVoteDto.Response.builder()
+             .score(answer.getAnswerVoteSum()).build();
+    }
 
 
 

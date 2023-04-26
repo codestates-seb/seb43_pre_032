@@ -4,6 +4,8 @@ import com.dudung.preproject.answer.domain.Answer;
 import com.dudung.preproject.answer.repository.AnswerRepository;
 import com.dudung.preproject.answerVote.domain.AnswerVote;
 import com.dudung.preproject.answerVote.repository.AnswerVoteRepository;
+import com.dudung.preproject.exception.BusinessLogicException;
+import com.dudung.preproject.exception.ExceptionCode;
 import com.dudung.preproject.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,12 +21,16 @@ public class AnswerVoteService {
     private final AnswerRepository answerRepository;
     private final AnswerVoteRepository answerVoteRepository;
 
+    public void checkVerifiedId(long authenticationMemeberId) { // 임의로 넣은 값 '-1'
+        if (authenticationMemeberId == -1) throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
+    }
     public void voteUp(Member member, Answer answer) {
         AnswerVote answerVote = findAnswerVote(member.getAnswerVotes(), answer);
         plus(answerVote);
         answerVote.setAnswer(answer);
         answerVote.setMember(member);
         answerVoteRepository.save(answerVote);
+        answer.getAnswerVoteSum();
         answerRepository.save(answer);
     }
 
@@ -34,6 +40,7 @@ public class AnswerVoteService {
         answerVote.setAnswer(answer);
         answerVote.setMember(member);
         answerVoteRepository.save(answerVote);
+        answer.getAnswerVoteSum();
         answerRepository.save(answer);
     }
 
@@ -52,7 +59,7 @@ public class AnswerVoteService {
         if (answerVote.getAnswerVoteStatus().getScore() == 0) {
             answerVote.setAnswerVoteStatus(AnswerVote.AnswerVoteStatus.PLUS);
         } else if (answerVote.getAnswerVoteStatus().getScore() == 1){
-            answerVote.setAnswerVoteStatus(AnswerVote.AnswerVoteStatus.ZERO);
+
         } else {
             answerVote.setAnswerVoteStatus(AnswerVote.AnswerVoteStatus.ZERO);
         }
@@ -64,7 +71,7 @@ public class AnswerVoteService {
         } else if (answerVote.getAnswerVoteStatus().getScore() == 1) {
             answerVote.setAnswerVoteStatus(AnswerVote.AnswerVoteStatus.ZERO);
         } else {
-            answerVote.setAnswerVoteStatus(AnswerVote.AnswerVoteStatus.ZERO);
+
         }
     }
 }
