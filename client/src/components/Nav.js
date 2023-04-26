@@ -23,26 +23,32 @@ const Nav = () => {
               <ol>
                 <li>PUBLIC</li>
                 <li>
-                  <div>
-                    <FontAwesomeIcon
-                      className="font-awesome"
-                      icon={faEarthAmericas}
-                    />
-                    <Link to={'/question'}>
+                  <Link to={'/question'}>
+                    <div>
+                      <FontAwesomeIcon
+                        className="font-awesome"
+                        icon={faEarthAmericas}
+                      />
                       <span className="font-icon">Questions</span>
-                    </Link>
-                  </div>
-                </li>
-                <li>
-                  <Link to={'/tags'}>
-                    <span>Tags</span>
+                    </div>
                   </Link>
                 </li>
                 <li>
-                  <span>Users</span>
+                  <Link to={'/tags'}>
+                    <div>
+                      <span>Tags</span>
+                    </div>
+                  </Link>
                 </li>
                 <li>
-                  <span>Companies</span>
+                  <div>
+                    <span>Users</span>
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <span>Companies</span>
+                  </div>
                 </li>
                 <li>
                   <FontAwesomeDiv>

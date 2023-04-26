@@ -27,6 +27,8 @@ const OtherButtons = () => {
   const getToken = localStorage.getItem('token');
   const getMemberid = localStorage.getItem('memberid');
 
+  //값이 있을때만 슬라이스 처리
+
   const membersIdAxios = () => {
     axios
       .get(
@@ -35,8 +37,10 @@ const OtherButtons = () => {
       )
       .then((res) => {
         const name = res.data.name;
-        setName(name);
-        const reputation = res.data.name;
+        if (name) {
+          setName(name.slice(1, 3));
+        }
+        const reputation = res.data.requtation;
         setReputation(reputation);
       })
       .catch((err) => console.log(err));
@@ -49,7 +53,7 @@ const OtherButtons = () => {
   return (
     <OtherContainer className="flex-center">
       <Menu className="section-size">
-        <Link to={`/users/${localStorage.getItem('memberid')}`}>
+        <Link to={`/users/${getMemberid}`}>
           <Profile>{name}</Profile>
           {reputation}
         </Link>
