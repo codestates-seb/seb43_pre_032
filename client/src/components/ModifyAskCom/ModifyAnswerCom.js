@@ -38,23 +38,25 @@ const ModifyAnswerCom = ({ asId }) => {
   ];
   const titles = ['How to Edit', 'How to Format', 'How to Tag'];
   const navigate = useNavigate();
-  const [answerOrigin, setanswerOrigin] = useState([]);
+  const url = `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/answers/${asId.asId}`;
+  const token = localStorage.getItem('token'); //로컬스토리지 토큰
 
+  const [answerOrigin, setanswerOrigin] = useState([]); // 새로받은 데이터
+  let [help, setHelp] = useState(titleHelp); //헬프 메세지
+  let [helpTitle, setHelpTitle] = useState(titles[0]); // 헬프타이틀
+  let [answerBody, setAnswerBody] = useState(''); // answer 컨텐츠
   console.log(answerOrigin);
+  // console.log(asId);
 
   useEffect(() => {
-    console.log(asId);
     axios
-      .get(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/answers/${asId.asId}`,
-        {
-          headers: {
-            'ngrok-skip-browser-warning': '69420',
-          },
-          withCredentials: true,
-          credentials: 'include',
-        }
-      )
+      .get(url, {
+        headers: {
+          'ngrok-skip-browser-warning': '69420',
+        },
+        withCredentials: true,
+        credentials: 'include',
+      })
       .then(function (res) {
         // 성공한 경우 실행
         setanswerOrigin(res.data);
@@ -66,12 +68,30 @@ const ModifyAnswerCom = ({ asId }) => {
       });
   }, []);
 
-  let [help, setHelp] = useState(titleHelp); //헬프 메세지
-  let [helpTitle, setHelpTitle] = useState(titles[0]); // 헬프타이틀
-  let [answerBody, setAnswerBody] = useState(''); // answer 컨텐츠
-
-  let bodyInput = (e) => {
-    setAnswerBody(e.target.value);
+  //답글 수정요청
+  const answerUpdataHandler = () => {
+    axios
+      .patch(
+        url,
+        { answerId: asId.asId, answerContent: answerBody },
+        {
+          headers: {
+            Authorization: token,
+            'ngrok-skip-browser-warning': '69420',
+          },
+          withCredentials: true,
+          credentials: 'include',
+        }
+      )
+      .then(function (res) {
+        // 성공한 경우 실행
+        console.log(res.data);
+        navigate(`/question/${asId.asId}`);
+      })
+      .catch(function (error) {
+        // 에러인 경우 실행
+        console.log(error);
+      });
   };
 
   let helphandler = (type) => {
@@ -82,10 +102,6 @@ const ModifyAnswerCom = ({ asId }) => {
       : (setHelp(tagHelp), setHelpTitle(titles[2]));
   };
 
-  const cancelClicked = () => {
-    navigate('/detailquestion');
-  };
-
   return (
     <TotalContainer>
       <ModifyContainer>
@@ -94,18 +110,25 @@ const ModifyAnswerCom = ({ asId }) => {
           <textarea
             value={answerBody}
             onClick={() => helphandler('body')}
-            onChange={bodyInput}
+            onChange={(e) => {
+              setAnswerBody(e.target.value);
+            }}
             className="modify-textarea-content link-style-remove"
           />
         </BodyContainer>
         <div className="preview">{answerBody}</div>
 
         <BtnContainer>
-          <button className="save flex-center btn-blue-style">
+          <button
+            onClick={answerUpdataHandler}
+            className="save flex-center btn-blue-style"
+          >
             Save edits
           </button>
           <button
-            onClick={cancelClicked}
+            onClick={() => {
+              navigate('/detailquestion');
+            }}
             className="cancel flex-center btn-skyblue-style"
           >
             Cancel
