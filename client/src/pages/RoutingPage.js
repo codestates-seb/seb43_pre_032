@@ -47,7 +47,7 @@ const Paging = () => {
               <Route path="/question" element={<Viewcomponent />} />
               <Route path="/question/:qsId" element={<DetailQuestion />} />
               <Route path="/users/:qsId" element={<MyinfoPage />} />
-              <Route path="/users/edit/3355" element={<MyInfoEdit />} />
+              <Route path="/users/edit/:userId" element={<MyInfoEdit />} />
               <Route path="/question/ask" element={<CreateAsk />} />
               <Route path="/tags" element={<Taglist />} />
               <Route path="/tags/:tagId" element={<TaggedQuestion />} />
