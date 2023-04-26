@@ -9,9 +9,11 @@ function Taglist() {
   const [tagData, setTagData] = useState([]);
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
+  const [tab, setTab] = useState('popular');
+  const [clicked, setClicked] = useState('popular');
   let url = searchQuery
-    ? `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags?page=1&keyword=${searchQuery}&tab=popular`
-    : `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags?page=${page}&tab=popular`;
+    ? `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags?page=1&keyword=${searchQuery}&tab=${tab}`
+    : `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags?page=${page}&tab=${tab}`;
 
   useEffect(() => {
     axios
@@ -32,7 +34,7 @@ function Taglist() {
         // 에러인 경우 실행
         console.log(error);
       });
-  }, [page, searchQuery]);
+  }, [page, searchQuery, tab]);
 
   const handleLoadMore = () => {
     setPage((prevPage) => prevPage + 1);
@@ -40,6 +42,13 @@ function Taglist() {
 
   const handleSearch = (search) => {
     setSearchQuery(search);
+  };
+
+  const handleTabChange = (tab) => {
+    setTagData([]);
+    setTab(tab);
+    setClicked(tab);
+    setPage(1);
   };
 
   return (
@@ -59,9 +68,18 @@ function Taglist() {
           ></TagSearch>
 
           <TagsTab>
-            <button className="tab">Popular</button>
-            <button className="tab">Name</button>
-            <button className="tab">New</button>
+            <button
+              className={clicked === 'popular' ? 'clicked tab' : 'tab'}
+              onClick={() => handleTabChange('popular')}
+            >
+              Popular
+            </button>
+            <button
+              className={clicked === 'name' ? 'clicked tab' : 'tab'}
+              onClick={() => handleTabChange('name')}
+            >
+              Name
+            </button>
           </TagsTab>
         </div>
         <TagContainer>
@@ -182,6 +200,9 @@ const TagsTab = styled.div`
     color: #6b6f73;
     border-left: 1px solid hsl(210, 8%, 65%);
     padding: 0px 10px;
+  }
+  .clicked {
+    background-color: #f5f5f5;
   }
   button:nth-child(1) {
     border: none;

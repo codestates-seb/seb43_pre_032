@@ -2,28 +2,29 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import CommentUpdate from './Comment/CommentUpdate';
 
 function Comment() {
   const [commentOn, setCommentOn] = useState(false);
+  const [updateCommentOn, setUpdateCommentOn] = useState(false);
+  const [updateId, setUpdateId] = useState(null);
+  const [updateContent, setUpdateContent] = useState(null);
   const [comments, setComments] = useState([]);
   const qsId = useParams();
-  const questionId = qsId.qsId;
   const url = `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080`;
   const token = localStorage.getItem('token');
   const [newComment, setNewComment] = useState('');
+  const memberId = localStorage.getItem('memberid');
 
   const useEffectget = () => {
     axios
-      .get(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}?page=1&answertab=score`,
-        {
-          headers: {
-            'ngrok-skip-browser-warning': '69420',
-          },
-          withCredentials: true,
-          credentials: 'include',
-        }
-      )
+      .get(`${url}/questions/${qsId.qsId}?page=1&answertab=score`, {
+        headers: {
+          'ngrok-skip-browser-warning': '69420',
+        },
+        withCredentials: true,
+        credentials: 'include',
+      })
       .then(function (res) {
         // console.log(res.data.data);
         // 성공한 경우 실행
@@ -49,9 +50,9 @@ function Comment() {
   const hadleCreateComment = () => {
     axios
       .post(
-        `${url}/questions/${questionId}?page=1&answertab=score`,
+        `${url}/questions/${qsId.qsId}?page=1&answertab=score`,
         {
-          questionId: Number(questionId),
+          questionId: Number(qsId.qsId),
           questionAnswerContent: newComment,
         },
         {
@@ -93,16 +94,40 @@ function Comment() {
               <span>{comment.questionAnswerContent}</span>
               <span className="comment-user">-{comment.memberName}</span>
               <span>{displayedAt(new Date(comment.createdAt))}</span>
-              <button>수정</button>
-              <button
-                onClick={() => handleDeleteComment(comment.questionAnswerId)}
-              >
-                삭제
-              </button>
+              {Number(memberId) === comment.memberId ? (
+                <>
+                  <button
+                    onClick={() => {
+                      setUpdateCommentOn(!updateCommentOn);
+                      setUpdateId(comment.questionAnswerId);
+                      setUpdateContent(comment.questionAnswerContent);
+                    }}
+                  >
+                    수정
+                  </button>
+                  <button
+                    onClick={() =>
+                      handleDeleteComment(comment.questionAnswerId)
+                    }
+                  >
+                    삭제
+                  </button>
+                </>
+              ) : null}
             </div>
           );
         })}
       </CommentView>
+      {updateCommentOn ? (
+        <CommentUpdate
+          updateId={updateId}
+          updateContent={updateContent}
+          setUpdateContent={setUpdateContent}
+          qsId={qsId}
+          useEffectget={useEffectget}
+          setUpdateCommentOn={setUpdateCommentOn}
+        />
+      ) : null}
       <CommentOpenBtn>
         <button
           className="addAComment"
