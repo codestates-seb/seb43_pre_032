@@ -4,6 +4,7 @@ import CardHeader from './CardHeader';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { selectFooter, selectNav } from '../../../store/store';
+import MemberDelete from '../../MemberDelete';
 // import { useState } from 'react';
 const MainContainer = styled.div`
   width: 100%;
@@ -130,6 +131,7 @@ const Myinfo_Main = ({ mainData }) => {
         <Article title="Articles" options={option5} />
         <Article title="Votes cast" isFilter={false} />
       </LongContainer> */}
+      <MemberDelete />
     </MainContainer>
   );
 };
