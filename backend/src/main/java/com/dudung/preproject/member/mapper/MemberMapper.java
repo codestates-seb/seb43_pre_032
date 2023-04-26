@@ -90,12 +90,5 @@ public interface MemberMapper {
                 .collect(Collectors.toList());
     }
 
-    default AnswerDto.AnswerMemberResponseForList getAnswerToMemberList(Answer answer){
-        return AnswerDto.AnswerMemberResponseForList.builder()
-                .answerContent(answer.getAnswerContent())
-                .answerId(answer.getAnswerId())
-                .build();
-    }
-
 
 }
