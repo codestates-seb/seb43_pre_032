@@ -25,7 +25,7 @@ function Comment() {
         }
       )
       .then(function (res) {
-        console.log(res.data.data);
+        // console.log(res.data.data);
         // 성공한 경우 실행
         setComments(res.data.data.question.questionAnswers);
       })

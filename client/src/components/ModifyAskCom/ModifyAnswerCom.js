@@ -6,13 +6,10 @@ import {
   Bannercomponent,
 } from '../question/Sidebanner.jsx';
 import { useState, useEffect } from 'react';
-import TagBar from '../TagBar.js';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const ModifyCom = ({ qsId }) => {
-  const url = `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}`;
-
+const ModifyAnswerCom = ({ asId }) => {
   let titleHelp = [
     'Correct minor typos or mistakes',
     'Clarify meaning without changing it',
@@ -41,16 +38,15 @@ const ModifyCom = ({ qsId }) => {
   ];
   const titles = ['How to Edit', 'How to Format', 'How to Tag'];
   const navigate = useNavigate();
-  let [word, setWord] = useState(''); // 태그 검색어
-  let [getTag, setGetTag] = useState([]);
-  let [selected, setSelected] = useState([]); // 선택한 태그
-  let [filtered, setFiltered] = useState([]);
+  const [answerOrigin, setanswerOrigin] = useState([]);
+
+  console.log(answerOrigin);
 
   useEffect(() => {
-    console.log(qsId);
+    console.log(asId);
     axios
       .get(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}?page=1&answertab=score`,
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/answers/${asId.asId}`,
         {
           headers: {
             'ngrok-skip-browser-warning': '69420',
@@ -61,9 +57,8 @@ const ModifyCom = ({ qsId }) => {
       )
       .then(function (res) {
         // 성공한 경우 실행
-        setSelected(res.data.data.question.tagName);
-        setQuestionTitle(res.data.data.question.questionTitle);
-        setQuestionBody(res.data.data.question.questionContent);
+        setanswerOrigin(res.data);
+        setAnswerBody(res.data.answerContent);
       })
       .catch(function (error) {
         // 에러인 경우 실행
@@ -71,57 +66,12 @@ const ModifyCom = ({ qsId }) => {
       });
   }, []);
 
-  const searchedData = async (word) => {
-    await axios
-      .get(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags?page=1&keyword=${word}&tab=popular`,
-        {
-          headers: {
-            'ngrok-skip-browser-warning': '69420',
-          },
-        }
-      )
-      .then((res) => setGetTag(res.data.data))
-      .catch((err) => console.log(err));
-  };
-  useEffect(() => {
-    searchedData(word);
-    setFiltered(getTag.slice(0, 6));
-  }, [word]);
-  let [help, setHelp] = useState(titleHelp);
-  let [helpTitle, setHelpTitle] = useState(titles[0]);
+  let [help, setHelp] = useState(titleHelp); //헬프 메세지
+  let [helpTitle, setHelpTitle] = useState(titles[0]); // 헬프타이틀
+  let [answerBody, setAnswerBody] = useState(''); // answer 컨텐츠
 
-  let [questionTitle, setQuestionTitle] = useState('');
-  let [questionBody, setQuestionBody] = useState('');
-
-  let titleInput = (e) => {
-    setQuestionTitle(e.target.value);
-  };
   let bodyInput = (e) => {
-    setQuestionBody(e.target.value);
-  };
-
-  let saveOnClick = () => {
-    let tagID = selected.map((el) => {
-      return { tagId: el.tagId };
-    });
-    let newData = {
-      questionId: +qsId.qsId,
-      questionTitle: questionTitle,
-      questionContent: questionBody,
-      tagName: tagID,
-    };
-    console.log(newData);
-    axios
-      .patch(url, newData, {
-        headers: {
-          Authorization: localStorage.getItem('token'),
-          'ngrok-skip-browser-warning': '69420',
-        },
-      })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-    navigate(`/question/${qsId.qsId}`);
+    setAnswerBody(e.target.value);
   };
 
   let helphandler = (type) => {
@@ -133,44 +83,25 @@ const ModifyCom = ({ qsId }) => {
   };
 
   const cancelClicked = () => {
-    navigate(`/question/${qsId.qsId}`);
+    navigate('/detailquestion');
   };
-  console.log(selected);
+
   return (
     <TotalContainer>
       <ModifyContainer>
-        <TitleContainer>
-          <div className="modify-content-title">Title</div>
-          <input
-            value={questionTitle}
-            onClick={() => helphandler('title')}
-            className="modify-input-content"
-            onChange={titleInput}
-          />
-        </TitleContainer>
         <BodyContainer>
           <div className="modify-content-title">Body</div>
           <textarea
-            value={questionBody}
+            value={answerBody}
             onClick={() => helphandler('body')}
             onChange={bodyInput}
             className="modify-textarea-content link-style-remove"
           />
         </BodyContainer>
-        <div className="preview">{questionBody}</div>
-        <div onFocus={() => helphandler('tag')} className="tagCon">
-          <TagBar
-            setWord={setWord}
-            selected={selected}
-            filtered={filtered}
-            setSelected={setSelected}
-          ></TagBar>
-        </div>
+        <div className="preview">{answerBody}</div>
+
         <BtnContainer>
-          <button
-            onClick={saveOnClick}
-            className="save flex-center btn-blue-style"
-          >
+          <button className="save flex-center btn-blue-style">
             Save edits
           </button>
           <button
@@ -181,24 +112,20 @@ const ModifyCom = ({ qsId }) => {
           </button>
         </BtnContainer>
       </ModifyContainer>
-      <BannerContainer
-        className={word === '' ? 'flex-center' : 'flex-center help'}
-      >
+      <BannerContainer>
         <Bannercomponent>
           <Sidebanners>
             <Bannertitle>{helpTitle}</Bannertitle>
             <Bannercontents>
-              <div className="pos-list">
-                <HelpContainer>
-                  {help.map((el, idx) => {
-                    return (
-                      <li className="list-style" key={idx}>
-                        {el}
-                      </li>
-                    );
-                  })}
-                </HelpContainer>
-              </div>
+              <HelpContainer>
+                {help.map((el, idx) => {
+                  return (
+                    <li className="list-style" key={idx}>
+                      {el}
+                    </li>
+                  );
+                })}
+              </HelpContainer>
             </Bannercontents>
           </Sidebanners>
         </Bannercomponent>
@@ -242,17 +169,14 @@ const ModifyContainer = styled.article`
   .tagCon {
     position: relative;
   }
+
   @media screen and (max-width: 1300px) {
     width: 90vw;
     padding-left: 30px;
   }
 `;
 
-const TitleContainer = styled.section`
-  width: 100%;
-`;
 const BodyContainer = styled.section`
-  min-width: 500px;
   width: 97.5%;
 `;
 
@@ -288,4 +212,4 @@ const BtnContainer = styled.div`
   }
 `;
 
-export default ModifyCom;
+export default ModifyAnswerCom;

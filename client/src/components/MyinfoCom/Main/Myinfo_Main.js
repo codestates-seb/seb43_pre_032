@@ -47,6 +47,18 @@ const ShortContainer = styled.div`
 //   grid-template-columns: 1fr;
 //   width: 100%;
 // `;
+const StatusContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 10%;
+  min-height: 80px;
+  width: 100%;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+`;
+const Status = styled.div`
+  width: 100%;
+`;
 
 const Myinfo_Main = ({ mainData }) => {
   const dispatch = useDispatch();
@@ -65,19 +77,34 @@ const Myinfo_Main = ({ mainData }) => {
   // let [reputation, setReputation] = useState(0);
   // let [questionCnt, setQuestionCnt] = useState(0);
   // let [answerCnt, setAnswerCnt] = useState(0);
-  const questionTitle = mainData.questionTitle;
-  console.log(questionTitle);
+  const questions = mainData.questions;
+  const answers = mainData.answers;
+  console.log(mainData);
   return (
     <MainContainer>
       <div className="flex-col">
-        <CardHeader title="Summary" />
+        <StatusContainer>
+          <Status className="flex-space-around">
+            <div>reputation</div>
+            <div>{mainData.reputation}</div>
+          </Status>
+          <Status className="flex-space-around">
+            <div>answers</div>
+            <div>{mainData.answerCount}</div>
+          </Status>
+          <Status className="flex-space-around">
+            <div>questions</div>
+            <div>{mainData.questionCount}</div>
+          </Status>
+        </StatusContainer>
+        <CardHeader title="About me" />
         <SummaryContentsContainer>
           <Box1 className="mypage-col-style"></Box1>
         </SummaryContentsContainer>
       </div>
       <ShortContainer>
-        <Article title="Answers" options={option1} />
-        <Article title="Questions" data={questionTitle} options={option2} />
+        <Article title="Answers" options={option1} data={answers} />
+        <Article title="Questions" data={questions} options={option2} />
         <Article title="Tags" isFilter={false} />
         <Article title="Requtation" isFilter={false} />
       </ShortContainer>

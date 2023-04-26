@@ -101,9 +101,13 @@ textarea{
 .help{
   width: 300px;
 }
+.pos-list{
+  padding-left: 5%;
+}
 .list-style{
   list-style: disc;
   padding: 5px;
+  justify-content: flex-end;
 }
 .modify-input-content {
   width: 100%;
