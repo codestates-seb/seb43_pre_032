@@ -21,8 +21,23 @@ public class TagService {
         return findVerifiedTag(tagId);
     }
 
-    public Page<Tag> findTags(int page, int size, String sortBy) {
-        return tagRepository.findAll(PageRequest.of(page, size,
+    public Page<Tag> findTags(int page, String sortBy, String keyword) {
+        if (sortBy.equals("popular")) {
+            sortBy = "questions";
+            if (keyword == null) {
+                return tagRepository.findAll(PageRequest.of(page, 20,
+                        Sort.by(sortBy).descending()));
+            }
+            return tagRepository.findAllByTagNameContaining(keyword, PageRequest.of(page, 20,
+                    Sort.by(sortBy).descending()));
+        } else if (sortBy.equals("name")) {
+            sortBy = "tagName";
+        }
+        if (keyword == null) {
+            return tagRepository.findAll(PageRequest.of(page, 20,
+                    Sort.by(sortBy).ascending()));
+        }
+        return tagRepository.findAllByTagNameContaining(keyword, PageRequest.of(page, 20,
                 Sort.by(sortBy).ascending()));
     }
 

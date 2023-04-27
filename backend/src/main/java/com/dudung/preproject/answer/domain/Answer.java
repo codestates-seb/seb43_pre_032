@@ -37,6 +37,8 @@ public class Answer {
     @OneToMany(mappedBy = "answer")
     private List<AnswerVote> answerVotes = new ArrayList<>();
 
+    private int answerVoteSum;
+
     public int getAnswerVoteSum() {
 
         int answerVoteSum = this.answerVotes.stream()
@@ -44,8 +46,12 @@ public class Answer {
                         .getAnswerVoteStatus().getScore())
                 .mapToInt(N -> N)
                 .sum();
+        this.answerVoteSum = answerVoteSum;
         return answerVoteSum;
     }
+
+    @OneToMany(mappedBy = "answer")
+    private List<AnswerAnswer> answerAnswers = new ArrayList<>();
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -55,4 +61,7 @@ public class Answer {
         this.answerVotes.add(answerVote);
     }
 
+    public void addAnswerAnswer(AnswerAnswer answerAnswer) {
+        this.answerAnswers.add(answerAnswer);
+    }
 }

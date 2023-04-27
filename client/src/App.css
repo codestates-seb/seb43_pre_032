@@ -1,8 +1,132 @@
-.App {
-  display: flex;
-  flex-direction: column;
-  border-right: 1px solid #ccc;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
+* {
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
+input:focus { outline: none; }
+textarea:focus { outline: none; }
+input {
+  border:1px solid lightgray;
+}
+textarea{
+  border:1px solid lightgray;
+
+}
+.flex-center{
+  display: flex;
+  align-items: center;
+ justify-content: center;
+}
+.flex-row{
+  display: flex;
+  flex-direction: row;
+}
+.flex-space-between{
+  display: flex;
+  align-items: center;
+ justify-content: space-between;
+}
+.flex-space-around{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.delete{
+  width: 100vw;
+}
+
+.logo{
+  height: 25px;
+}
+.other-img-size{
+  height: 27px;
+}
+
+@media (max-width: 980px) {
+  .moblie-none{
+    display: none;
+  }
+}
+.menu-icon{
+  height: 100%;
+  padding: 5px;
+}
+.log-sign{
+  width: 150px;
+  font-size: 13px;
+}
+.margin-right-3px{
+  margin-right: 3px;
+}
+.selected{
+  background-color: lightgray;
+}
+@media (max-width: 980px) {
+  .mypage-col-style{
+    width: 90%;
+  }
+}
+.link-style-remove{
+  text-decoration: none;
+  color: inherit;
+}
+.modify-content-title {
+  font-weight: 500;
+  padding: 3px;
+}
+.btn-blue-style{
+  font-weight: bold;
+  border: 1px solid skyblue;
+  border-radius: 4px;
+  box-shadow: 0px 0.5px 1px#dadce0 inset;
+  border: 1px solid skyblue;
+  background-color: var(--signup-btn-before);
+  padding-left: 7px;
+  padding-right: 7px;
+  color: white;
+}
+.btn-skyblue-style{
+  border: 1px solid var(--login-btn-border);
+  border-radius: 4px;
+  background-color: var(--login-btn-before);
+  padding-left: 3px;
+  padding-right: 3px;
+  color: var(--login-btn-border);
+  margin: 5px;
+}
+.height-auto{
+  height:auto;
+}
+.help{
+  width: 300px;
+}
+.pos-list{
+  padding-left: 5%;
+}
+.list-style{
+  list-style: disc;
+  padding: 5px;
+  justify-content: flex-end;
+}
+.modify-input-content {
+  width: 100%;
+  height: 30px;
+  box-shadow: none;
+  border-radius: 3px;
+}
+.modify-textarea-content {
+  padding: 10px;
+  height: 200px;
+  width: 100%;
+  box-shadow: none;
+  border-radius: 3px;
+  resize: none;
+}
+
+.disabled {
+  opacity: 0.1;
+  pointer-events: none; 
+  cursor: default; 
+}
+
