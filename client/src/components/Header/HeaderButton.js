@@ -11,6 +11,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 const OtherButtons = () => {
+
+
   // axios요청 응답값으로 받아온 name과 reputation을 저장하는 상태
   const [name, setName] = useState('');
   const [reputation, setReputation] = useState('');
@@ -19,17 +21,19 @@ const OtherButtons = () => {
   const getToken = localStorage.getItem('token');
   const getMemberid = localStorage.getItem('memberid');
 
+
   // axios.get 멤버 id와 토큰을 사용해 이름을 읽어오는 함수
   const membersIdAxios = () => {
     //헤더에 토큰값을 주어서 유저정보를 읽어온다
     axios
       .get(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/mypage/${getMemberid}`,
-        { headers: { Authorization: getToken } }
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/mypage/${getMemberid}`, //url
+        { headers: { Authorization: getToken } } // 인증토큰 헤더에 담기
       )
       .then((res) => {
         //받아온 이름을 변수에 할당후
         const name = res.data.name;
+
         // 조건문을 통해 이름이 있다면 뒤에서 2글자만 저장(ex. 박지성 => 지성)
         if (name) {
           setName(name.slice(name.length - 2));
@@ -41,8 +45,9 @@ const OtherButtons = () => {
   };
 
   //유즈이펙트로 처음 렌더링때 axios함수를 실행
+
   useEffect(() => {
-    membersIdAxios();
+    membersIdAxios(); // 화면 첫 렌더링 시 한번만 axios 데이터 받아오기
   }, []);
 
   return (

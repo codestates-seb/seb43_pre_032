@@ -29,9 +29,8 @@ const Article = ({
   data = [],
   select = '',
 }) => {
+  // 제목, 필터 옵션, 담을 data, key 전달 받음
   let id = data.map((el) => `/question/${el.questionId}`);
-  console.log(id);
-
   return (
     <ArticleContainer>
       <CardHeader title={title} isFilter={isFilter} options={options} />

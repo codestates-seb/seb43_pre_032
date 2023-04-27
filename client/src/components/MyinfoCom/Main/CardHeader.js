@@ -21,6 +21,7 @@ const Menu = styled.div`
   }
 `;
 const CardHeader = ({ title, isFilter, options = [] }) => {
+  // 제목, 필터 유무, 옵션 값 전달 받음
   let [onClick, setOnClick] = useState(0);
   const onClickHandler = (idx) => {
     setOnClick(idx);

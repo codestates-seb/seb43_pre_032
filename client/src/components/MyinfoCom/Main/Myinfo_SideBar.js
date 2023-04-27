@@ -19,6 +19,7 @@ const Menu = styled.div`
 `;
 
 const Myinfo_SideBar = () => {
+  // sub sidebar 구성
   let options = [
     'Summary',
     'Answers',
