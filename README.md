@@ -21,7 +21,7 @@
 
 | 심재우 | MyPage - 회원정보 수정, 이미지 업로드, 다운로드 / Answer - CRUD  / AnswerAnswer - CRUD / AnswerVote - CRUD |
 |:--------:| :--------: |
-| 석원준 | 블라블 |
+| 석원준 | Member - CRUD / QuestionVote - CRUD / Member, MyPage, Answer, AnswerAnswer, QuestionVote, AnswerVote - ControllerTest |
 | 송준상 |  Spring Security (JWT) / Question - CRUD , 검색 (제목), 조회수 (쿠키 사용), 댓글 / Answer - 투표 / Tag - Data set (csv) 제작, 검색 (제목) / AWS 배포 환경 구축 및 배포 |
 
 </br>
