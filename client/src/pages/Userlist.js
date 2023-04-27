@@ -16,7 +16,6 @@ function Userlist() {
         `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members?page=1&size=10&sortBy=memberId`
       )
       .then((response) => {
-        console.log(response);
         setUserData(response.data.data);
       })
       .catch((error) => console.error(error));
