@@ -14,6 +14,9 @@ const OtherButtons = () => {
   // axios요청 응답값으로 받아온 name과 reputation을 저장하는 상태
   const [name, setName] = useState('');
   const [reputation, setReputation] = useState('');
+  const [img, setImg] = useState('');
+  const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // 로컬에 저장한 토큰과 멤버id 값을 변수에 할당
   const getToken = localStorage.getItem('token');
@@ -30,6 +33,7 @@ const OtherButtons = () => {
       .then((res) => {
         //받아온 이름을 변수에 할당후
         const name = res.data.name;
+        setImg(res.data.memberJpegUrl);
 
         // 조건문을 통해 이름이 있다면 뒤에서 2글자만 저장(ex. 박지성 => 지성)
         if (name) {
@@ -37,6 +41,7 @@ const OtherButtons = () => {
         }
         const reputation = res.data.requtation;
         setReputation(reputation);
+        setIsLoading(false);
       })
       .catch((err) => console.log(err));
   };
@@ -47,11 +52,25 @@ const OtherButtons = () => {
     membersIdAxios(); // 화면 첫 렌더링 시 한번만 axios 데이터 받아오기
   }, []);
 
+  if (isLoading) {
+    return <div>isLoading</div>;
+  }
+
   return (
     <OtherContainer className="flex-center">
       <Menu className="section-size">
         <Link to={`/users/${getMemberid}`}>
-          <Profile>{name}</Profile>
+          {error ? (
+            <Profile>{name}</Profile>
+          ) : (
+            <img
+              className="img"
+              src={img}
+              alt="img"
+              onError={() => setError(true)}
+            />
+          )}
+
           {reputation}
         </Link>
       </Menu>
@@ -106,6 +125,11 @@ const OtherContainer = styled.div`
     text-decoration: none; /* 밑줄 제거 */
     color: inherit; /* 상속받은 색상 사용 */
     font-size: inherit;
+  }
+
+  .img {
+    width: 25px;
+    height: 25px;
   }
 
   @media (max-width: 640px) {
