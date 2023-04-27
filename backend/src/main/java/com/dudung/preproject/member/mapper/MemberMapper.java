@@ -4,6 +4,7 @@ import com.dudung.preproject.answer.domain.Answer;
 import com.dudung.preproject.answer.dto.AnswerDto;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.member.dto.MemberDto;
+import com.dudung.preproject.member.service.MemberService;
 import com.dudung.preproject.question.domain.Question;
 import com.dudung.preproject.question.dto.QuestionResponseDto;
 import org.mapstruct.Mapper;
@@ -62,6 +63,9 @@ public interface MemberMapper {
                         .build().toUri().toString())
                 .answers(getAnswerToMember(member.getAnswers()))
                 .questions(getQuestionToMember(member.getQuestions()))
+                .myPageTitle(member.getMyPageTitle())
+                .aboutMe(member.getAboutMe())
+                .modifiedAt(member.getModifiedAt())
                 .name(member.getName())
                 .createAt(member.getCreatedAt())
                 .reputation(member.getReputation())
