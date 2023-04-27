@@ -10,10 +10,11 @@ import { faBookmark as faRegularBookmark } from '@fortawesome/free-regular-svg-i
 import { useState } from 'react';
 
 function AnswerVoteGroup({ answerQsId, answerVoteSum }) {
-  const [bookmark, setBookmark] = useState(false);
+  const [bookmark, setBookmark] = useState(false); //북마크 클릭여부
 
   const token = localStorage.getItem('token'); //로컬스토리지 토큰 가져오기
 
+  //찬성 투표 post 요청
   const voteHandler = (votee) => {
     axios
       .post(
