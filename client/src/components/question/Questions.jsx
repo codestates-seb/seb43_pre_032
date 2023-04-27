@@ -383,6 +383,7 @@ const ContentsData = styled.div`
     margin: 10px 0px;
   }
   h3 {
+    word-break: break-all;
     font-weight: 500;
     color: #0074cc;
   }
@@ -391,6 +392,7 @@ const ContentsData = styled.div`
   }
   span {
     font-size: 14px;
+    word-break: break-all;
   }
   p {
     background-color: hsl(205, 46%, 92%);
