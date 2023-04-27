@@ -5,6 +5,7 @@ import axios from 'axios';
 function MyInfoEdit_imgSelect({ membername, memberId, imgUrl }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [uploaded, setUploaded] = useState(false);
   const formData = new FormData();
   const token = localStorage.getItem('token');
   let [error, setError] = useState(true);
@@ -33,10 +34,12 @@ function MyInfoEdit_imgSelect({ membername, memberId, imgUrl }) {
         }
       )
       .then((response) => {
+        setUploaded(true);
         console.log(response);
       })
       .catch((error) => {
         console.log(error);
+        setUploaded(false);
       });
   };
   return (
@@ -76,6 +79,7 @@ function MyInfoEdit_imgSelect({ membername, memberId, imgUrl }) {
         <button className="imgSubmit" onClick={handleImg}>
           image Submit
         </button>
+        {uploaded ? <p>이미지가 업로드 되었습니다</p> : null}
       </ImgSelectContainer>
     </>
   );
@@ -125,5 +129,8 @@ const ImgSelectContainer = styled.div`
   .initialImg {
     width: 164px;
     height: 164px;
+  }
+  p {
+    margin: 0px;
   }
 `;
