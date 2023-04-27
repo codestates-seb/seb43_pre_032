@@ -164,6 +164,7 @@ const CreateAsk = () => {
           Cancel
         </CancelBtn>
       </div>
+      <Space></Space>
     </MainContainer>
   );
 };
@@ -186,7 +187,6 @@ const CancelBtn = styled.button`
   border-radius: 3px;
 `;
 const MainContainer = styled.div`
-  max-width: 150vh;
   padding-left: 20px;
   padding-right: 20px;
 `;
@@ -223,6 +223,9 @@ const ItemContainer = styled.div`
 const SingleContainer = styled.section`
   display: grid;
   grid-template-columns: 1fr;
+`;
+const Space = styled.div`
+  height: 51vh;
 `;
 
 export default CreateAsk;

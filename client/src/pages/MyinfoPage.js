@@ -30,7 +30,6 @@ const MyPage = () => {
         `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/mypage/${memberId.qsId}` // 유저 정보 가져오기
       )
       .then((res) => {
-        console.log(res);
         let topData = {
           name: res.data.name,
           createAt: res.data.createAt,
