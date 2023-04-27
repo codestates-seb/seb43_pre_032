@@ -42,7 +42,11 @@ const Nav = () => {
                 </li>
                 <li>
                   <div>
-                    <span>Users</span>
+                    <Link to={'/users'}>
+                      <div>
+                        <span>Users</span>
+                      </div>
+                    </Link>
                   </div>
                 </li>
                 <li>
