@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { useEffect } from 'react';
 
 function Viewcomponent({ tagId }) {
+  //oauth 인증 토큰&멤버 아이디 가져오기
   const searchParamsToken = new URLSearchParams(window.location.search);
   const token = searchParamsToken.get('Authorization');
 
@@ -27,7 +28,6 @@ function Viewcomponent({ tagId }) {
     }
   }, []);
 
-  console.log('hi');
   return (
     <Questionscomponent>
       <Viewquestion>
