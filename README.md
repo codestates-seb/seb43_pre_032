@@ -98,7 +98,10 @@
 
 ### API 명세서
 
-[API 명세서](https://turbo-adventure-7vlnryg.pages.github.io/)
+![API 명세서 스크린샷](https://user-images.githubusercontent.com/120303851/234854961-262d3574-d4eb-49ee-8815-7be4d87403cc.png)
+
+
+[API 명세서 URL](https://turbo-adventure-7vlnryg.pages.github.io/)
 
 </br>
 
