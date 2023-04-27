@@ -96,6 +96,9 @@
 [G043 - 화면정의서.pdf](https://github.com/codestates-seb/seb43_pre_032/files/11341899/G043.-.2F.2F.-.pdf)
 [Figma Url](http://figma.com/file/6Rpo1TChF74rUwzyAEfxDQ/Stackoverflow-wireframe?node-id=0-1&t=1TEbmcQJrwdnn1hJ-0)
 
+### API 명세서
+
+[API 명세서](https://turbo-adventure-7vlnryg.pages.github.io/)
 
 </br>
 
