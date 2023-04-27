@@ -13,6 +13,7 @@ function Questions({ tagId }) {
   const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
   const [totalcontetns, setTotalcontetns] = useState(0); // 전체 페이지 수
   const [filter, setFilter] = useState('Newest');
+  const [imgerorr, setImgerror] = useState(true);
 
   const dispatch = useDispatch();
   const search = useSelector((state) => state.SearchData.data);
@@ -20,8 +21,8 @@ function Questions({ tagId }) {
   useEffect(() => {
     dispatch(selectFooter(true));
     dispatch(selectNav(true));
-    setKeyword(search);
-  }, []);
+    setQsData(search);
+  }, [search]);
 
   const url = tagId
     ? `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags/${tagId}?page=${currentPage}&tab=Active`
@@ -47,7 +48,7 @@ function Questions({ tagId }) {
       .catch(function (error) {
         console.log(error);
       });
-  }, [currentPage, keyword, filter]);
+  }, [currentPage, filter]);
 
   //이전페이지
   const handlePreviousPageClick = () => {
@@ -163,7 +164,17 @@ function Questions({ tagId }) {
                 </div>
               </ContentsData>
               <UserData>
-                <img src="https://i.imgur.com/nXnTowV.jpg" alt="profile icon" />
+                {imgerorr ? (
+                  <img
+                    src={el.memberJpegUrl}
+                    alt="profile icon"
+                    onError={() => {
+                      setImgerror(false);
+                    }}
+                  />
+                ) : (
+                  <div className="icon-name">{el.memberName.slice(-1)}</div>
+                )}
                 <span className="username_color">{el.memberName}</span>
                 <span>
                   {el.memberReputation} asked{' '}
@@ -438,5 +449,17 @@ const UserData = styled.div`
   }
   .username_color {
     color: #0074cc;
+  }
+  .icon-name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    border-radius: 3px;
+    width: 15px;
+    height: 15px;
+    background-color: #0074cc;
+    font-size: 0.1rem;
+    font-weight: 600;
   }
 `;
