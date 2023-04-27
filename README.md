@@ -3,7 +3,7 @@
 # 🥁 두둥탁! 
 
 ### stackoverflow 클론코딩 Pre-Project
-🔖 [배포 URL](http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com/) 2023.04.14 - 2023.04.27
+🔖 [배포 URL](http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com/3000) 2023.04.14 - 2023.04.27
 
 
 </br>
