@@ -43,7 +43,6 @@ function Questions({ tagId }) {
         setTotalPages(Math.ceil(response.data.pageInfo.totalElements / 10)); //전체페이지 계산
         setTotalcontetns(response.data.pageInfo.totalElements);
         window.scrollTo(0, 0);
-        console.log('요청 성공');
       })
       .catch(function (error) {
         console.log(error);
