@@ -2,11 +2,14 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import axios from 'axios';
 
-function MyInfoEdit_imgSelect({ membername, memberId }) {
-  const [, setSelectedFile] = useState(null);
+function MyInfoEdit_imgSelect({ memberId, imgUrl }) {
+  const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const formData = new FormData();
+  const token = localStorage.getItem('token');
+
   const fileSelectedHandler = (event) => {
+    //이미지파일을 선택하면, 미리보기를 진행합니다.
     const file = event.target.files[0];
     setSelectedFile(file);
     const reader = new FileReader();
@@ -14,13 +17,19 @@ function MyInfoEdit_imgSelect({ membername, memberId }) {
       setPreviewUrl(reader.result);
     };
     reader.readAsDataURL(file);
-    formData.append('file', file);
   };
   const handleImg = () => {
+    formData.append('file', selectedFile);
     axios
       .post(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/${memberId}`,
-        formData
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/upload/${memberId}`,
+        formData,
+        {
+          headers: {
+            Authorization: token,
+            'Content-Type': 'multipart/form-data',
+          },
+        }
       )
       .then((response) => {
         console.log(response);
@@ -44,9 +53,10 @@ function MyInfoEdit_imgSelect({ membername, memberId }) {
         {previewUrl ? (
           <img className="selectedImg" src={previewUrl} alt="Selected file" />
         ) : (
-          <div className="defalutProfile">
-            {membername ? membername.slice(1) : ''}
-          </div>
+          <img className="initialImg" src={imgUrl} alt="initialUrl" />
+          // <div className="defalutProfile">
+          //   {membername ? membername.slice(1) : ''}
+          // </div>
         )}
         <label
           className="img-select-label img-select-label-btn"
@@ -102,5 +112,9 @@ const ImgSelectContainer = styled.div`
   .imgSubmit {
     margin-top: -20px;
     width: 164px;
+  }
+  .initialImg {
+    width: 164px;
+    height: 164px;
   }
 `;

@@ -8,26 +8,26 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-function MyInfoEdit_Main({ memberId, topData }) {
+function MyInfoEdit_Main({ memberId, topData, imgUrl }) {
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
   const [name, setName] = useState(topData.name);
   const [title, setTitle] = useState(topData.myPageTitle || '');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [aboutme, setAboutme] = useState(topData.aboutMe || '');
+
   const handleChange = (e, func) => {
     func(e.target.value);
   };
+
   const handleSubmit = () => {
     axios
       .patch(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/${memberId}`,
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/mypage/${memberId}`,
         {
-          mberId: memberId,
+          meberId: memberId,
           name: name,
           email: email,
-          password: password,
           myPageTitle: title,
           aboutMe: aboutme,
         },
@@ -59,6 +59,7 @@ function MyInfoEdit_Main({ memberId, topData }) {
             <MyInfoEdit_imgSelect
               membername={topData.name}
               memberId={memberId}
+              imgUrl={imgUrl}
             ></MyInfoEdit_imgSelect>
           </div>
           <div className="simpleModifyContainer">
@@ -77,15 +78,6 @@ function MyInfoEdit_Main({ memberId, topData }) {
               onChange={(e) => handleChange(e, setEmail)}
               value={email}
               className="simpleModify"
-            ></input>
-          </div>
-          <div className="simpleModifyContainer">
-            <label htmlFor="password">password</label>
-            <input
-              id="password"
-              className="simpleModify"
-              onChange={(e) => handleChange(e, setPassword)}
-              value={password}
             ></input>
           </div>
           <div className="simpleModifyContainer">

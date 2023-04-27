@@ -27,6 +27,7 @@ const MyInfoEdit = () => {
   const memberId = useParams();
   const [topData, setTopData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [imgUrl, setImgUrl] = useState('');
   useEffect(() => {
     axios
       .get(
@@ -41,6 +42,7 @@ const MyInfoEdit = () => {
         };
         setTopData(topData);
         setIsLoading(false);
+        setImgUrl(res.data.memberJpegUrl);
       })
       .catch((err) => {
         console.log(err);
@@ -62,6 +64,7 @@ const MyInfoEdit = () => {
         <MyInfoEdit_Main
           topData={topData}
           memberId={memberId.userId}
+          imgUrl={imgUrl}
         ></MyInfoEdit_Main>
       </MyPageMainSection>
     </MyPageContainer>
