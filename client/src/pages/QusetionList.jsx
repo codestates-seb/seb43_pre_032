@@ -2,6 +2,7 @@ import Sidebanner from '../components/question/Sidebanner.jsx';
 import Questions from '../components/question/Questions.jsx';
 import { useDispatch } from 'react-redux';
 import { selectFooter, selectNav } from '../store/store';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 function Viewcomponent({ tagId }) {
@@ -10,6 +11,7 @@ function Viewcomponent({ tagId }) {
   const searchParamsId = new URLSearchParams(window.location.search);
   const memberid = searchParamsId.get('Memberid');
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   if (token && memberid) {
@@ -17,6 +19,7 @@ function Viewcomponent({ tagId }) {
     localStorage.setItem('memberid', memberid);
     dispatch(selectFooter(true));
     dispatch(selectNav(true));
+    navigate('/question');
   }
 
   return (
