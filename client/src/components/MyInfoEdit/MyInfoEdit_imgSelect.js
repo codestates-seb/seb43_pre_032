@@ -2,11 +2,12 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import axios from 'axios';
 
-function MyInfoEdit_imgSelect({ memberId, imgUrl }) {
+function MyInfoEdit_imgSelect({ membername, memberId, imgUrl }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const formData = new FormData();
   const token = localStorage.getItem('token');
+  let [error, setError] = useState(true);
 
   const fileSelectedHandler = (event) => {
     //이미지파일을 선택하면, 미리보기를 진행합니다.
@@ -52,11 +53,19 @@ function MyInfoEdit_imgSelect({ memberId, imgUrl }) {
 
         {previewUrl ? (
           <img className="selectedImg" src={previewUrl} alt="Selected file" />
+        ) : error ? (
+          <img
+            className="initialImg"
+            src={imgUrl}
+            alt="initialUrl "
+            onError={() => {
+              setError(false);
+            }}
+          />
         ) : (
-          <img className="initialImg" src={imgUrl} alt="initialUrl" />
-          // <div className="defalutProfile">
-          //   {membername ? membername.slice(1) : ''}
-          // </div>
+          <div className="defalutProfile">
+            {membername ? membername.slice(-2) : ''}
+          </div>
         )}
         <label
           className="img-select-label img-select-label-btn"

@@ -9,7 +9,6 @@ import axios from 'axios';
 
 const MyPageContainer = styled.main`
   font-size: 14px;
-  /* width: calc(100%-200px); */
   height: 100%;
   .flex-row {
     display: flex;
@@ -39,6 +38,8 @@ const MyInfoEdit = () => {
           createAt: res.data.createAt,
           memberId: res.data.memberId,
           myPageTitle: res.data.myPageTitle,
+          modifiedAt: res.data.modifiedAt,
+          memberJpegUrl: res.data.memberJpegUrl,
         };
         setTopData(topData);
         setIsLoading(false);
