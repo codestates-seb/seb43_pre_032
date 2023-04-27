@@ -32,7 +32,7 @@
 |:--------:| :--------: |
 | 이세영 | 로그인(post, ouath, jwt)/ 회원가입(post, ouath)/ 회원탈퇴(delete)/ Navbar/ header(회원정보 get) |
 | 정호재 |question Ask(질문 생성, 태그 조회, post)/ question Modify(질문 수정, get, post, 태그 조회)/Mypage 정보창(유저 정보, get)/Header|
-| 정솔 | 블라블라 |
+| 정솔 | 질문 및 답변의 코멘트 CRUD/회원정보 수정,이미지 업로드 / 로그아웃 / 태그리스트(조회, 무한스크롤, 검색)/ 유저리스트 / footer |
 
 </br>
 
