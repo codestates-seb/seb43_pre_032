@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { menudata } from './MyInfoEdit_SideBar';
 
 function MyInfoEdit_Menu() {
+  //화면의 크기가 줄어들었을때, SideBar가 select메뉴로 변경됩니다.
   return (
     <>
       <MenuContainer>

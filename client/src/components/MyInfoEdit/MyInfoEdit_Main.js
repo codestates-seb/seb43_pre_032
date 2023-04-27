@@ -7,35 +7,29 @@ import MyInfoEdit_Menu from './MyInfoEdit_Menu';
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-function MyInfoEdit_Main({ membername, memberId }) {
+
+function MyInfoEdit_Main({ memberId, topData, imgUrl }) {
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [title, setTitle] = useState('');
+  const [name, setName] = useState(topData.name);
+  const [title, setTitle] = useState(topData.myPageTitle || '');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const handleChangeName = (e) => {
-    setName(e.target.value);
+  const [aboutme, setAboutme] = useState(topData.aboutMe || '');
+
+  const handleChange = (e, func) => {
+    func(e.target.value);
   };
-  const handleChangeTitle = (e) => {
-    setTitle(e.target.value);
-  };
-  const hanldeChangeEmail = (e) => {
-    setEmail(e.target.value);
-  };
-  const hanldeChangePassword = (e) => {
-    setPassword(e.target.value);
-  };
-  console.log(title, name);
+
   const handleSubmit = () => {
     axios
       .patch(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/${memberId}`,
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/mypage/${memberId}`,
         {
+          meberId: memberId,
           name: name,
           email: email,
-          password: password,
-          myPageTitle: 'title도 수정이 되나?',
+          myPageTitle: title,
+          aboutMe: aboutme,
         },
         {
           headers: {
@@ -63,7 +57,9 @@ function MyInfoEdit_Main({ membername, memberId }) {
         <InformationContainer className="informationContainer">
           <div>
             <MyInfoEdit_imgSelect
-              membername={membername}
+              membername={topData.name}
+              memberId={memberId}
+              imgUrl={imgUrl}
             ></MyInfoEdit_imgSelect>
           </div>
           <div className="simpleModifyContainer">
@@ -72,39 +68,35 @@ function MyInfoEdit_Main({ membername, memberId }) {
               id="display-name"
               className="simpleModify"
               value={name}
-              onChange={handleChangeName}
+              onChange={(e) => handleChange(e, setName)}
             ></input>
           </div>
           <div className="simpleModifyContainer">
             <label htmlFor="email">Email</label>
             <input
               id="email"
-              onChange={hanldeChangeEmail}
+              onChange={(e) => handleChange(e, setEmail)}
               value={email}
               className="simpleModify"
-            ></input>
-          </div>
-          <div className="simpleModifyContainer">
-            <label htmlFor="password">password</label>
-            <input
-              id="password"
-              className="simpleModify"
-              onChange={hanldeChangePassword}
-              value={password}
             ></input>
           </div>
           <div className="simpleModifyContainer">
             <label htmlFor="title">Title</label>
             <input
               value={title}
-              onChange={handleChangeTitle}
+              onChange={(e) => handleChange(e, setTitle)}
               id="title"
               className="simpleModify"
             ></input>
           </div>
           <div className="abouteditContainer">
             <label htmlFor="aboutme">About me</label>
-            <input id="aboutme" className="aboutedit"></input>
+            <input
+              id="aboutme"
+              className="aboutedit"
+              onChange={(e) => handleChange(e, setAboutme)}
+              value={aboutme}
+            ></input>
           </div>
         </InformationContainer>
         <div className="subtitle">
@@ -204,6 +196,11 @@ const MainContainer = styled.div`
     :hover {
       background-color: #f0f8ff;
     }
+  }
+  p {
+    margin-top: -10px;
+    color: red;
+    font-size: 8px;
   }
   @media (max-width: 1050px) {
     .linksContainer {
