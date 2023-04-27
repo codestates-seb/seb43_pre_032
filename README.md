@@ -28,7 +28,7 @@
 
 ## FE
 
-| 김주비 | 블라블라 |
+| 김주비 | question list(조회 및 삭제 , tap filter) / question detail - CRUD / answer detail - CRUD , tap filter / side banner / vote - CRU |
 |:--------:| :--------: |
 | 이세영 | 블라블라 |
 | 정호재 | 블라블라 |
