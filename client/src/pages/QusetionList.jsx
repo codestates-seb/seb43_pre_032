@@ -10,7 +10,7 @@ function Viewcomponent({ tagId }) {
   const token = searchParamsToken.get('Authorization');
   console.log(token);
   const searchParamsId = new URLSearchParams(window.location.search);
-  const memberid = searchParamsId.get('Memberid');
+  const memberid = searchParamsId.get('MemberId');
   console.log(memberid);
 
   const navigate = useNavigate();
