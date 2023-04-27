@@ -86,7 +86,10 @@ function Header() {
             >
               <a href="https://stackoverflow.co/">About</a>
             </Menu>
-            <Menu className="flex-center">Products</Menu>
+
+            <Menu className="flex-center">
+              <Link to="/question">Products</Link>
+            </Menu>
             <Menu
               className={`flex-center display-none ${
                 isLogin ? 'moblie-none' : null
