@@ -25,6 +25,7 @@ public class QuestionVoteService {
         questionVote.setMember(member);
         questionVote.setQuestion(question);
         questionVoteRepository.save(questionVote);
+        question.getQuestionVoteSum();
         questionRepository.save(question);
     }
 
@@ -34,6 +35,7 @@ public class QuestionVoteService {
         questionVote.setMember(member);
         questionVote.setQuestion(question);
         questionVoteRepository.save(questionVote);
+        question.getQuestionVoteSum();
         questionRepository.save(question);
     }
 
