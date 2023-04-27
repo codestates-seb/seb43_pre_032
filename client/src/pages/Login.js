@@ -13,20 +13,22 @@ import {
 import axios from 'axios';
 
 const Login = () => {
-  //아이디 비밀번호
+  //아이디 비밀번호& 로그인 상태
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(false);
 
+  //리덕스 툴킷-디스패치 생성
   const dispatch = useDispatch();
-
+  // 유즈 이펙트로 한번만 렌더링될때 Nav와 Footer없애주기
   useEffect(() => {
     dispatch(selectFooter(false));
     dispatch(selectNav(false));
   }, []);
-
+  //유즈네비게이트 생성
   const navigate = useNavigate();
 
+  //로그인 axios.post요청실행하는 함수
   const loginAxios = () => {
     axios.defaults.withCredentials = true;
     axios
@@ -47,19 +49,24 @@ const Login = () => {
         }
       )
       .then((response) => {
+        // 백엔드가 헤더에 담아서 보내준 토큰을 가져옴
         const token = response.headers.authorization;
+        // 로컬에 토큰을 저장하는 함수 매개변수로 토큰을 받음
         const saveToken = (token) => {
           localStorage.setItem('token', token);
         };
 
+        // 멤버id(유저id)도 헤더에 담긴 값을 가져옴
         const memberid = response.headers.memberid;
+        // 로컬에 저장하는 함수 매개변수로 id를 받음
         const saveMemberId = (memberid) => {
           localStorage.setItem('memberid', memberid);
         };
 
+        //응답 성공코드가 올때 실행
         if (response.status === 200 || response.status === 201) {
-          //--------------------------해야할일
-          // 유저 id도 받아와서 로컬스토리지에 저장하기
+          /*  로그인 성공시
+          => 로그인 상태 변경, 토큰과 아이디 로컬에 저장, 디스패치로 Nav와 Footer보이게 true설정, 네비게이트로 페이지 이동 */
           setIsLogin(false);
           saveToken(token);
           saveMemberId(memberid);
@@ -69,52 +76,40 @@ const Login = () => {
         }
       })
       .catch((err) => {
-        console.log(err.name === 'AxiosError');
+        /*응답이 안될때 로그인 상태 변경 / 콘솔 오류코드*/
+        console.log(err);
         if (err.name === 'AxiosError') {
           setIsLogin(true);
         }
 
         if (err.response.status === 401) {
           setIsLogin(true);
-          console.log('아이디 혹은 비밀번호를 잘못 적었습니다.');
         }
       });
   };
 
-  //  Oauth 클라이언트 ID
-  const GITHUB_CLIENT_ID = '6fec513b9c45ba90c613';
-
-  // Oauth 함수
+  // Oauth 미구현
   const googleLoginRequestHandler = () => {
     return window.location.assign(
       `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google`
     );
-    // console.log('준비완료');
   };
-  const githubLoginRequestHandler = () => {
-    return window.location.assign(
-      `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}`
-    );
-    // console.log('준비완료');
-  };
-  const facebookLoginRequestHandler = () => {
-    // return window.location.assign(
-    //   `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}`
-    // );
-    console.log('준비완료');
-  };
+  const githubLoginRequestHandler = () => {};
+  const facebookLoginRequestHandler = () => {};
 
+  //이메일 이벤트 onChange
   const emailHandler = (event) => {
     setId(event.target.value);
   };
-
+  //비밀번호 이벤트 onChange
   const passwordHandler = (event) => {
     setPassword(event.target.value);
   };
-
+  //form 이벤트 onSubmit
   const loginFormHandler = (event) => {
     event.preventDefault();
 
+    //axios 함수 실행
     loginAxios();
   };
 
@@ -161,7 +156,6 @@ const Login = () => {
                         id="email"
                         type="email"
                         name="email"
-                        // ref={IdInputRef}
                         onChange={emailHandler}
                       ></input>
                       <div>Invalid username or password.</div>
@@ -171,7 +165,6 @@ const Login = () => {
                       id="email"
                       type="email"
                       name="email"
-                      // ref={IdInputRef}
                       onChange={emailHandler}
                     ></input>
                   )}
@@ -191,7 +184,6 @@ const Login = () => {
                     name="password"
                     autoComplete="off"
                     onChange={passwordHandler}
-                    // ref={PasswordInputRef}
                   ></input>
                 </div>
               </DivUserInput>
@@ -212,6 +204,7 @@ const Login = () => {
   );
 };
 
+// 스타일드 컴포넌트
 const DivContainer = styled.div`
   margin: 0px;
   padding: 0px;

@@ -19,7 +19,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 const Signup = () => {
-  //이름, 이메일, 비밀번호 입력 값
+  //이름, 이메일, 비밀번호 입력 값 상태
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,30 +30,35 @@ const Signup = () => {
   const [isPassword, setIsPassword] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
 
+  /*
+  useRef를 사용하여 값을 가져옴
+  => 이유: onChange로 가져오면 상태가 계속 바뀌어 회원가입 클릭시 유효성 검사가 실시 되는 로직이 안이루어져서 useRef로 값을 받아옴
+  */
   const NameInputRef = useRef(null);
   const EamilInputRef = useRef(null);
   const PasswordInputRef = useRef(null);
 
+  //네비게이트 생성
   const navigate = useNavigate();
-
+  //디스패치 생성
   const dispatch = useDispatch();
 
+  //유즈 이펙트로 처음 한번 렌더링될때 리덕스 툴킷을통해 디스패치로 Nav와 Footer을 지움
   useEffect(() => {
     dispatch(selectFooter(false));
     dispatch(selectNav(false));
   }, []);
 
-  //이게 문제인데
+  /* 유효성 검사후 중속성 배열을 통하여 값이 변할때 조건문을 통과하면 함수가 실행될 수 있게 함 
+  => 이유: 처음 함수에(formSubmitHandler)서 유효성 검사후 axios요청을 보내는 로직이였는데, useRef이다 보니 실시간으로
+  변경이 이루어지지 않아 두번클릭을 해야 정상적인 실행이 되어서 유즈 이펙트로 상태를 추적하여 요청을 보냄 */
   useEffect(() => {
     const isVaild = !isName && !isEmail && !isPassword && isCheck;
     if (isVaild) signupAxios();
   }, [email, password, name]);
 
-  //이게 찐
+  //회원가입 axios.post요청하는 함수
   const signupAxios = () => {
-    console.log(email);
-    console.log(password);
-    console.log(name);
     axios.defaults.withCredentials = true;
     axios
       .post(
@@ -73,9 +78,9 @@ const Signup = () => {
         }
       )
       .then((res) => {
+        // 응답 코드를 통해 네비게이트로 페이지 전환
         if (res.status === 201 || res.status === 200) {
           alert('Register now complete.');
-          console.log('완료');
           navigate('/auth/login');
         }
       })
@@ -89,6 +94,7 @@ const Signup = () => {
       });
   };
 
+  //이름
   const nameHandler = () => {
     let nameInputText = NameInputRef.current.value;
     setName(nameInputText);
@@ -101,6 +107,7 @@ const Signup = () => {
     }
   };
 
+  //이름(name) - useRef값 받아와 상태 업데이트와 유효성 검사하는 함수
   const emailHandler = () => {
     let emailInputText = EamilInputRef.current.value;
     setEmail(emailInputText);
@@ -116,7 +123,7 @@ const Signup = () => {
       setIsEmail(false);
     }
   };
-
+  //비밀번호(password) - useRef값 받아와 상태 업데이트와 유효성 검사하는 함수
   const passwordHandler = () => {
     let passwordInputText = PasswordInputRef.current.value;
     setPassword(passwordInputText);
@@ -128,11 +135,12 @@ const Signup = () => {
       setIsPassword(false);
     }
   };
-
+  //체크박스(checkbox) - 체크했는지 상태업데이트를 통해 확인하는 함수
   const checkboxHandler = () => {
     setIsCheck((prev) => !prev);
   };
 
+  //form-onSubmit이벤트로 유효성 검사와 useRef로 받아온 값을 업데이트하여 => useEffet(55번줄)함수가 실행되어 axios요청이 가게 됨
   const formSubmitHandler = (event) => {
     event.preventDefault();
 
@@ -140,40 +148,16 @@ const Signup = () => {
     nameHandler();
     emailHandler();
     passwordHandler();
-
-    const isVaild = !isName && !isEmail && !isPassword && isCheck;
-    console.log(isVaild);
-
-    //유효성 검사 통과하면 axios요청 보내기
-    if (isVaild) {
-      signupAxios();
-    } else {
-      return;
-    }
   };
 
-  //  Oauth 클라이언트 ID
-  const GITHUB_CLIENT_ID = '6fec513b9c45ba90c613';
-
-  // Oauth 함수
+  // Oauth 함수 미구현 (구글,깃헙,페북)
   const googleLoginRequestHandler = () => {
-    // return window.location.assign(
-    //   `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}`
-    // );
-    console.log('준비완료');
-  };
-  const githubLoginRequestHandler = () => {
     return window.location.assign(
-      `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}`
+      `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google`
     );
-    // console.log('준비완료');
   };
-  const facebookLoginRequestHandler = () => {
-    // return window.location.assign(
-    //   `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}`
-    // );
-    console.log('준비완료');
-  };
+  const githubLoginRequestHandler = () => {};
+  const facebookLoginRequestHandler = () => {};
 
   return (
     <>
@@ -400,6 +384,7 @@ const Signup = () => {
   );
 };
 
+//스타일드 컴포넌트
 const DivContainer = styled.div`
   display: flex;
   justify-content: center;
