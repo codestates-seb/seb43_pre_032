@@ -11,8 +11,6 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 const OtherButtons = () => {
-
-
   // axios요청 응답값으로 받아온 name과 reputation을 저장하는 상태
   const [name, setName] = useState('');
   const [reputation, setReputation] = useState('');
@@ -20,7 +18,6 @@ const OtherButtons = () => {
   // 로컬에 저장한 토큰과 멤버id 값을 변수에 할당
   const getToken = localStorage.getItem('token');
   const getMemberid = localStorage.getItem('memberid');
-
 
   // axios.get 멤버 id와 토큰을 사용해 이름을 읽어오는 함수
   const membersIdAxios = () => {
