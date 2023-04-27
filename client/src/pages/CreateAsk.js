@@ -56,10 +56,12 @@ const CreateAsk = () => {
           Authorization: localStorage.getItem('token'), //post 요청시 인증토큰 필요
         },
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        navigate('/question'); // 생성후 전체 질문 페이지로 이동하고
+        window.location.reload(); // 새로고침
+      })
       .catch((err) => console.log(err));
-    navigate('/question'); // 생성후 전체 질문 페이지로 이동하고
-    window.location.reload(); // 새로고침
   };
 
   let dispatch = useDispatch();

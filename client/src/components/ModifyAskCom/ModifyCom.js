@@ -115,9 +115,11 @@ const ModifyCom = ({ qsId }) => {
           'ngrok-skip-browser-warning': '69420',
         },
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        navigate(`/question/${qsId.qsId}`);
+      })
       .catch((err) => console.log(err));
-    navigate(`/question/${qsId.qsId}`);
   };
 
   let helphandler = (type) => {
