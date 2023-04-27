@@ -10,43 +10,29 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-// import { selectNav } from '../../store/store';
-// import { useDispatch } from 'react-redux';
-
 const OtherButtons = () => {
-  // const dispatch = useDispatch();
-  // const example = [{ data1: '1' }, { data2: '2' }];
-
-  // 로그인시 get요청으로 유저이름 가져오기
-  // 프로필 클릭시 마이페이지 링크 연결
-  // 프로필 색? 랜덤??
-
+  // axios요청 응답값으로 받아온 name과 reputation을 저장하는 상태
   const [name, setName] = useState('');
   const [reputation, setReputation] = useState('');
 
+  // 로컬에 저장한 토큰과 멤버id 값을 변수에 할당
   const getToken = localStorage.getItem('token');
   const getMemberid = localStorage.getItem('memberid');
 
+  // axios.get 멤버 id와 토큰을 사용해 이름을 읽어오는 함수
   const membersIdAxios = () => {
+    //헤더에 토큰값을 주어서 유저정보를 읽어온다
     axios
       .get(
         `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/mypage/${getMemberid}`,
         { headers: { Authorization: getToken } }
       )
       .then((res) => {
+        //받아온 이름을 변수에 할당후
         const name = res.data.name;
-        console.log(name);
-
+        // 조건문을 통해 이름이 있다면 뒤에서 2글자만 저장(ex. 박지성 => 지성)
         if (name) {
-          if (name.length === 3) {
-            setName(name.slice(1, 3));
-          } else if (name.length === 2) {
-            setName(name);
-          } else if (name.length === 4) {
-            setName(name.slice(2, 4));
-          } else {
-            setName(name.slice(3, 5));
-          }
+          setName(name.slice(name.length - 2));
         }
         const reputation = res.data.requtation;
         setReputation(reputation);
@@ -54,6 +40,7 @@ const OtherButtons = () => {
       .catch((err) => console.log(err));
   };
 
+  //유즈이펙트로 처음 렌더링때 axios함수를 실행
   useEffect(() => {
     membersIdAxios();
   }, []);
@@ -84,6 +71,7 @@ const OtherButtons = () => {
   );
 };
 
+// 스타일드 컴포넌트
 export const LoginBtn = styled.div`
   height: 30px;
   :hover {
