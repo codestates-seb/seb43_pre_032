@@ -81,7 +81,7 @@ public class MemberController {
                                           @RequestPart(required = false) MultipartFile file){
         long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();
 
-        memberService.uploading(file, memberId, authenticationMemberId);
+        memberService.uploading(file, memberId, authenticationMemberId, IMAGE_DEFAULT_URL);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

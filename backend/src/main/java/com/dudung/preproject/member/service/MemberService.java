@@ -101,7 +101,7 @@ public class MemberService {
         }
     }
 
-    public Boolean uploading(MultipartFile file, long memberId, long authenticationMemberId) {
+    public Boolean uploading(MultipartFile file, long memberId, long authenticationMemberId, String url) {
 
         checkVerifiedId(authenticationMemberId);
         Member findedmember = findVerifiedMember(memberId);
@@ -118,7 +118,7 @@ public class MemberService {
         String newFileName = dir + extiension;
 
         try {
-            File folder = new File("image" + File.separator + dir);
+            File folder = new File(url + File.separator + dir);
             File[] files = folder.listFiles();
             if (!folder.exists()) {
                 folder.mkdirs();
@@ -127,7 +127,7 @@ public class MemberService {
                     file1.delete();
                 }
             }
-            File destination = new File(folder.getAbsolutePath() , newFileName);
+            File destination = new File( folder , newFileName);
 
             System.out.println(folder.getAbsolutePath());
             file.transferTo(destination);
