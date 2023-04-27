@@ -81,6 +81,9 @@
 ## 🔖 Project Docs
 
 ### 사용자 요구사항 정의서
+
+![image](https://user-images.githubusercontent.com/119921683/234832126-ef30ebd8-cbf6-4fb8-ad36-a9644c8f753d.png)
+
 [G043 - 요구사항 명세서.pdf](https://github.com/codestates-seb/seb43_pre_032/files/11341763/G043.-.2F.2F.-.pdf)
 
 ### DB Diagram
