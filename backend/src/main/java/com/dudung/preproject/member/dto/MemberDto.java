@@ -60,7 +60,7 @@ public class MemberDto {
     }
 
     @Getter
-    @Builder
+    @Setter
     public static class MyPagePatch {
 
         private Long memberId;

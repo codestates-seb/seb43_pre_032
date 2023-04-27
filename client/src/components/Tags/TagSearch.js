@@ -44,7 +44,7 @@ const TagSearchMain = styled.div`
     }
   }
 `;
-const TagSerachBar = styled.input`
+export const TagSerachBar = styled.input`
   margin: 10px 0px;
   width: 190px;
   height: 38px;

@@ -82,6 +82,7 @@ public class AnswerDto {
     @Getter
     @Builder
     public static class AnswerMemberResponseForList {
+        private Long questionId;
         private Long answerId;
         private String answerContent;
     }

@@ -40,6 +40,7 @@ const HelpContainer = styled.section`
 `;
 
 const HelpItem = ({ title, help }) => {
+  // 도움잘 제목 및 내용 전달 받은 후 삽입
   return (
     <HelpContainer>
       <Bannercomponent className="resize">

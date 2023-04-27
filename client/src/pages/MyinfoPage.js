@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import NavigateBar from '../components/MyinfoCom/NavigateBar';
 import Myinfo_SideBar from '../components/MyinfoCom/Main/Myinfo_SideBar';
 import Myinfo_Main from '../components/MyinfoCom/Main/Myinfo_Main';
-import MemberDelete from '../components/MemberDelete';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -28,15 +27,17 @@ const MyPage = () => {
   useEffect(() => {
     axios
       .get(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/mypage/${memberId.qsId}`
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/mypage/${memberId.qsId}` // 유저 정보 가져오기
       )
       .then((res) => {
-        console.log(res.data);
+        console.log(res);
         let topData = {
           name: res.data.name,
           createAt: res.data.createAt,
           memberId: res.data.memberId,
           myPageTitle: res.data.myPageTitle,
+          modifiedAt: res.data.modifiedAt,
+          memberJpegUrl: res.data.memberJpegUrl,
         };
         let mainData = {
           questions: res.data.questions,
@@ -46,13 +47,13 @@ const MyPage = () => {
           answers: res.data.answers,
           aboutMe: res.data.aboutMe,
         };
-        console.log(res.data.question);
-        setTopData(topData);
-        setMainData(mainData);
+        setTopData(topData); // 상단 데이터 상태 응답 데이터로 변경
+        setMainData(mainData); // 중심 데이터 상태 응답 데이터 변경
       });
   }, []);
-  const [topData, setTopData] = useState({});
-  const [mainData, setMainData] = useState({});
+  const [topData, setTopData] = useState({}); // 상단 부분 data 상태
+  const [mainData, setMainData] = useState({}); // 중심 부분 data 상태
+  // 이후 각 컴포넌트에 필요한 데이터 내려주기
   return (
     <MyPageContainer>
       <MyPageTop topData={topData} />
@@ -63,7 +64,6 @@ const MyPage = () => {
         <Myinfo_SideBar></Myinfo_SideBar>
         <Myinfo_Main mainData={mainData}></Myinfo_Main>
       </MyPageMainSection>
-      <MemberDelete />
     </MyPageContainer>
   );
 };

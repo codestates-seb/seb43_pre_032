@@ -164,7 +164,7 @@ export const TagContainer = styled.div`
   }
 `;
 
-const TagsPage = styled.div`
+export const TagsPage = styled.div`
   padding: 24px;
   max-width: 1050;
   h1 {

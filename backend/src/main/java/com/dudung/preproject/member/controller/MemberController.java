@@ -81,7 +81,7 @@ public class MemberController {
                                           @RequestPart(required = false) MultipartFile file){
         long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();
 
-        memberService.uploading(file, memberId, authenticationMemberId);
+        memberService.uploading(file, memberId, authenticationMemberId, IMAGE_DEFAULT_URL);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -90,8 +90,9 @@ public class MemberController {
                                       @Valid @RequestBody MemberDto.MyPagePatch requestBody) {
         long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();
 
+        requestBody.setMemberId(memberId);
         memberService.updateMyPage(mapper.responserMypagePatchToMember(requestBody), authenticationMemberId);
-        return new ResponseEntity<>("수정 완료", HttpStatus.OK);
+        return new ResponseEntity<>(mapper.memberToMyPage(memberService.findMember(memberId)), HttpStatus.OK);
     }
 
     @GetMapping("/image/{member-id}")

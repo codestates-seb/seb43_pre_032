@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const MemberDelete = () => {
   const [deleteBtn, setDeleteBtn] = useState(false);
-  console.log(deleteBtn);
+  const [isChecked, setIsChecked] = useState(false);
 
   const navigate = useNavigate();
 
@@ -19,8 +19,13 @@ const MemberDelete = () => {
     localStorage.removeItem('memberid');
   };
 
+  const checkboxHandler = () => {
+    setIsChecked(!isChecked);
+  };
+
   const checkDeleteHandler = () => {
-    setDeleteBtn(true);
+    setDeleteBtn(!deleteBtn);
+    setIsChecked(false);
   };
 
   const deleteHandler = () => {
@@ -48,13 +53,40 @@ const MemberDelete = () => {
       {deleteBtn ? (
         <DivDelete>
           <div>
-            정말로 계정을 삭제하시겠습니까? 계정을 다시 되돌릴 수 없습니다.
+            <input
+              type="checkbox"
+              id="deleteCheck"
+              onChange={checkboxHandler}
+            />
+            <label htmlFor="deleteCheck">
+              정말로 계정을 삭제하시겠습니까? 계정을 다시 되돌릴 수 없습니다.
+            </label>
           </div>
-          <button onClick={deleteHandler}>계정삭제</button>
+          {isChecked ? (
+            <>
+              <button onClick={deleteHandler} className="hover">
+                계정삭제
+              </button>
+              <button onClick={checkDeleteHandler} className="hover">
+                취소
+              </button>
+            </>
+          ) : (
+            <>
+              <button onClick={deleteHandler} disabled>
+                계정삭제
+              </button>
+              <button onClick={checkDeleteHandler} className="hover">
+                취소
+              </button>
+            </>
+          )}
         </DivDelete>
       ) : (
         <DivDelete>
-          <button onClick={checkDeleteHandler}>계정삭제</button>
+          <button onClick={checkDeleteHandler} className="hover">
+            계정삭제
+          </button>
         </DivDelete>
       )}
     </DivContainer>
@@ -63,15 +95,25 @@ const MemberDelete = () => {
 
 const DivContainer = styled.div`
   width: 600px;
+  height: 60px;
 `;
 
 const DivDelete = styled.div`
+  text-align: right;
+
   > button {
-    height: 30px;
-    width: 215px;
+    width: 100px;
     border-radius: 5px;
     border: 2px solid #fca5a5;
     background-color: transparent;
+  }
+
+  .hover {
+    :hover {
+      color: white;
+      background-color: #fca5a5;
+      cursor: pointer;
+    }
   }
 `;
 

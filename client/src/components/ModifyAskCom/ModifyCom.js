@@ -11,7 +11,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const ModifyCom = ({ qsId }) => {
-  const url = `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}`;
+  const url = `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}`; //url
 
   let titleHelp = [
     'Correct minor typos or mistakes',
@@ -38,23 +38,19 @@ const ModifyCom = ({ qsId }) => {
     'read the descriptions that appear below the tag',
     'combine multiple words into single-words with hyphens (e.g. python-3.x), up to a maximum of 35 characters',
     `creating new tags is a privilege; if you can't yet create a tag you need, then post this question without it, then ask the community to create it for you`,
-  ];
+  ]; // 사이드 배너 내용 배열
   const titles = ['How to Edit', 'How to Format', 'How to Tag'];
   const navigate = useNavigate();
   let [word, setWord] = useState(''); // 태그 검색어
-  let [getTag, setGetTag] = useState([]);
+  let [getTag, setGetTag] = useState([]); // filter된 태그 정보
   let [selected, setSelected] = useState([]); // 선택한 태그
-  let [filtered, setFiltered] = useState([]);
+  let [filtered, setFiltered] = useState([]); // 상위 6개
 
   useEffect(() => {
-    console.log(qsId);
     axios
       .get(
         `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions/${qsId.qsId}?page=1&answertab=score`,
         {
-          headers: {
-            'ngrok-skip-browser-warning': '69420',
-          },
           withCredentials: true,
           credentials: 'include',
         }
@@ -119,9 +115,11 @@ const ModifyCom = ({ qsId }) => {
           'ngrok-skip-browser-warning': '69420',
         },
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        navigate(`/question/${qsId.qsId}`);
+      })
       .catch((err) => console.log(err));
-    navigate(`/question/${qsId.qsId}`);
   };
 
   let helphandler = (type) => {

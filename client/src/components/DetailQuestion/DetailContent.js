@@ -108,6 +108,7 @@ export default DetailContent;
 export const DetailContents = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
   margin-top: 30px;
   max-width: 700px;
   div:nth-child(1) {
@@ -119,6 +120,7 @@ export const TextContents = styled.div`
   width: 100%;
   padding: 0px 20px;
   line-height: 150%;
+  word-break: break-all;
   .tagData {
     display: flex;
     justify-content: left;
