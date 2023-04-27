@@ -22,6 +22,7 @@ function Viewcomponent({ tagId }) {
     dispatch(selectFooter(true));
     dispatch(selectNav(true));
     navigate('/question');
+    window.location.reload();
   }
 
   console.log('hi');

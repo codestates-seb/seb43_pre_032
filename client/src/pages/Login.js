@@ -18,8 +18,6 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(false);
 
-  console.log('로그인 컴포넌트');
-
   //리덕스 툴킷-디스패치 생성
   const dispatch = useDispatch();
   // 유즈 이펙트로 한번만 렌더링될때 Nav와 Footer없애주기
