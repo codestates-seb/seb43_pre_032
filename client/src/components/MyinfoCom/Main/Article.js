@@ -19,6 +19,7 @@ const ContentsContainer = styled.div`
     font-size: 20px;
     font-weight: 600;
     color: #1972c5;
+    text-decoration: none;
   }
 `;
 const Article = ({
@@ -36,8 +37,8 @@ const Article = ({
       <CardHeader title={title} isFilter={isFilter} options={options} />
       <ContentsContainer>
         {data.map((el, idx) => (
-          <Link to={id[idx]} key={idx}>
-            <div className="data">{el[select]}</div>
+          <Link className="data" to={id[idx]} key={idx}>
+            <div>{el[select]}</div>
           </Link>
         ))}
       </ContentsContainer>
