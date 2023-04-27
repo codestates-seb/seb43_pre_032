@@ -6,6 +6,7 @@ import lombok.Setter;
 
 public class QuestionVoteDto {
     @Getter
+    @Setter
     public static class QuestionVotePost {
         private long questionId;
         private long memberId;
@@ -24,9 +25,6 @@ public class QuestionVoteDto {
     @Getter
     @Builder
     public static class QuestionVoteResponse {
-        private long questionVoteId;
-        private long questionId;
-        private long memberId;
         private int score;
     }
 }
