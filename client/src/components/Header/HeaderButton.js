@@ -27,16 +27,15 @@ const OtherButtons = () => {
   const getToken = localStorage.getItem('token');
   const getMemberid = localStorage.getItem('memberid');
 
-  //값이 있을때만 슬라이스 처리
-
   const membersIdAxios = () => {
     axios
       .get(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/${getMemberid}`,
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/mypage/${getMemberid}`,
         { headers: { Authorization: getToken } }
       )
       .then((res) => {
         const name = res.data.name;
+        console.log(name);
 
         if (name) {
           if (name.length === 3) {
