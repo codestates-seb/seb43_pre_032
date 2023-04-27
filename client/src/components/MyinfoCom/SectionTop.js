@@ -105,13 +105,16 @@ const MyPageTop = ({ topData }) => {
   let now = DateFormat(new Date(), new Date());
   let at = DateFormat(new Date(), topData.createAt);
 
+  let modifiedWhen = DateFormat(new Date(), topData.modifiedAt);
+
+  const modifiedTime = Diff(now, modifiedWhen);
   const since = Diff(now, at);
   // console.log(since);
   // DateFormat(new Date(), topData.createAt);
   // DateFormat(new Date(), new Date());
   const history = {
     signupDate: since,
-    // lastseenDate: '7',
+    modified: modifiedTime,
     // visitedDate: '6',
   };
   const clickEdit = () => {
@@ -128,8 +131,10 @@ const MyPageTop = ({ topData }) => {
           <UserTitle>{topData.myPageTitle}</UserTitle>
           <div className="time-history-container">
             <div className="info">{`🎂 Member for ${history.signupDate} days`}</div>
-            {/* <div className="info">{`🕔 Last seen this ${history.lastseenDate} days`}</div>
-            <div className="info">{`🗓️ Visited ${history.visitedDate} days`}</div> */}
+            <div className="info">{`📝 Modified before ${
+              history.modified - 1
+            } days`}</div>
+            {/* <div className="info">{`🗓️ Visited ${history.visitedDate} days`}</div> */}
           </div>
         </ItemContainer>
         <ProfileBtnContainer className="flex-space-between">

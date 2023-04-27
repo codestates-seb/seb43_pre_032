@@ -37,6 +37,7 @@ const MyPage = () => {
           createAt: res.data.createAt,
           memberId: res.data.memberId,
           myPageTitle: res.data.myPageTitle,
+          modifiedAt: res.data.modifiedAt,
         };
         let mainData = {
           questions: res.data.questions,

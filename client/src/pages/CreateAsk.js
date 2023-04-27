@@ -197,7 +197,7 @@ const CancelBtn = styled.button`
   border-radius: 3px;
 `;
 const MainContainer = styled.div`
-  max-width: 1000px;
+  max-width: 150vh;
   padding-left: 20px;
   padding-right: 20px;
 `;

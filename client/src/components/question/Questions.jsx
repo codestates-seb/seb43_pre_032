@@ -33,6 +33,7 @@ function Questions({ tagId }) {
         },
       })
       .then(function (response) {
+        console.log(response);
         tagId
           ? setQsData(response.data.data.questions)
           : setQsData(response.data.data); //현재 페이지의 데이터
@@ -73,6 +74,7 @@ function Questions({ tagId }) {
 
   //작성시간계산 : ~~시간전 으로 표기
   function displayedAt(createdAt) {
+    console.log(createdAt, new Date());
     const milliSeconds = new Date() - createdAt;
     const seconds = milliSeconds / 1000;
     if (seconds < 60) return `${Math.floor(seconds)} secs ago`;
