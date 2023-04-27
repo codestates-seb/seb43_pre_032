@@ -30,7 +30,7 @@
 
 | 김주비 | question list(조회 및 삭제 , tap filter) / question detail - CRUD / answer detail - CRUD , tap filter / side banner / vote - CRU |
 |:--------:| :--------: |
-| 이세영 | 블라블라 |
+| 이세영 | 로그인(post, ouath, jwt)/ 회원가입(post, ouath)/ 회원탈퇴(delete)/ Navbar/ header(회원정보 get) |
 | 정호재 |question Ask(질문 생성, 태그 조회, post)/ question Modify(질문 수정, get, post, 태그 조회)/Mypage 정보창(유저 정보, get)/Header|
 | 정솔 | 블라블라 |
 
