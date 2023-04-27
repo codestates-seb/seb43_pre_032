@@ -87,13 +87,14 @@ const Login = () => {
         }
       });
   };
-
   // Oauth 미구현
   const googleLoginRequestHandler = () => {
-    return window.location.assign(
+    //오어스 인증링크로 이동
+    window.location.assign(
       `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google`
     );
   };
+
   const githubLoginRequestHandler = () => {};
   const facebookLoginRequestHandler = () => {};
 
