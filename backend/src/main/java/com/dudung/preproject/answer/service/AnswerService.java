@@ -53,7 +53,7 @@ public class AnswerService {
                 .ifPresent(LocalDateTime -> findAnswer.setModifiedAt(java.time.LocalDateTime.now()));
 
         findAnswer.setModifiedAt(answer.getModifiedAt());
-        findAnswer.getQuestion().setQuestionLastStatus(Question.LastStatus.QUESTION_MODIFY);
+        findAnswer.getQuestion().setQuestionLastStatus(Question.LastStatus.ANSWER_MODIFY);
         findAnswer.getQuestion().setQuestionLastStatusTime(findAnswer.getModifiedAt());
 
         return answerRepository.save(findAnswer);
