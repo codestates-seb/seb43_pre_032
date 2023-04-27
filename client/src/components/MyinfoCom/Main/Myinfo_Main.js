@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { selectFooter, selectNav } from '../../../store/store';
 import MemberDelete from '../../MemberDelete';
-// import { useState } from 'react';
+
 const MainContainer = styled.div`
   width: 100%;
   @media (max-width: 1300px) {
@@ -33,7 +33,6 @@ const SummaryContentsContainer = styled.div`
   grid-column-gap: 20px;
   @media only screen and (max-width: 980px) {
     grid-template-columns: 1fr;
-    /* grid-row-gap: 20px; */
     grid-column-gap: 0px;
   }
   width: 100%;
@@ -44,11 +43,7 @@ const ShortContainer = styled.div`
   grid-template-columns: 1fr;
   width: 100%;
 `;
-// const LongContainer = styled.div`
-//   display: grid;
-//   grid-template-columns: 1fr;
-//   width: 100%;
-// `;
+
 const StatusContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -63,25 +58,19 @@ const Status = styled.div`
 `;
 
 const Myinfo_Main = ({ mainData }) => {
+  // main에 사용할 데이터 전달 받음
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(selectNav(true));
-    dispatch(selectFooter(true));
+    dispatch(selectNav(true)); // nav 가져옴
+    dispatch(selectFooter(true)); // footer 가져옴
   }, []);
 
-  const option1 = ['score', 'Activity', 'Newest'];
-  const option2 = ['score', 'Activity', 'Newest', 'Views'];
-  // const option3 = ['score', 'Activity', 'Newest', 'Added'];
-  // const option4 = ['Active', 'Offered', 'Earned'];
-  // const option5 = ['score', 'Activity', 'Newest', 'Views'];
+  const option1 = ['score', 'Activity', 'Newest']; // 옵션 타입1
+  const option2 = ['score', 'Activity', 'Newest', 'Views']; // 옵션 타입2
 
-  // let [titles, setTitles] = useState([]);
-  // let [reputation, setReputation] = useState(0);
-  // let [questionCnt, setQuestionCnt] = useState(0);
-  // let [answerCnt, setAnswerCnt] = useState(0);
-  const questions = mainData.questions;
-  const answers = mainData.answers;
-  console.log(mainData);
+  const questions = mainData.questions; //questions 배열
+  const answers = mainData.answers; // answers 배열
+
   return (
     <MainContainer>
       <div className="flex-col">
@@ -121,16 +110,7 @@ const Myinfo_Main = ({ mainData }) => {
           options={option2}
           select="questionsTitle"
         />
-        {/* <Article title="Tags" isFilter={false} />
-        <Article title="Requtation" isFilter={false} /> */}
       </ShortContainer>
-      {/* <LongContainer>
-        <Article title="Budges" options={option3} />
-        <Article title="Followed posts" options={option4} />
-        <Article title="Active bounties" isFilter={false} />
-        <Article title="Articles" options={option5} />
-        <Article title="Votes cast" isFilter={false} />
-      </LongContainer> */}
       <MemberDelete />
     </MainContainer>
   );

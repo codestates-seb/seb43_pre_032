@@ -16,68 +16,55 @@ const url =
 
 const CreateAsk = () => {
   let [word, setWord] = useState(''); // 태그 검색어
-  let [selected, setSelected] = useState([]); // 선택한 태그
-  let [filtered, setFiltered] = useState([]);
-  let [getTag, setGetTag] = useState([]);
+  let [selected, setSelected] = useState([]); // 사용자가 선택한 태그
+  let [filtered, setFiltered] = useState([]); // 상위 6개 태그
+  let [getTag, setGetTag] = useState([]); // 요청으로 받아온 필터된 태그
   useEffect(() => {
-    searchedData(word);
-    setFiltered(getTag.slice(0, 6));
+    searchedData(word); // 검색어 상태 변경
+    setFiltered(getTag.slice(0, 6)); // 6개만 추출
   }, [word]);
   const searchedData = async (word) => {
     await axios
       .get(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags?page=1&keyword=${word}&tab=popular`,
-        {
-          headers: {
-            'ngrok-skip-browser-warning': '69420',
-          },
-        }
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags?page=1&keyword=${word}&tab=popular`
       )
-      .then((res) => setGetTag(res.data.data))
+      .then((res) => setGetTag(res.data.data)) //응답 전체 태그 가져오기
       .catch((err) => console.log(err));
   };
-  useEffect(() => {
-    searchedData(word);
-    setFiltered(getTag.slice(0, 6));
-  }, [word]);
-  let [selectHelp, setSelectHelp] = useState(0);
-  let [titleInput, setTitleInput] = useState('');
-  let [body, setBody] = useState('');
-  let [isReady, setIsReady] = useState(false);
-
-  console.log(titleInput);
-  console.log(body);
+  let [selectHelp, setSelectHelp] = useState(0); // 보여줄 헬프 배너 선택 상태
+  let [titleInput, setTitleInput] = useState(''); // 제목 Input 상태
+  let [body, setBody] = useState(''); // body textarea 상태
+  let [isReady, setIsReady] = useState(false); // 유효성 검사 통과 관리 상태
 
   useEffect(() => {
-    body.length > 20 ? setIsReady(true) : setIsReady(false);
+    body.length > 20 ? setIsReady(true) : setIsReady(false); // body의 내용이 20자 넘게 작성하도록 함
   }, [body]);
   let navigate = useNavigate();
   const postData = () => {
     let tagID = selected.map((el) => {
       return { tagId: el.tagId };
-    });
+    }); // 사용자 선택 tagID 가져오기
 
     let newData = {
       questionTitle: titleInput,
       questionContent: body,
       tagName: tagID,
-    };
-    console.log(newData, localStorage.getItem('token'));
+    }; // 요청 바디 구성
     axios
       .post(url, newData, {
         headers: {
-          Authorization: localStorage.getItem('token'),
+          Authorization: localStorage.getItem('token'), //post 요청시 인증토큰 필요
         },
       })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
-    navigate('/question');
-    window.location.reload();
+    navigate('/question'); // 생성후 전체 질문 페이지로 이동하고
+    window.location.reload(); // 새로고침
   };
 
   let dispatch = useDispatch();
   useEffect(() => {
-    dispatch(selectNav(false));
+    dispatch(selectNav(false)); // 질문 생성 페이지 렌더링시 nav 제거
   }, []);
 
   const helpTitle = [
@@ -110,7 +97,7 @@ const CreateAsk = () => {
       'Tags help ensure that your question will get attention from the right people.',
       'Tag things in more than one way so people can find them more easily. Add tags for product lines, projects, teams, and the specific technologies or languages used.',
     ],
-  ];
+  ]; // 배너 내용
   const cancelHandler = () => {
     navigate('/question');
   };

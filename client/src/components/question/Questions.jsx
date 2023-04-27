@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { selectFooter, selectNav } from '../../store/store';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Questions({ tagId }) {
   const [qsData, setQsData] = useState([]);
@@ -13,19 +13,22 @@ function Questions({ tagId }) {
   const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
   const [totalcontetns, setTotalcontetns] = useState(0); // 전체 페이지 수
   const [filter, setFilter] = useState('Newest');
-
+  const [keyword, setKeyword] = useState('');
   const dispatch = useDispatch();
-
+  const search = useSelector((state) => state.SearchData.data);
+  console.log(search);
   useEffect(() => {
     dispatch(selectFooter(true));
     dispatch(selectNav(true));
+    setKeyword(search);
   }, []);
 
   const url = tagId
     ? `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags/${tagId}?page=${currentPage}&tab=Active`
-    : `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions?page=${currentPage}&tab=${filter}`;
+    : `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions?page=${currentPage}&tab=${filter}&keyword=${keyword}`;
 
   useEffect(() => {
+    // console.log(url);
     axios
       .get(url, {
         headers: {
@@ -33,18 +36,18 @@ function Questions({ tagId }) {
         },
       })
       .then(function (response) {
-        console.log(response);
         tagId
           ? setQsData(response.data.data.questions)
           : setQsData(response.data.data); //현재 페이지의 데이터
         setTotalPages(Math.ceil(response.data.pageInfo.totalElements / 10)); //전체페이지 계산
         setTotalcontetns(response.data.pageInfo.totalElements);
         window.scrollTo(0, 0);
+        console.log('요청 성공');
       })
       .catch(function (error) {
         console.log(error);
       });
-  }, [currentPage, filter]);
+  }, [currentPage, keyword, filter]);
 
   //이전페이지
   const handlePreviousPageClick = () => {
@@ -74,7 +77,6 @@ function Questions({ tagId }) {
 
   //작성시간계산 : ~~시간전 으로 표기
   function displayedAt(createdAt) {
-    console.log(createdAt, new Date());
     const milliSeconds = new Date() - createdAt;
     const seconds = milliSeconds / 1000;
     if (seconds < 60) return `${Math.floor(seconds)} secs ago`;

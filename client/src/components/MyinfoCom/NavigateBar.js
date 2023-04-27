@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-
+//sub 상단 메뉴
 const MenuContainer = styled.div`
   width: 278px;
 `;

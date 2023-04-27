@@ -10,10 +10,15 @@ import {
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import Nav from '../Nav';
+import { useDispatch } from 'react-redux';
+import { setData } from '../../store/store';
+import axios from 'axios';
 
 function Header() {
   //토큰 여부로 로그인 여부 확인하여 헤더 표시
   const tokenValid = localStorage.getItem('token');
+
+  let [inputWord, setInputWord] = useState('');
   let isLogin = false;
   if (tokenValid) {
     isLogin = true;
@@ -24,12 +29,28 @@ function Header() {
   let [menuOpen, setMenuOpen] = useState(false);
 
   let navigate = useNavigate();
+  let dispatch = useDispatch();
 
   const clickLogin = () => {
-    navigate('/auth/login');
+    navigate('/auth/login'); // 로그인 버튼 클릭시 Login 화면 이동
   };
   const clickSignup = () => {
-    navigate('/members');
+    navigate('/members'); // 회원가입 버튼 클릭시 members 화면으로 이동
+  };
+  const searchHandler = (e) => {
+    setInputWord(e.target.value);
+  };
+  const enterHandler = (e) => {
+    if (e.key === 'Enter') {
+      axios
+        .get(
+          `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions?page=1&tab=Newest&keyword=${inputWord}`
+        )
+        .then((res) => {
+          dispatch(setData(res.data.data));
+        });
+      navigate('/question');
+    }
   };
 
   return (
@@ -77,7 +98,11 @@ function Header() {
         </Logogroup>
         <SerachGroup>
           <FontAwesomeIcon icon={faMagnifyingGlass} className="serch-icon" />
-          <SerachBar placeholder="Search..."></SerachBar>
+          <SerachBar
+            onKeyDown={enterHandler}
+            onChange={searchHandler}
+            placeholder="Search..."
+          ></SerachBar>
         </SerachGroup>
         {isLogin ? (
           <>

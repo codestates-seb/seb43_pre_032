@@ -10,34 +10,27 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-// import { selectNav } from '../../store/store';
-// import { useDispatch } from 'react-redux';
-
 const OtherButtons = () => {
-  // const dispatch = useDispatch();
-  // const example = [{ data1: '1' }, { data2: '2' }];
-
   // 로그인시 get요청으로 유저이름 가져오기
   // 프로필 클릭시 마이페이지 링크 연결
-  // 프로필 색? 랜덤??
 
-  const [name, setName] = useState('');
+  const [name, setName] = useState(''); // 사용자 이름
   const [reputation, setReputation] = useState('');
 
-  const getToken = localStorage.getItem('token');
-  const getMemberid = localStorage.getItem('memberid');
+  const getToken = localStorage.getItem('token'); // 로컬 저장된 토큰 가져오기
+  const getMemberid = localStorage.getItem('memberid'); // 로컬 저장된 멤버 아이디 가져오기
 
   const membersIdAxios = () => {
     axios
       .get(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/mypage/${getMemberid}`,
-        { headers: { Authorization: getToken } }
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/mypage/${getMemberid}`, //url
+        { headers: { Authorization: getToken } } // 인증토큰 헤더에 담기
       )
       .then((res) => {
         const name = res.data.name;
-        console.log(name);
 
         if (name) {
+          // 이름의 크기에 따른 프로필 글자 수 제한
           if (name.length === 3) {
             setName(name.slice(1, 3));
           } else if (name.length === 2) {
@@ -53,9 +46,8 @@ const OtherButtons = () => {
       })
       .catch((err) => console.log(err));
   };
-
   useEffect(() => {
-    membersIdAxios();
+    membersIdAxios(); // 화면 첫 렌더링 시 한번만 axios 데이터 받아오기
   }, []);
 
   return (
