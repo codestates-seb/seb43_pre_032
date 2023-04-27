@@ -9,7 +9,6 @@ import axios from 'axios';
 
 const MyPageContainer = styled.main`
   font-size: 14px;
-  /* width: calc(100%-200px); */
   height: 100%;
   .flex-row {
     display: flex;
@@ -25,25 +24,36 @@ const MyPageMainSection = styled.section`
 
 const MyInfoEdit = () => {
   const memberId = useParams();
-  console.log(memberId);
   const [topData, setTopData] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [imgUrl, setImgUrl] = useState('');
   useEffect(() => {
     axios
       .get(
         `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/mypage/${memberId.userId}`
       )
       .then((res) => {
-        console.log(res.data);
         let topData = {
           name: res.data.name,
           createAt: res.data.createAt,
           memberId: res.data.memberId,
           myPageTitle: res.data.myPageTitle,
+          modifiedAt: res.data.modifiedAt,
+          memberJpegUrl: res.data.memberJpegUrl,
         };
-        console.log(res.data.question);
         setTopData(topData);
+        setIsLoading(false);
+        setImgUrl(res.data.memberJpegUrl);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
       });
   }, []);
+  if (isLoading) {
+    return <div>...Loading</div>;
+  }
+
   return (
     <MyPageContainer>
       <MyPageTop topData={topData} />
@@ -53,8 +63,9 @@ const MyInfoEdit = () => {
       <MyPageMainSection className="flex-row">
         <MyInfoEdit_SideBar />
         <MyInfoEdit_Main
-          membername={topData.name}
+          topData={topData}
           memberId={memberId.userId}
+          imgUrl={imgUrl}
         ></MyInfoEdit_Main>
       </MyPageMainSection>
     </MyPageContainer>

@@ -8,20 +8,20 @@ import { useParams } from 'react-router-dom';
 import { selectFooter, selectNav } from '../store/store';
 import { useDispatch } from 'react-redux';
 function DetailQuestion() {
-  const [detailData, setDetailData] = useState([]);
-  const [answerData, setAnswerData] = useState([]);
-  const [tagData, setTagData] = useState([]);
+  const [detailData, setDetailData] = useState([]); //상세페이지 질문 data
+  const [answerData, setAnswerData] = useState([]); //상세페이지 답글 data
+  const [tagData, setTagData] = useState([]); //상세페이지 태그 data
 
-  const qsId = useParams();
-  // console.log(qsId);
+  const qsId = useParams(); // 파람스
+  const dispatch = useDispatch(); //디스패치
 
-  const dispatch = useDispatch();
-
+  //헤더 푸터 여부
   useEffect(() => {
     dispatch(selectFooter(true));
     dispatch(selectNav(true));
   }, []);
 
+  //상세페이지 답글 get 요청
   useEffect(() => {
     axios
       .get(
@@ -71,6 +71,7 @@ export default DetailQuestion;
 const DetailSection = styled.section`
   display: flex;
   flex-direction: column;
+  max-width: 1000px;
   padding: 30px;
 `;
 

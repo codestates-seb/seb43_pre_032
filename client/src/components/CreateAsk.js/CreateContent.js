@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 
-// eslint-disable-next-line react/display-name
 const InputItem = ({ setTitle, title, help }) => {
+  //제목, 제목변경함수, Help 배너 내용 내려받기
   const textHandler = (e) => {
+    // input 입력 추적
     setTitle(e.target.value);
   };
 
@@ -17,7 +18,9 @@ const InputItem = ({ setTitle, title, help }) => {
 
 // eslint-disable-next-line react/display-name
 const TextareaItem = ({ setBody, title, help }) => {
+  //내용, 내용변경함수, Help 배너 내용 내려받기
   const textHandler = (e) => {
+    // Textarea 입력 추적
     setBody(e.target.value);
   };
 
