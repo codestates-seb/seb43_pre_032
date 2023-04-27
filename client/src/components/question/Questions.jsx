@@ -13,10 +13,10 @@ function Questions({ tagId }) {
   const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
   const [totalcontetns, setTotalcontetns] = useState(0); // 전체 페이지 수
   const [filter, setFilter] = useState('Newest');
-  const [keyword, setKeyword] = useState('');
+
   const dispatch = useDispatch();
   const search = useSelector((state) => state.SearchData.data);
-  console.log(search);
+
   useEffect(() => {
     dispatch(selectFooter(true));
     dispatch(selectNav(true));
@@ -25,7 +25,7 @@ function Questions({ tagId }) {
 
   const url = tagId
     ? `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/tags/${tagId}?page=${currentPage}&tab=Active`
-    : `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions?page=${currentPage}&tab=${filter}&keyword=${keyword}`;
+    : `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/questions?page=${currentPage}&tab=${filter}`;
 
   useEffect(() => {
     // console.log(url);
