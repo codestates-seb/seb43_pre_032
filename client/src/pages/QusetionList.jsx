@@ -8,8 +8,10 @@ import styled from 'styled-components';
 function Viewcomponent({ tagId }) {
   const searchParamsToken = new URLSearchParams(window.location.search);
   const token = searchParamsToken.get('Authorization');
+  console.log(token);
   const searchParamsId = new URLSearchParams(window.location.search);
   const memberid = searchParamsId.get('Memberid');
+  console.log(memberid);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -22,6 +24,7 @@ function Viewcomponent({ tagId }) {
     navigate('/question');
   }
 
+  console.log('hi');
   return (
     <Questionscomponent>
       <Viewquestion>
