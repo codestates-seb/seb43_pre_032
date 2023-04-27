@@ -4,6 +4,7 @@ import com.dudung.preproject.answer.domain.Answer;
 import com.dudung.preproject.answer.dto.AnswerDto;
 import com.dudung.preproject.member.domain.Member;
 import com.dudung.preproject.member.dto.MemberDto;
+import com.dudung.preproject.member.service.MemberService;
 import com.dudung.preproject.question.domain.Question;
 import com.dudung.preproject.question.dto.QuestionResponseDto;
 import org.mapstruct.Mapper;
@@ -51,17 +52,13 @@ public interface MemberMapper {
                         .scheme("http")
                         .host("ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com")
                         .port(8080)
-                        .path("/image/"+member.getMemberId() + File.separator + member.getMemberId() + ".jpeg")
-                        .build().toUri().toString())
-                .memberPngUrl(UriComponentsBuilder
-                        .newInstance()
-                        .scheme("http")
-                        .host("ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com")
-                        .port(8080)
-                        .path("/image/"+member.getMemberId() + File.separator + member.getMemberId() + ".png")
+                        .path("/members/image/" + member.getMemberId())
                         .build().toUri().toString())
                 .answers(getAnswerToMember(member.getAnswers()))
                 .questions(getQuestionToMember(member.getQuestions()))
+                .myPageTitle(member.getMyPageTitle())
+                .aboutMe(member.getAboutMe())
+                .modifiedAt(member.getModifiedAt())
                 .name(member.getName())
                 .createAt(member.getCreatedAt())
                 .reputation(member.getReputation())
@@ -83,17 +80,11 @@ public interface MemberMapper {
     default List<AnswerDto.AnswerMemberResponseForList> getAnswerToMember(List<Answer> answer) {
         return answer.stream()
                 .map(answerList -> AnswerDto.AnswerMemberResponseForList.builder()
+                        .questionId(answerList.getQuestion().getQuestionId())
                         .answerId(answerList.getAnswerId())
                         .answerContent(answerList.getAnswerContent())
                         .build())
                 .collect(Collectors.toList());
-    }
-
-    default AnswerDto.AnswerMemberResponseForList getAnswerToMemberList(Answer answer){
-        return AnswerDto.AnswerMemberResponseForList.builder()
-                .answerContent(answer.getAnswerContent())
-                .answerId(answer.getAnswerId())
-                .build();
     }
 
 
