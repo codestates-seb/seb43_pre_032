@@ -49,25 +49,6 @@ public class MemberController {
     }
 
 
-    @PatchMapping("/{member-id}")
-    public ResponseEntity patchMember(@Positive @PathVariable("member-id") long memberId,
-                                      @Valid @RequestBody MemberDto.Patch requestBody) {
-        long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();
-
-        requestBody.setMemberId(memberId);
-
-        Member member = memberService.updateMember(mapper.memberPatchToMember(requestBody), authenticationMemberId);
-
-        return ResponseEntity.status(HttpStatus.OK).body(mapper.memberToMemberResponse(member));
-    }
-
-    @GetMapping("/{member-id}")
-    public ResponseEntity getMember(@Positive @PathVariable("member-id") long memberId) {
-
-        Member member = memberService.findMember(memberId);
-
-        return new ResponseEntity<>(mapper.memberToMemberResponse(member), HttpStatus.OK);
-    }
 
     @GetMapping
     public ResponseEntity getMembers(@Positive @RequestParam int page, @RequestParam int size) {
@@ -98,8 +79,9 @@ public class MemberController {
     @PostMapping(path = "/upload/{member-id}")
     public ResponseEntity postImageUpload(@PathVariable("member-id") long memberId,
                                           @RequestPart(required = false) MultipartFile file){
+        long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();
 
-        memberService.uploading(file, memberId);
+        memberService.uploading(file, memberId, authenticationMemberId, IMAGE_DEFAULT_URL);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -108,8 +90,9 @@ public class MemberController {
                                       @Valid @RequestBody MemberDto.MyPagePatch requestBody) {
         long authenticationMemberId = JwtParseInterceptor.getAuthenticatedMemberId();
 
+        requestBody.setMemberId(memberId);
         memberService.updateMyPage(mapper.responserMypagePatchToMember(requestBody), authenticationMemberId);
-        return new ResponseEntity<>("수정 완료", HttpStatus.OK);
+        return new ResponseEntity<>(mapper.memberToMyPage(memberService.findMember(memberId)), HttpStatus.OK);
     }
 
     @GetMapping("/image/{member-id}")

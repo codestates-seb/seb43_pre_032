@@ -38,22 +38,6 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    public Member updateMember(Member member, long authenticationMemberId) {
-        checkVerifiedId(authenticationMemberId);
-
-        Member findedMember = findVerifiedMember(member.getMemberId());
-
-        patchPermission(findedMember, authenticationMemberId);
-
-        Optional.ofNullable(member.getEmail())
-                .ifPresent(email -> findedMember.setEmail(email));
-        Optional.ofNullable(member.getPassword())
-                .ifPresent(password -> findedMember.setPassword(password));
-        Optional.ofNullable(member.getName())
-                .ifPresent(name -> findedMember.setName(name));
-
-        return memberRepository.save(findedMember);
-    }
 
     public Member findMember(long memberId) {
         return findVerifiedMember(memberId);
@@ -88,6 +72,13 @@ public class MemberService {
         return findedMember;
     }
 
+    public void findVerifiedMemberEmail (String email) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+        if (optionalMember.isPresent()) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_EMAIL_EXISTS);
+        }
+    }
+
     private void checkVerifiedId(long authenticationMemeberId) {
         if (authenticationMemeberId == -1) throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
     }
@@ -104,7 +95,18 @@ public class MemberService {
         }
     }
 
-    public Boolean uploading(MultipartFile file, long memberId) {
+    private void uploadingPermission(Member member, long authenticationMemberId) {
+        if (!member.getMemberId().equals(authenticationMemberId) && !member.getEmail().equals("admin@gmail.com")) {
+            throw new BusinessLogicException(ExceptionCode.ONLY_AUTHOR);
+        }
+    }
+
+    public Boolean uploading(MultipartFile file, long memberId, long authenticationMemberId, String url) {
+
+        checkVerifiedId(authenticationMemberId);
+        Member findedmember = findVerifiedMember(memberId);
+        uploadingPermission(findedmember, authenticationMemberId);
+
         Boolean result = Boolean.TRUE;
 
         String dir = Long.toString(memberId);
@@ -116,7 +118,7 @@ public class MemberService {
         String newFileName = dir + extiension;
 
         try {
-            File folder = new File("image" + File.separator + dir);
+            File folder = new File(url + File.separator + dir);
             File[] files = folder.listFiles();
             if (!folder.exists()) {
                 folder.mkdirs();
@@ -125,7 +127,8 @@ public class MemberService {
                     file1.delete();
                 }
             }
-            File destination = new File(folder.getAbsolutePath() , newFileName);
+            File destination = new File( folder , newFileName);
+
             System.out.println(folder.getAbsolutePath());
             file.transferTo(destination);
 
@@ -141,17 +144,18 @@ public class MemberService {
     public Member updateMyPage(Member member, long authenticationMemberId) {
         checkVerifiedId(authenticationMemberId);
         Member findedMember = findVerifiedMember(member.getMemberId());
+        findVerifiedMemberEmail(member.getEmail());
 
-        deletePermission(findedMember, authenticationMemberId);
+        patchPermission(findedMember, authenticationMemberId);
 
         Optional.ofNullable(member.getName())
                 .ifPresent(name -> findedMember.setName(member.getName()));
         Optional.ofNullable(member.getMyPageTitle())
                 .ifPresent(myPageTitle -> findedMember.setMyPageTitle(member.getMyPageTitle()));
-        Optional.ofNullable(member.getMyPageTitle())
-                .ifPresent(myPageTitle -> findedMember.setMyPageTitle(member.getMyPageTitle()));
         Optional.ofNullable(member.getAboutMe())
                 .ifPresent(aboutMe -> findedMember.setAboutMe(member.getAboutMe()));
+        Optional.ofNullable(member.getEmail())
+                .ifPresent(email -> findedMember.setEmail(member.getEmail()));
 
         findedMember.setModifiedAt(member.getModifiedAt());
 
