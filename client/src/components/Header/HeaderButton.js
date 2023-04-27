@@ -27,16 +27,15 @@ const OtherButtons = () => {
   const getToken = localStorage.getItem('token');
   const getMemberid = localStorage.getItem('memberid');
 
-  //값이 있을때만 슬라이스 처리
-
   const membersIdAxios = () => {
     axios
       .get(
-        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/${getMemberid}`,
+        `http://ec2-13-125-39-247.ap-northeast-2.compute.amazonaws.com:8080/members/mypage/${getMemberid}`,
         { headers: { Authorization: getToken } }
       )
       .then((res) => {
         const name = res.data.name;
+        console.log(name);
 
         if (name) {
           if (name.length === 3) {
@@ -67,16 +66,16 @@ const OtherButtons = () => {
           {reputation}
         </Link>
       </Menu>
-      <Menu>
+      <Menu className="menu">
         <FontAwesomeIcon icon={faInbox} />
       </Menu>
-      <Menu>
+      <Menu className="menu">
         <FontAwesomeIcon icon={faTrophy} />
       </Menu>
-      <Menu>
+      <Menu className="menu">
         <FontAwesomeIcon icon={faCircleQuestion} />
       </Menu>
-      <Menu>
+      <Menu className="menu">
         <Link to={'/logout'}>
           <FontAwesomeIcon icon={faStackExchange} />
         </Link>
@@ -117,6 +116,13 @@ const OtherContainer = styled.div`
     text-decoration: none; /* 밑줄 제거 */
     color: inherit; /* 상속받은 색상 사용 */
     font-size: inherit;
+  }
+
+  @media (max-width: 640px) {
+    width: 15%;
+    .menu {
+      display: none;
+    }
   }
 `;
 const Menu = styled.div`

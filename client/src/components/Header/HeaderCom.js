@@ -195,6 +195,7 @@ const SidemenuGroup = styled.div`
   }
   @media (min-width: 640px) {
     display: none;
+    background-color: red;
   }
 `;
 
